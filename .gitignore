@@ -1,0 +1,33 @@
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build artifacts
+bin/
+obj/
+[Bb]uild/
+[Bb]uilds/
+x64/
+x86/
+[Aa][Rr][Mm]*/
+[Aa][Rr][Mm]64*/
+
+# NuGet
+packages/
+*.nupkg
+project.lock.json
+artifacts/
+
+# msbuild
+*.log
+*.tlog
+
+# ETWSpy projects
+ETWSpy/bin/
+ETWSpy/obj/
+ETWSpyLib/bin/
+ETWSpyLib/obj/
+ETWSpyUI/bin/
+ETWSpyUI/obj/
