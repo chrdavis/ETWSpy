@@ -12,7 +12,7 @@
         Width="1000"
         MinHeight="400"
         MinWidth="600">
-    <Grid>
+    <Grid Background="{DynamicResource SecondaryBackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -157,7 +157,7 @@
                               VirtualizingPanel.VirtualizationMode="Recycling"
                               VirtualizingPanel.ScrollUnit="Pixel"
                               ScrollViewer.IsDeferredScrollingEnabled="True"
-                              KeyDown="EventsDataGrid_KeyDown"
+                              PreviewKeyDown="EventsDataGrid_PreviewKeyDown"
                               MouseDoubleClick="EventsDataGrid_MouseDoubleClick">
                     </DataGrid>
 
@@ -174,9 +174,9 @@
                                    Margin="0,0,20,0"/>
                         <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" 
                                     HorizontalAlignment="Right">
-                            <Button Content="Start" 
-                                    x:Name="StartStopButton"
-                                    Click="StartTracing"
+                            <Button Content="Pause" 
+                                    x:Name="PauseResumeButton"
+                                    Click="PauseResumeTracing"
                                     Margin="5,0"
                                     MinWidth="100"/>
                             <Button Content="Clear" 

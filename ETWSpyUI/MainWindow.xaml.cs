@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -14,7 +15,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Threading;
 using ETWSpyLib;
 using Microsoft.O365.Security.ETW;
@@ -84,8 +84,6 @@ namespace ETWSpyUI
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
-        private const int DWMWA_CAPTION_COLOR = 35;
         private const int DefaultMaxEventsToDisplay = 10000;
         private const int MaxPendingQueueSize = 10000; // Limit pending queue to prevent unbounded memory growth
 
@@ -103,9 +101,6 @@ namespace ETWSpyUI
             WriteIndented = true
         };
 
-        [DllImport("dwmapi.dll", PreserveSig = true)]
-        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
-
         private bool _isDarkMode;
         private bool _showTimestampsInUTC;
         private int _maxEventsToShow = DefaultMaxEventsToDisplay;
@@ -120,6 +115,9 @@ namespace ETWSpyUI
         // Adaptive interval tracking - circular buffer of recent queue sizes
         private readonly int[] _queueSizeHistory = new int[AdaptiveWindowSize];
         private int _queueSizeHistoryIndex;
+
+        // Tracks whether event processing is paused (trace session still runs, but events are not processed)
+        private bool _isPaused;
 
         // Use a simple List as backing store to avoid ObservableCollection overhead
         private List<EventRecord> _eventRecordsList = new(DefaultMaxEventsToDisplay);
@@ -174,7 +172,7 @@ namespace ETWSpyUI
         public MainWindow()
         {
             HandleAdminPrivileges();
-            Opacity = 0; // Start fully transparent to prevent white flash
+            //Opacity = 0; // Start fully transparent to prevent white flash
             InitializeComponent();
 
             // Bind settings (checkbox) to this window
@@ -194,6 +192,9 @@ namespace ETWSpyUI
             // Bind the FiltersListView to the FilterEntries collection
             FiltersListView.ItemsSource = FilterEntries;
 
+            // Subscribe to filter changes to auto-start/restart trace session
+            FilterEntries.CollectionChanged += OnFilterEntriesChanged;
+
             // EventsDataGrid uses a plain List<T> to avoid ObservableCollection overhead
             // ItemsSource is set/reset in FlushPendingEvents to trigger UI refresh
             EventsDataGrid.ItemsSource = _eventRecordsList;
@@ -204,11 +205,11 @@ namespace ETWSpyUI
                 LoadSettingsFromRegistry();
             };
 
-            ContentRendered += (_, _) =>
-            {
-                // Apply title bar theme after window is shown
-                Opacity = 1;
-            };
+            //ContentRendered += (_, _) =>
+           // {
+            //    // Apply title bar theme after window is shown
+            //    Opacity = 1;
+            //};
 
             // Clean up on close
             Closing += MainWindow_Closing;
@@ -337,7 +338,109 @@ namespace ETWSpyUI
         private void MainWindow_Closing(object? sender, CancelEventArgs e)
         {
             _batchTimer.Stop();
+            FilterEntries.CollectionChanged -= OnFilterEntriesChanged;
             StopTracing();
+        }
+
+        /// <summary>
+        /// Handles changes to the FilterEntries collection.
+        /// Automatically starts, restarts, or stops the trace session based on filter changes.
+        /// </summary>
+        private void OnFilterEntriesChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            // If filters were added or removed, restart the trace session with new providers
+            if (FilterEntries.Count > 0)
+            {
+                RestartTraceSession();
+            }
+            else
+            {
+                // No filters remaining - stop the trace session
+                StopTracing();
+                PauseResumeButton.Content = "Pause";
+                StatusTextBlock.Text = "Stopped";
+            }
+        }
+
+        /// <summary>
+        /// Stops the current trace session and starts a new one with the current filter configuration.
+        /// </summary>
+        private void RestartTraceSession()
+        {
+            try
+            {
+                // Stop any existing session
+                StopTracing();
+
+                // Clear any previous provider references
+                _activeProviders.Clear();
+
+                // Reset adaptive interval to start fresh
+                ResetAdaptiveInterval();
+
+                _traceSession = EtwTraceSession.CreateUserSession($"ETWSpySession_{Guid.NewGuid():N}");
+                _traceCancellation = new CancellationTokenSource();
+
+                // Group filters by provider to create one wrapper per provider
+                var providerGroups = FilterEntries
+                    .GroupBy(f => f.Provider, StringComparer.OrdinalIgnoreCase)
+                    .ToList();
+
+                foreach (var providerGroup in providerGroups)
+                {
+                    var filterList = providerGroup.ToList();
+                    var firstFilter = filterList.First();
+
+                    // Determine if we need OnAllEvents (when there are filters with no specific event IDs)
+                    // or if all filters specify event IDs (use only event filters)
+                    bool hasFilterWithAllEvents = filterList.Any(f => string.IsNullOrWhiteSpace(f.EventId));
+
+                    // Collect exclude event IDs to filter out in OnAllEvents callback
+                    var excludeEventIds = new HashSet<ushort>();
+                    foreach (var f in filterList.Where(f => f.FilterType == "Exclude" && !string.IsNullOrWhiteSpace(f.EventId)))
+                    {
+                        if (TryParseEventIds(f.EventId, out var ids, out _))
+                        {
+                            foreach (var id in ids)
+                            {
+                                excludeEventIds.Add(id);
+                            }
+                        }
+                    }
+
+                    var wrapper = CreateProviderWrapper(firstFilter, hasFilterWithAllEvents, excludeEventIds);
+
+                    // Apply all include filters with specific event IDs
+                    foreach (var filterEntry in filterList.Where(f => f.FilterType == "Include" && !string.IsNullOrWhiteSpace(f.EventId)))
+                    {
+                        ApplyFilterToProvider(wrapper, filterEntry);
+                    }
+
+                    _activeProviders.Add(wrapper); // Keep reference alive
+                    _traceSession.EnableProvider(wrapper);
+                }
+
+                // Subscribe to error events from the trace session
+                _traceSession.ErrorOccurred += OnTraceSessionError;
+
+                // Start the batch timer
+                _batchTimer.Start();
+
+                // Start the trace asynchronously
+                _ = _traceSession.StartAsync(_traceCancellation.Token);
+
+                // Update UI to reflect running state
+                _isPaused = false;
+                PauseResumeButton.Content = "Pause";
+                StatusTextBlock.Text = "Running...";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to start tracing: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                StopTracing();
+                PauseResumeButton.Content = "Pause";
+                StatusTextBlock.Text = "Stopped";
+            }
         }
 
         private void OnPropertyChanged(string propertyName)
@@ -416,7 +519,7 @@ namespace ETWSpyUI
         private void SetDarkMode(bool enable)
         {
             SwitchTheme(enable ? "Themes/DarkTheme.xaml" : "Themes/LightTheme.xaml");
-            ApplyTitleBarTheme(enable);
+            WindowHelper.ApplyTitleBarTheme(this, enable);
         }
 
         private void SwitchTheme(string themePath)
@@ -427,117 +530,37 @@ namespace ETWSpyUI
             Application.Current.Resources.MergedDictionaries.Add(resourceDict);
         }
 
-        private void ApplyTitleBarTheme(bool isDarkMode)
+        private void PauseResumeTracing(object sender, RoutedEventArgs e)
         {
-            if (!OperatingSystem.IsWindowsVersionAtLeast(10, 0, 17763))
+            // If no trace session exists, nothing to pause/resume
+            if (_traceSession == null)
             {
+                MessageBox.Show("No active trace session. Add a filter to start tracing.", "No Session", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
-            var hwnd = new WindowInteropHelper(this).Handle;
-            if (hwnd == IntPtr.Zero) return;
+            // Toggle pause state
+            _isPaused = !_isPaused;
 
-            int darkMode = isDarkMode ? 1 : 0;
-            DwmSetWindowAttribute(hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE, ref darkMode, sizeof(int));
-
-            if (OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000))
+            if (_isPaused)
             {
-                int titleBarColor = isDarkMode ? 0x001E1E1E : 0x00FFFFFF;
-                DwmSetWindowAttribute(hwnd, DWMWA_CAPTION_COLOR, ref titleBarColor, sizeof(int));
-            }
-        }
-
-        private void StartTracing(object sender, RoutedEventArgs e)
-        {
-            if (_traceSession != null)
-            {
-                StopTracing();
-                if (sender is Button stopButton)
+                // Paused - stop the batch timer but keep the trace session running
+                _batchTimer.Stop();
+                if (sender is Button pauseResumeButton)
                 {
-                    stopButton.Content = "Start";
+                    pauseResumeButton.Content = "Resume";
                 }
-                StatusTextBlock.Text = "Stopped";
-                return;
+                StatusTextBlock.Text = "Paused";
             }
-
-            if (FilterEntries.Count == 0)
+            else
             {
-                MessageBox.Show("Please add at least one filter before starting the trace.", "No Filters", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            try
-            {
-                // Clear any previous provider references
-                _activeProviders.Clear();
-
-                // Reset adaptive interval to start fresh
-                ResetAdaptiveInterval();
-
-                _traceSession = EtwTraceSession.CreateUserSession($"ETWSpySession_{Guid.NewGuid():N}");
-                _traceCancellation = new CancellationTokenSource();
-
-                // Group filters by provider to create one wrapper per provider
-                var providerGroups = FilterEntries
-                    .GroupBy(f => f.Provider, StringComparer.OrdinalIgnoreCase)
-                    .ToList();
-
-                foreach (var providerGroup in providerGroups)
-                {
-                    var filterList = providerGroup.ToList();
-                    var firstFilter = filterList.First();
-                    
-                    // Determine if we need OnAllEvents (when there are filters with no specific event IDs)
-                    // or if all filters specify event IDs (use only event filters)
-                    bool hasFilterWithAllEvents = filterList.Any(f => string.IsNullOrWhiteSpace(f.EventId));
-                    
-                    // Collect exclude event IDs to filter out in OnAllEvents callback
-                    var excludeEventIds = new HashSet<ushort>();
-                    foreach (var f in filterList.Where(f => f.FilterType == "Exclude" && !string.IsNullOrWhiteSpace(f.EventId)))
-                    {
-                        if (TryParseEventIds(f.EventId, out var ids, out _))
-                        {
-                            foreach (var id in ids)
-                            {
-                                excludeEventIds.Add(id);
-                            }
-                        }
-                    }
-                    
-                    var wrapper = CreateProviderWrapper(firstFilter, hasFilterWithAllEvents, excludeEventIds);
-                    
-                    // Apply all include filters with specific event IDs
-                    foreach (var filterEntry in filterList.Where(f => f.FilterType == "Include" && !string.IsNullOrWhiteSpace(f.EventId)))
-                    {
-                        ApplyFilterToProvider(wrapper, filterEntry);
-                    }
-                    
-                    _activeProviders.Add(wrapper); // Keep reference alive
-                    _traceSession.EnableProvider(wrapper);
-                }
-
-                // Subscribe to error events from the trace session
-                _traceSession.ErrorOccurred += OnTraceSessionError;
-
-                // Start the batch timer
+                // Resumed - restart the batch timer
                 _batchTimer.Start();
-
-                // Start the trace asynchronously
-                _ = _traceSession.StartAsync(_traceCancellation.Token);
-
-                // Update button text to indicate tracing is active
-                if (sender is Button button)
+                if (sender is Button pauseResumeButton)
                 {
-                    button.Content = "Stop";
+                    pauseResumeButton.Content = "Pause";
                 }
-
-                // Update status bar
                 StatusTextBlock.Text = "Running...";
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Failed to start tracing: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                StopTracing();
             }
         }
 
@@ -673,6 +696,12 @@ namespace ETWSpyUI
 
         private void OnEventReceived(IEventRecord record)
         {
+            // Don't enqueue events while paused
+            if (_isPaused)
+            {
+                return;
+            }
+
             // Drop events if queue is too large to prevent unbounded memory growth
             // This can happen when events arrive faster than the UI can process them
             if (_pendingEvents.Count >= MaxPendingQueueSize)
@@ -714,8 +743,8 @@ namespace ETWSpyUI
                 // Stop tracing and reset UI
                 StopTracing();
 
-                // Reset the Start/Stop button text
-                StartStopButton.Content = "Start";
+                // Reset the Pause/Resume button text
+                PauseResumeButton.Content = "Resume";
                 StatusTextBlock.Text = "Stopped";
             });
         }
@@ -736,6 +765,7 @@ namespace ETWSpyUI
         private void StopTracing()
         {
             _batchTimer.Stop();
+            _isPaused = false;
             _traceCancellation?.Cancel();
 
             // Unsubscribe from error events before stopping
@@ -936,7 +966,7 @@ namespace ETWSpyUI
             }
         }
 
-        private void EventsDataGrid_KeyDown(object sender, KeyEventArgs e)
+        private void EventsDataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             // Handle Ctrl+C for copy
             if (e.Key == Key.C && Keyboard.Modifiers == ModifierKeys.Control)
@@ -1269,7 +1299,7 @@ namespace ETWSpyUI
                 var detailsWindow = new EventDetailsWindow(IsDarkMode);
                 detailsWindow.SetEventRecord(selectedRecord, ShowTimestampsInUTC);
                 detailsWindow.Owner = this;
-                detailsWindow.Show();
+                WindowHelper.ShowWithoutFlash(detailsWindow, centerOnScreen: false);
             }
         }
     }

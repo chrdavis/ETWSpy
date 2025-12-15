@@ -9,10 +9,10 @@
         Background="{DynamicResource PrimaryBackgroundBrush}"
         Title="ETWSpy - Event Details" 
         Height="550" 
-        Width="400"
-        MinHeight="500"
-        MinWidth="400">
-    <Grid>
+        Width="500"
+        MinHeight="550"
+        MinWidth="500">
+    <Grid Background="{DynamicResource SecondaryBackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -59,10 +59,10 @@
                       ScrollViewer.VerticalScrollBarVisibility="Auto"
                       ScrollViewer.HorizontalScrollBarVisibility="Auto">
                         <ListView.View>
-                            <GridView AllowsColumnReorder="True">
-                                <GridViewColumn Header="Name" Width="150" DisplayMemberBinding="{Binding Name}"/>
+                            <GridView AllowsColumnReorder="False">
+                                <GridViewColumn Header="Name" Width="200" DisplayMemberBinding="{Binding Name}"/>
                                 <GridViewColumn Header="Type" Width="100" DisplayMemberBinding="{Binding Type}"/>
-                                <GridViewColumn Header="Value" Width="150" DisplayMemberBinding="{Binding Value}"/>
+                                <GridViewColumn Header="Value" Width="200" DisplayMemberBinding="{Binding Value}"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
