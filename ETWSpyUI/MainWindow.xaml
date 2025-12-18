@@ -234,6 +234,18 @@
             </TabItem>
             <TabItem Header="About">
                 <Grid Background="{DynamicResource SecondaryBackgroundBrush}" Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Content="ETWSpy - Event Tracing Monitor for Windows" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
+                    <Label Grid.Row="1" Content="{Binding AppVersion}" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
+                    <TextBlock Grid.Row="2" HorizontalAlignment="Left" Margin="14,10,10,10" VerticalAlignment="Top">
+                        <Hyperlink NavigateUri="https://github.com/chrdavis/ETWSpy" RequestNavigate="Hyperlink_RequestNavigate">
+                            https://github.com/chrdavis/ETWSpy
+                        </Hyperlink>
+                    </TextBlock>
                 </Grid>
             </TabItem>
         </TabControl>

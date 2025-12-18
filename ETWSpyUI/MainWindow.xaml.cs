@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -15,6 +16,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Navigation;
 using System.Windows.Threading;
 using ETWSpyLib;
 using Microsoft.O365.Security.ETW;
@@ -166,6 +168,18 @@ namespace ETWSpyUI
                 _maxEventsToShow = value;
                 OnPropertyChanged(nameof(MaxEventsToShow));
                 RegistrySettings.SaveInt(RegistrySettings.MaxEventsToShow, _maxEventsToShow);
+            }
+        }
+
+        /// <summary>
+        /// Gets the application version string for display in the About tab.
+        /// </summary>
+        public string AppVersion
+        {
+            get
+            {
+                var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+                return version != null ? $"Version: {version.Major}.{version.Minor}.{version.Build}" : "Version: Unknown";
             }
         }
 
@@ -458,27 +472,34 @@ namespace ETWSpyUI
 
         private void PopulateProviderComboBox()
         {
-            var providers = new List<string>
-            {
-                "Microsoft-Windows-DNS-Client",
-                "Microsoft-Windows-Kernel-Process",
-                "Microsoft-Windows-Kernel-File",
-                "Microsoft-Windows-Kernel-Network",
-                "Microsoft-Windows-TCPIP",
-                "Microsoft-Windows-Security-Auditing",
-                "Microsoft-Windows-PowerShell",
-                "Microsoft-Windows-WinHttp",
-                "Microsoft-Windows-WinINet",
-                "Microsoft-Windows-Networking-Correlation",
-                "Microsoft-Windows-LDAP-Client",
-                "Microsoft-Windows-RPC",
-                "Microsoft-Windows-Kernel-Registry",
-                "Microsoft-Windows-Kernel-Memory",
-                "Microsoft-Windows-DotNETRuntime"
-            };
+            // Get all providers (defaults + user-added from registry), sorted alphabetically
+            var providers = ProviderManager.GetAllProviders();
 
             ProviderComboBox.ItemsSource = providers;
             if (ProviderComboBox.Items.Count > 0)
+            {
+                ProviderComboBox.SelectedIndex = 0;
+            }
+        }
+
+        /// <summary>
+        /// Refreshes the provider combo box to include any newly added providers.
+        /// </summary>
+        private void RefreshProviderComboBox()
+        {
+            var currentText = ProviderComboBox.Text;
+            var providers = ProviderManager.GetAllProviders();
+            ProviderComboBox.ItemsSource = providers;
+
+            // Try to restore the previous selection
+            var matchingProvider = providers.FirstOrDefault(p => 
+                string.Equals(p.Name, currentText, StringComparison.OrdinalIgnoreCase));
+            
+            if (matchingProvider != null)
+            {
+                ProviderComboBox.SelectedItem = matchingProvider;
+            }
+            else if (ProviderComboBox.Items.Count > 0)
             {
                 ProviderComboBox.SelectedIndex = 0;
             }
@@ -637,10 +658,25 @@ namespace ETWSpyUI
 
         private EtwProviderWrapper CreateProviderWrapper(FilterEntry entry, bool registerOnAllEvents, HashSet<ushort> excludeEventIds)
         {
-            // Try to parse as GUID first, otherwise use as name
-            EtwProviderWrapper wrapper = Guid.TryParse(entry.Provider, out var guid)
-                ? new EtwProviderWrapper(guid)
-                : new EtwProviderWrapper(entry.Provider);
+            // Look up the provider to get its GUID if available
+            var providerInfo = ProviderManager.FindByName(entry.Provider);
+            
+            EtwProviderWrapper wrapper;
+            if (providerInfo?.Guid != null)
+            {
+                // Use the GUID from the provider info
+                wrapper = new EtwProviderWrapper(providerInfo.Guid.Value);
+            }
+            else if (Guid.TryParse(entry.Provider, out var guid))
+            {
+                // The provider name itself is a GUID
+                wrapper = new EtwProviderWrapper(guid);
+            }
+            else
+            {
+                // Use the provider name
+                wrapper = new EtwProviderWrapper(entry.Provider);
+            }
 
             // Set keywords
             if (!string.IsNullOrWhiteSpace(entry.Keywords) &&
@@ -655,7 +691,7 @@ namespace ETWSpyUI
 
             // Set trace level
             if (!string.IsNullOrWhiteSpace(entry.TraceLevel) &&
-                Enum.TryParse<TraceLevel>(entry.TraceLevel, ignoreCase: true, out var level))
+                Enum.TryParse<ETWSpyLib.TraceLevel>(entry.TraceLevel, ignoreCase: true, out var level))
             {
                 wrapper.SetTraceLevel(level);
             }
@@ -865,6 +901,13 @@ namespace ETWSpyUI
             }
 
             FilterEntries.Add(filter);
+
+            // Save the provider to registry if it's a new one (not in defaults or registry)
+            if (ProviderManager.AddProvider(filter.Provider))
+            {
+                // Refresh the combo box to include the newly added provider
+                RefreshProviderComboBox();
+            }
         }
 
         private void RemoveFilter(object sender, RoutedEventArgs e)
@@ -937,11 +980,35 @@ namespace ETWSpyUI
                     return;
                 }
 
-                // Clear existing data and load from file
-                FilterEntries.Clear();
-                foreach (var filter in config.Filters)
+                // Temporarily unsubscribe from CollectionChanged to avoid restarting the trace session
+                // for each filter added during loading
+                FilterEntries.CollectionChanged -= OnFilterEntriesChanged;
+
+                try
                 {
-                    FilterEntries.Add(filter);
+                    // Clear existing data and load from file
+                    FilterEntries.Clear();
+                    foreach (var filter in config.Filters)
+                    {
+                        FilterEntries.Add(filter);
+                    }
+                }
+                finally
+                {
+                    // Re-subscribe to CollectionChanged
+                    FilterEntries.CollectionChanged += OnFilterEntriesChanged;
+                }
+
+                // Now restart the trace session once with all filters loaded
+                if (FilterEntries.Count > 0)
+                {
+                    RestartTraceSession();
+                }
+                else
+                {
+                    StopTracing();
+                    PauseResumeButton.Content = "Pause";
+                    StatusTextBlock.Text = "Stopped";
                 }
 
                 MessageBox.Show("Configuration loaded successfully.", "Load Configuration", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -959,10 +1026,10 @@ namespace ETWSpyUI
         private void ProviderComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var cb = (ComboBox)sender;
-            // Keep Text synchronized with the selected item (strings in ItemsSource)
-            if (cb.SelectedItem is string s)
+            // Keep Text synchronized with the selected item (ProviderInfo objects in ItemsSource)
+            if (cb.SelectedItem is ProviderInfo provider)
             {
-                cb.Text = s;
+                cb.Text = provider.Name;
             }
         }
 
@@ -1301,6 +1368,12 @@ namespace ETWSpyUI
                 detailsWindow.Owner = this;
                 WindowHelper.ShowWithoutFlash(detailsWindow, centerOnScreen: false);
             }
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
+            e.Handled = true;
         }
     }
 

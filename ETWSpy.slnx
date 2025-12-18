@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="ETWSpy/ETWSpy.csproj" />
+  <Project Path="ETWSpyLib.Tests/ETWSpyLib.Tests.csproj" />
   <Project Path="ETWSpyLib/ETWSpyLib.csproj" />
   <Project Path="ETWSpyUI/ETWSpyUI.csproj" />
 </Solution>
