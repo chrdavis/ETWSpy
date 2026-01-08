@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Windows;
 
 namespace ETWSpyUI
@@ -19,6 +22,8 @@ namespace ETWSpyUI
         }
 
         private readonly bool _isDarkMode;
+        private EventRecord? _eventRecord;
+        private bool _showTimestampsInUTC;
 
         public EventDetailsWindow()
             : this(false)
@@ -41,6 +46,10 @@ namespace ETWSpyUI
         /// <param name="showTimestampsInUTC">Whether to display timestamps in UTC format.</param>
         public void SetEventRecord(EventRecord eventRecord, bool showTimestampsInUTC = false)
         {
+            // Store for later use (e.g., copying)
+            _eventRecord = eventRecord;
+            _showTimestampsInUTC = showTimestampsInUTC;
+
             // Populate the labels
             ProviderLabel.Content = eventRecord.ProviderName;
             EventIdLabel.Content = eventRecord.EventId.ToString();
@@ -68,6 +77,43 @@ namespace ETWSpyUI
             }
 
             EventPayloadListView.ItemsSource = payloadItems;
+        }
+
+        private void CopyButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_eventRecord == null)
+            {
+                return;
+            }
+
+            var sb = new StringBuilder();
+
+            // Add header row
+            sb.AppendLine("Timestamp\tProviderName\tEventName\tTaskName\tEventId\tProcessId\tThreadId\tPayload");
+
+            // Format timestamp
+            var displayTime = _showTimestampsInUTC
+                ? _eventRecord.Timestamp.ToUniversalTime()
+                : _eventRecord.Timestamp.ToLocalTime();
+            var suffix = _showTimestampsInUTC ? " UTC" : "";
+            string timestampStr = $"{displayTime:yyyy-MM-dd HH:mm:ss.fff}{suffix}";
+
+            // Format payload
+            string payloadStr = _eventRecord.Payload.Count == 0
+                ? string.Empty
+                : string.Join("; ", _eventRecord.Payload.Select(kvp => $"{kvp.Key}={kvp.Value}"));
+
+            // Add data row
+            sb.AppendLine($"{timestampStr}\t{_eventRecord.ProviderName}\t{_eventRecord.EventName}\t{_eventRecord.TaskName}\t{_eventRecord.EventId}\t{_eventRecord.ProcessId}\t{_eventRecord.ThreadId}\t{payloadStr}");
+
+            try
+            {
+                Clipboard.SetText(sb.ToString());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to copy to clipboard: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
