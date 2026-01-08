@@ -28,7 +28,7 @@
                         <TextBlock Text="&#xE8E5;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem Header="_Save..." Click="SaveToFile" InputGestureText="Ctrl+S">
+                <MenuItem x:Name="SaveMenuItem" Header="_Save..." Click="SaveToFile" InputGestureText="Ctrl+S" IsEnabled="False">
                     <MenuItem.Icon>
                         <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
                     </MenuItem.Icon>
@@ -99,11 +99,11 @@
 
         <!-- Toolbar -->
         <ToolBarTray Grid.Row="1" Background="{DynamicResource TertiaryBackgroundBrush}" IsLocked="True">
-            <ToolBar Background="{DynamicResource TertiaryBackgroundBrush}" Padding="6,4" Band="0" BandIndex="0">
+            <ToolBar Background="{DynamicResource TertiaryBackgroundBrush}" Padding="2,2" Band="0" BandIndex="0">
                 <Button Click="LoadFromFile" ToolTip="Open Configuration (Ctrl+O)" Style="{DynamicResource ToolbarButtonStyle}">
                     <TextBlock Text="&#xE8E5;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
                 </Button>
-                <Button Click="SaveToFile" ToolTip="Save Configuration (Ctrl+S)" Style="{DynamicResource ToolbarButtonStyle}">
+                <Button x:Name="SaveToolbarButton" Click="SaveToFile" ToolTip="Save Configuration (Ctrl+S)" IsEnabled="False" Style="{DynamicResource ToolbarButtonStyle}">
                     <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
                 </Button>
                 <Separator/>
@@ -114,7 +114,7 @@
                     <TextBlock Text="&#xE71C;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
                 </Button>
                 <Separator/>
-                <Button x:Name="StartPauseToolbarButton" Click="PauseResumeTracing" ToolTip="Start/Pause event capture" Style="{DynamicResource ToolbarButtonStyle}">
+                <Button x:Name="StartPauseToolbarButton" Click="PauseResumeTracing" ToolTip="Start/Pause event capture" IsEnabled="False" Style="{DynamicResource ToolbarButtonStyle}">
                     <TextBlock x:Name="StartPauseToolbarIcon" Text="&#xE768;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
                 </Button>
                 <Button x:Name="EventDetailsToolbarButton" Click="ShowEventDetailsButton_Click" ToolTip="View event details" IsEnabled="False" Style="{DynamicResource ToolbarButtonStyle}">
@@ -123,20 +123,19 @@
                 <Button x:Name="CopyToolbarButton" Click="CopySelectedEvents" ToolTip="Copy selected events (Ctrl+C)" IsEnabled="False" Style="{DynamicResource ToolbarButtonStyle}">
                     <TextBlock Text="&#xE8C8;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
                 </Button>
-                <Button Click="ClearEvents" ToolTip="Clear all captured events" Style="{DynamicResource ToolbarButtonStyle}">
-                    <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
+                <Button x:Name="ClearEventsToolbarButton" Click="ClearEvents" ToolTip="Clear all captured events" IsEnabled="False" Style="{DynamicResource ToolbarButtonStyle}">
+                    <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
                 </Button>
-                <Button Click="ExportToCsv" ToolTip="Export events to CSV file" Style="{DynamicResource ToolbarButtonStyle}">
-                    <TextBlock Text="&#xEDE1;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
+                <Button x:Name="ExportToolbarButton" Click="ExportToCsv" ToolTip="Export events to CSV file" IsEnabled="False" Style="{DynamicResource ToolbarButtonStyle}">
+                    <TextBlock Text="&#xEE71;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
                 </Button>
             </ToolBar>
         </ToolBarTray>
 
         <!-- Main Content - Events -->
-        <Grid Grid.Row="2" Background="{DynamicResource SecondaryBackgroundBrush}" Margin="10">
+        <Grid Grid.Row="2" Background="{DynamicResource SecondaryBackgroundBrush}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <DataGrid Grid.Row="0" 
@@ -157,19 +156,6 @@
                       PreviewKeyDown="EventsDataGrid_PreviewKeyDown"
                       MouseDoubleClick="EventsDataGrid_MouseDoubleClick">
             </DataGrid>
-
-            <Grid Grid.Row="1" Background="{DynamicResource SecondaryBackgroundBrush}" Margin="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Row="0" Grid.Column="0" x:Name="EventCountText" 
-                           Text="Events: 0" 
-                           VerticalAlignment="Center"
-                           Margin="0,0,20,0"/>
-            </Grid>
         </Grid>
 
         <!-- Status Bar -->
@@ -178,7 +164,9 @@
                 BorderBrush="{DynamicResource BorderBrush}" 
                 BorderThickness="0,1,0,0"
                 Padding="10,5">
-            <TextBlock x:Name="StatusTextBlock" Text="Ready" FontSize="12"/>
+            <TextBlock x:Name="EventCountText" 
+                       Text="Events: 0" 
+                       VerticalAlignment="Center"/>
         </Border>
     </Grid>
 </Window>

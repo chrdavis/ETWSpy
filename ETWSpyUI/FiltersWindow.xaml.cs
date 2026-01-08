@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,6 +18,9 @@ namespace ETWSpyUI
         private readonly Action _onFiltersChanged;
         private readonly bool _isDarkMode;
 
+        private const string EventIdCategory = "Event Id";
+        private const string MatchTextCategory = "Match Text";
+
         public FiltersWindow(ObservableCollection<FilterEntry> filterEntries, ObservableCollection<ProviderConfigEntry> providerEntries, Action onFiltersChanged, bool isDarkMode)
         {
             _filterEntries = filterEntries;
@@ -29,10 +34,65 @@ namespace ETWSpyUI
             SourceInitialized += (_, _) => WindowHelper.ApplyTitleBarTheme(this, _isDarkMode);
 
             PopulateProviderComboBox();
-            PopulateFilterTypeComboBox();
+            PopulateFilterCategoryComboBox();
+            PopulateActionComboBox();
 
             // Bind the FiltersListView to the FilterEntries collection
             FiltersListView.ItemsSource = _filterEntries;
+
+            // Subscribe to collection changes to update button states
+            _filterEntries.CollectionChanged += FilterEntries_CollectionChanged;
+
+            // Subscribe to provider collection changes to update the provider combo box
+            _providerEntries.CollectionChanged += ProviderEntries_CollectionChanged;
+
+            // Initialize button states
+            UpdateButtonStates();
+
+            // Set initial instruction label
+            UpdateValueInstructionLabel();
+
+            // Unsubscribe when window is closed
+            Closed += FiltersWindow_Closed;
+        }
+
+        private void FiltersWindow_Closed(object? sender, EventArgs e)
+        {
+            _filterEntries.CollectionChanged -= FilterEntries_CollectionChanged;
+            _providerEntries.CollectionChanged -= ProviderEntries_CollectionChanged;
+        }
+
+        private void ProviderEntries_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            // Refresh the provider combo box when providers are added or removed
+            var currentSelection = ProviderComboBox.SelectedItem?.ToString();
+            PopulateProviderComboBox();
+
+            // Try to restore the previous selection if it still exists
+            if (!string.IsNullOrEmpty(currentSelection))
+            {
+                var providers = ProviderComboBox.ItemsSource as IList<string>;
+                if (providers != null && providers.Contains(currentSelection))
+                {
+                    ProviderComboBox.SelectedItem = currentSelection;
+                }
+            }
+        }
+
+        private void FilterEntries_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            UpdateButtonStates();
+        }
+
+        private void FiltersListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateButtonStates();
+        }
+
+        private void UpdateButtonStates()
+        {
+            RemoveFilterButton.IsEnabled = FiltersListView.SelectedItem != null;
+            ClearFiltersButton.IsEnabled = _filterEntries.Count > 0;
         }
 
         private void PopulateProviderComboBox()
@@ -46,43 +106,70 @@ namespace ETWSpyUI
             }
         }
 
-        private void PopulateFilterTypeComboBox()
+        private void PopulateFilterCategoryComboBox()
         {
-            FilterTypeComboBox.ItemsSource = new[] { "Include", "Exclude" };
-            FilterTypeComboBox.SelectedIndex = 0;
+            FilterCategoryComboBox.ItemsSource = new[] { EventIdCategory, MatchTextCategory };
+            FilterCategoryComboBox.SelectedIndex = 0;
+        }
+
+        private void PopulateActionComboBox()
+        {
+            ActionComboBox.ItemsSource = new[] { "Include", "Exclude" };
+            ActionComboBox.SelectedIndex = 0;
+        }
+
+        private void FilterCategoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateValueInstructionLabel();
+            ValueTextBox.Clear();
+        }
+
+        private void UpdateValueInstructionLabel()
+        {
+            if (FilterCategoryComboBox.SelectedItem is string category)
+            {
+                ValueInstructionLabel.Content = category == EventIdCategory
+                    ? "(Separate IDs with ','; Specify range with '-')"
+                    : "(Case-insensitive sub-string match in event/task name)";
+            }
         }
 
         private void AddFilter_Click(object sender, RoutedEventArgs e)
         {
             // Validate provider is specified
-            if (string.IsNullOrWhiteSpace(ProviderComboBox.Text))
+            if (ProviderComboBox.SelectedItem == null)
             {
-                MessageBox.Show("Please specify a provider name or GUID.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please select a provider.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            // Validate and parse event IDs
-            string eventIdInput = EventTextBox.Text.Trim();
-            if (!TryParseEventIds(eventIdInput, out _, out string? errorMessage))
+            string filterCategory = FilterCategoryComboBox.SelectedItem?.ToString() ?? EventIdCategory;
+            string value = ValueTextBox.Text.Trim();
+
+            // Validate based on filter category
+            if (filterCategory == EventIdCategory && !string.IsNullOrWhiteSpace(value))
             {
-                MessageBox.Show(errorMessage, "Invalid Event ID", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                if (!TryParseEventIds(value, out _, out string? errorMessage))
+                {
+                    MessageBox.Show(errorMessage, "Invalid Event ID", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
             }
 
             var filter = new FilterEntry
             {
-                Provider = ProviderComboBox.Text,
-                EventId = eventIdInput,
-                MatchText = TextToMatchBox.Text,
-                FilterType = FilterTypeComboBox.Text
+                Provider = ProviderComboBox.SelectedItem.ToString() ?? string.Empty,
+                FilterCategory = filterCategory,
+                Value = value,
+                FilterLogic = ActionComboBox.SelectedItem?.ToString() ?? "Include"
             };
 
             // Check if an exact duplicate filter already exists
             bool isDuplicate = _filterEntries.Any(existing =>
                 string.Equals(existing.Provider, filter.Provider, StringComparison.OrdinalIgnoreCase) &&
-                string.Equals(existing.EventId, filter.EventId, StringComparison.Ordinal) &&
-                string.Equals(existing.MatchText, filter.MatchText, StringComparison.OrdinalIgnoreCase) &&
-                string.Equals(existing.FilterType, filter.FilterType, StringComparison.Ordinal));
+                string.Equals(existing.FilterCategory, filter.FilterCategory, StringComparison.Ordinal) &&
+                string.Equals(existing.Value, filter.Value, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(existing.FilterLogic, filter.FilterLogic, StringComparison.Ordinal));
 
             if (isDuplicate)
             {
@@ -92,6 +179,9 @@ namespace ETWSpyUI
 
             _filterEntries.Add(filter);
             _onFiltersChanged?.Invoke();
+
+            // Clear the value field for the next entry
+            ValueTextBox.Clear();
         }
 
         private void RemoveFilter_Click(object sender, RoutedEventArgs e)
@@ -117,7 +207,7 @@ namespace ETWSpyUI
         /// <summary>
         /// Parses an event ID input string into a list of individual event IDs.
         /// </summary>
-        private static bool TryParseEventIds(string input, out System.Collections.Generic.List<ushort> eventIds, out string? errorMessage)
+        private static bool TryParseEventIds(string input, out List<ushort> eventIds, out string? errorMessage)
         {
             eventIds = [];
             errorMessage = null;

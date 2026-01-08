@@ -42,28 +42,33 @@
                       HorizontalAlignment="Left"
                       VerticalAlignment="Center"
                       Width="400"
-                      IsEditable="True"
-                      IsReadOnly="False"
+                      IsEditable="False"
+                      IsReadOnly="True"
                       IsTextSearchEnabled="True"/>
-            <Label Grid.Row="0" Grid.Column="2" Content="(Name or GUID, select or enter new provider)" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2"/>
 
-            <Label Grid.Row="1" Grid.Column="0" Content="Event:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2"/>
-            <TextBox Grid.Row="1" Grid.Column="1" x:Name="EventTextBox" Height="26" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="400"/>
-            <Label Grid.Row="1" Grid.Column="2" Content="(Separate IDs with ','; Specify range with '-'; Empty = All)" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2"/>
+            <Label Grid.Row="1" Grid.Column="0" Content="Filter Type:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2"/>
+            <ComboBox Grid.Row="1"
+                      Grid.Column="1"
+                      x:Name="FilterCategoryComboBox"
+                      Margin="2"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Center"
+                      Width="150"
+                      SelectionChanged="FilterCategoryComboBox_SelectionChanged"/>
 
-            <Label Grid.Row="2" Grid.Column="0" Content="Match Text:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2"/>
-            <TextBox Grid.Row="2" Grid.Column="1" x:Name="TextToMatchBox" Height="26" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Top" Width="400"/>
-            <Label Grid.Row="2" Grid.Column="2" Content="(Case-insensitive sub-string match in event/task name)" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2"/>
+            <Label Grid.Row="2" Grid.Column="0" Content="Value:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2"/>
+            <TextBox Grid.Row="2" Grid.Column="1" x:Name="ValueTextBox" Height="26" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="400"/>
+            <Label Grid.Row="2" Grid.Column="2" x:Name="ValueInstructionLabel" Content="(Separate IDs with ','; Specify range with '-')" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2"/>
 
             <Label Grid.Row="3" Grid.Column="0" Content="Action:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2"/>
-            <ComboBox Grid.Row="3" Grid.Column="1" x:Name="FilterTypeComboBox" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150"/>
+            <ComboBox Grid.Row="3" Grid.Column="1" x:Name="ActionComboBox" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150"/>
         </Grid>
 
         <!-- buttons -->
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,10">
             <Button Content="Add" x:Name="AddFilterButton" Click="AddFilter_Click" Margin="5,0" MinWidth="100"/>
-            <Button Content="Remove" x:Name="RemoveFilterButton" Click="RemoveFilter_Click" Margin="5,0" MinWidth="100"/>
-            <Button Content="Clear" x:Name="ClearFiltersButton" Click="ClearFilters_Click" Margin="5,0" MinWidth="100"/>
+            <Button Content="Remove" x:Name="RemoveFilterButton" Click="RemoveFilter_Click" Margin="5,0" MinWidth="100" IsEnabled="False"/>
+            <Button Content="Clear" x:Name="ClearFiltersButton" Click="ClearFilters_Click" Margin="5,0" MinWidth="100" IsEnabled="False"/>
         </StackPanel>
 
         <!-- list (fills remaining space) -->
@@ -72,20 +77,22 @@
                   VerticalAlignment="Stretch"
                   HorizontalAlignment="Stretch"
                   Margin="0"
+                  SelectionChanged="FiltersListView_SelectionChanged"
                   ScrollViewer.VerticalScrollBarVisibility="Auto"
                   ScrollViewer.HorizontalScrollBarVisibility="Auto">
             <ListView.View>
                 <GridView AllowsColumnReorder="True">
                     <GridViewColumn Header="Provider" Width="300" DisplayMemberBinding="{Binding Provider}"/>
-                    <GridViewColumn Header="Event Id" Width="100">
+                    <GridViewColumn Header="Filter Type" Width="100" DisplayMemberBinding="{Binding FilterCategory}"/>
+                    <GridViewColumn Header="Value" Width="200">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock>
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
-                                            <Setter Property="Text" Value="{Binding EventId}"/>
+                                            <Setter Property="Text" Value="{Binding Value}"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding EventId}" Value="">
+                                                <DataTrigger Binding="{Binding Value}" Value="">
                                                     <Setter Property="Text" Value="(All)"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -95,8 +102,7 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Match Text" Width="150" DisplayMemberBinding="{Binding MatchText}"/>
-                    <GridViewColumn Header="Action" Width="100" DisplayMemberBinding="{Binding FilterType}"/>
+                    <GridViewColumn Header="Action" Width="100" DisplayMemberBinding="{Binding FilterLogic}"/>
                 </GridView>
             </ListView.View>
         </ListView>

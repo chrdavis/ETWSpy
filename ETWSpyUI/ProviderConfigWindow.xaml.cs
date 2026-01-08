@@ -1,7 +1,9 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace ETWSpyUI
 {
@@ -22,12 +24,14 @@ namespace ETWSpyUI
     public partial class ProviderConfigWindow : Window
     {
         private readonly ObservableCollection<ProviderConfigEntry> _providerEntries;
+        private readonly ObservableCollection<FilterEntry> _filterEntries;
         private readonly Action _onProvidersChanged;
         private readonly bool _isDarkMode;
 
-        public ProviderConfigWindow(ObservableCollection<ProviderConfigEntry> providerEntries, Action onProvidersChanged, bool isDarkMode)
+        public ProviderConfigWindow(ObservableCollection<ProviderConfigEntry> providerEntries, ObservableCollection<FilterEntry> filterEntries, Action onProvidersChanged, bool isDarkMode)
         {
             _providerEntries = providerEntries;
+            _filterEntries = filterEntries;
             _onProvidersChanged = onProvidersChanged;
             _isDarkMode = isDarkMode;
 
@@ -41,6 +45,28 @@ namespace ETWSpyUI
 
             // Bind the ListView to the provider entries collection
             ProvidersListView.ItemsSource = _providerEntries;
+
+            // Subscribe to collection changes to update button states
+            _providerEntries.CollectionChanged += ProviderEntries_CollectionChanged;
+
+            // Initialize button states
+            UpdateButtonStates();
+        }
+
+        private void ProviderEntries_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            UpdateButtonStates();
+        }
+
+        private void ProvidersListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateButtonStates();
+        }
+
+        private void UpdateButtonStates()
+        {
+            RemoveButton.IsEnabled = ProvidersListView.SelectedItem != null;
+            ClearButton.IsEnabled = _providerEntries.Count > 0;
         }
 
         private void PopulateProviderComboBox()
@@ -129,6 +155,20 @@ namespace ETWSpyUI
             }
 
             _providerEntries.Add(entry);
+
+            // Add a default "Include all events" filter for this provider
+            var defaultFilter = new FilterEntry
+            {
+                Provider = entry.Provider,
+                FilterCategory = "Event Id", // Default to Event Id filter type
+                Value = string.Empty, // Empty value = All event IDs
+                FilterLogic = "Include",
+                Keywords = entry.Keywords,
+                TraceLevel = entry.TraceLevel,
+                TraceFlags = entry.TraceFlags
+            };
+            _filterEntries.Add(defaultFilter);
+
             _onProvidersChanged?.Invoke();
 
             // Save the provider to registry if it's a new one

@@ -28,9 +28,19 @@ namespace ETWSpyUI
     public class FilterEntry
     {
         public string Provider { get; set; } = string.Empty;
-        public string EventId { get; set; } = string.Empty;
-        public string MatchText { get; set; } = string.Empty;
-        public string FilterType { get; set; } = string.Empty;
+        /// <summary>
+        /// The type of filter: "Event Id" or "Match Text". Defaults to "Event Id".
+        /// </summary>
+        public string FilterCategory { get; set; } = "Event Id";
+        /// <summary>
+        /// The filter value - either event IDs or match text depending on FilterCategory.
+        /// Empty value means "all" for the given category.
+        /// </summary>
+        public string Value { get; set; } = string.Empty;
+        /// <summary>
+        /// The filter logic: "Include" or "Exclude". Defaults to "Include".
+        /// </summary>
+        public string FilterLogic { get; set; } = "Include";
         public string Keywords { get; set; } = string.Empty;
         public string TraceLevel { get; set; } = string.Empty;
         public string TraceFlags { get; set; } = string.Empty;
@@ -373,6 +383,9 @@ namespace ETWSpyUI
             // Update the event count display with current interval info
             EventCountText.Text = $"Events: {_eventRecordsList.Count:N0} (max {MaxEventsToShow:N0}) | Interval: {_currentBatchIntervalMs}ms";
 
+            // Enable Clear and Export buttons when there are events
+            UpdateEventButtonsEnabled();
+
             // Autoscroll to the last item if enabled
             if (_autoscroll && _eventRecordsList.Count > 0)
             {
@@ -399,12 +412,26 @@ namespace ETWSpyUI
 
         /// <summary>
         /// Updates the enabled state of the Filters menu and button based on whether providers exist.
+        /// Also enables/disables the Start/Pause button and Save button/menu.
         /// </summary>
         private void UpdateFiltersEnabled()
         {
             bool hasProviders = ProviderConfigEntries.Count > 0;
             FiltersMenuItem.IsEnabled = hasProviders;
             FiltersToolbarButton.IsEnabled = hasProviders;
+            StartPauseToolbarButton.IsEnabled = hasProviders;
+            SaveMenuItem.IsEnabled = hasProviders;
+            SaveToolbarButton.IsEnabled = hasProviders;
+        }
+
+        /// <summary>
+        /// Updates the enabled state of the Clear and Export buttons based on whether events exist.
+        /// </summary>
+        private void UpdateEventButtonsEnabled()
+        {
+            bool hasEvents = _eventRecordsList.Count > 0;
+            ClearEventsToolbarButton.IsEnabled = hasEvents;
+            ExportToolbarButton.IsEnabled = hasEvents;
         }
 
         /// <summary>
@@ -423,7 +450,6 @@ namespace ETWSpyUI
                 // No filters remaining - stop the trace session
                 StopTracing();
                 StartPauseToolbarIcon.Text = "\uE768"; // Play icon
-                StatusTextBlock.Text = "Stopped";
             }
         }
 
@@ -456,15 +482,19 @@ namespace ETWSpyUI
                     var filterList = providerGroup.ToList();
                     var firstFilter = filterList.First();
 
-                    // Determine if we need OnAllEvents (when there are filters with no specific event IDs)
-                    // or if all filters specify event IDs (use only event filters)
-                    bool hasFilterWithAllEvents = filterList.Any(f => string.IsNullOrWhiteSpace(f.EventId));
+                    // Determine if we need OnAllEvents:
+                    // - When there are no Event Id filters with specific values (only Match Text filters or "all events" filters)
+                    // - Or when there's an Event Id filter with empty value (all events)
+                    bool hasEventIdFilters = filterList.Any(f => f.FilterCategory == "Event Id" && !string.IsNullOrWhiteSpace(f.Value));
+                    bool hasMatchTextFilters = filterList.Any(f => f.FilterCategory == "Match Text");
+                    bool hasAllEventsFilter = filterList.Any(f => f.FilterCategory == "Event Id" && string.IsNullOrWhiteSpace(f.Value));
+                    bool needsOnAllEvents = !hasEventIdFilters || hasMatchTextFilters || hasAllEventsFilter;
 
                     // Collect exclude event IDs to filter out in OnAllEvents callback
                     var excludeEventIds = new HashSet<ushort>();
-                    foreach (var f in filterList.Where(f => f.FilterType == "Exclude" && !string.IsNullOrWhiteSpace(f.EventId)))
+                    foreach (var f in filterList.Where(f => f.FilterLogic == "Exclude" && f.FilterCategory == "Event Id" && !string.IsNullOrWhiteSpace(f.Value)))
                     {
-                        if (TryParseEventIds(f.EventId, out var ids, out _))
+                        if (TryParseEventIds(f.Value, out var ids, out _))
                         {
                             foreach (var id in ids)
                             {
@@ -473,12 +503,22 @@ namespace ETWSpyUI
                         }
                     }
 
-                    var wrapper = CreateProviderWrapper(firstFilter, hasFilterWithAllEvents, excludeEventIds);
+                    // Collect match text filters for OnAllEvents callback
+                    var includeMatchTexts = filterList
+                        .Where(f => f.FilterLogic == "Include" && f.FilterCategory == "Match Text" && !string.IsNullOrWhiteSpace(f.Value))
+                        .Select(f => f.Value)
+                        .ToList();
+                    var excludeMatchTexts = filterList
+                        .Where(f => f.FilterLogic == "Exclude" && f.FilterCategory == "Match Text" && !string.IsNullOrWhiteSpace(f.Value))
+                        .Select(f => f.Value)
+                        .ToList();
+
+                    var wrapper = CreateProviderWrapper(firstFilter, needsOnAllEvents, excludeEventIds, includeMatchTexts, excludeMatchTexts);
 
                     // Apply all include filters with specific event IDs
-                    foreach (var filterEntry in filterList.Where(f => f.FilterType == "Include" && !string.IsNullOrWhiteSpace(f.EventId)))
+                    foreach (var filterEntry in filterList.Where(f => f.FilterLogic == "Include" && f.FilterCategory == "Event Id" && !string.IsNullOrWhiteSpace(f.Value)))
                     {
-                        ApplyFilterToProvider(wrapper, filterEntry);
+                        ApplyEventIdFilterToProvider(wrapper, filterEntry);
                     }
 
                     _activeProviders.Add(wrapper); // Keep reference alive
@@ -497,14 +537,12 @@ namespace ETWSpyUI
                 // Update UI to reflect running state
                 _isPaused = false;
                 StartPauseToolbarIcon.Text = "\uE769"; // Pause icon
-                StatusTextBlock.Text = "Running...";
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed to start tracing: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 StopTracing();
                 StartPauseToolbarIcon.Text = "\uE768"; // Play icon
-                StatusTextBlock.Text = "Stopped";
             }
         }
 
@@ -602,21 +640,19 @@ namespace ETWSpyUI
                 // Paused - stop the batch timer but keep the trace session running
                 _batchTimer.Stop();
                 StartPauseToolbarIcon.Text = "\uE768"; // Play icon
-                StatusTextBlock.Text = "Paused";
             }
             else
             {
                 // Resumed - restart the batch timer
                 _batchTimer.Start();
                 StartPauseToolbarIcon.Text = "\uE769"; // Pause icon
-                StatusTextBlock.Text = "Running...";
             }
         }
 
-        private void ApplyFilterToProvider(EtwProviderWrapper wrapper, FilterEntry filterEntry)
+        private void ApplyEventIdFilterToProvider(EtwProviderWrapper wrapper, FilterEntry filterEntry)
         {
-            // Parse event IDs from the filter entry
-            if (!TryParseEventIds(filterEntry.EventId, out var eventIds, out _))
+            // Parse event IDs from the filter entry Value
+            if (!TryParseEventIds(filterEntry.Value, out var eventIds, out _))
             {
                 // Parsing already validated in AddFilter, but handle gracefully
                 return;
@@ -633,25 +669,10 @@ namespace ETWSpyUI
             {
                 var filter = new EtwEventFilter(eventId);
                 
-                // If there's match text, add a predicate filter
-                if (!string.IsNullOrWhiteSpace(filterEntry.MatchText))
+                // For Include: add callback, For Exclude: don't add (events will be dropped)
+                if (filterEntry.FilterLogic == "Include")
                 {
-                    bool isInclude = filterEntry.FilterType == "Include";
-                    string matchText = filterEntry.MatchText;
-                    
-                    // Register callback with text matching
-                    filter.Where(
-                        record => MatchesText(record, matchText) == isInclude,
-                        OnEventReceived);
-                }
-                else
-                {
-                    // No text matching - just filter by event ID
-                    // For Include: add callback, For Exclude: don't add (events will be dropped)
-                    if (filterEntry.FilterType == "Include")
-                    {
-                        filter.OnEvent(OnEventReceived);
-                    }
+                    filter.OnEvent(OnEventReceived);
                 }
                 
                 wrapper.AddFilter(filter);
@@ -684,7 +705,7 @@ namespace ETWSpyUI
             }
         }
 
-        private EtwProviderWrapper CreateProviderWrapper(FilterEntry entry, bool registerOnAllEvents, HashSet<ushort> excludeEventIds)
+        private EtwProviderWrapper CreateProviderWrapper(FilterEntry entry, bool registerOnAllEvents, HashSet<ushort> excludeEventIds, List<string> includeMatchTexts, List<string> excludeMatchTexts)
         {
             // Look up the provider to get its GUID if available
             var providerInfo = ProviderManager.FindByName(entry.Provider);
@@ -717,11 +738,15 @@ namespace ETWSpyUI
                 wrapper.EnableAllEvents();
             }
 
-            // Set trace level
+            // Set trace level (default to Verbose if not specified to capture all events)
             if (!string.IsNullOrWhiteSpace(entry.TraceLevel) &&
                 Enum.TryParse<ETWSpyLib.TraceLevel>(entry.TraceLevel, ignoreCase: true, out var level))
             {
                 wrapper.SetTraceLevel(level);
+            }
+            else
+            {
+                wrapper.SetTraceLevel(ETWSpyLib.TraceLevel.Verbose);
             }
 
             // Set trace flags
@@ -731,28 +756,55 @@ namespace ETWSpyUI
                 wrapper.SetTraceFlagsRaw(flags);
             }
 
-            // Only register OnAllEvents if there are filters that want all events
-            // (filters with no specific event IDs specified)
+            // Only register OnAllEvents if needed
             if (registerOnAllEvents)
             {
-                if (excludeEventIds.Count > 0)
+                // Capture variables for closure
+                var capturedExcludeIds = excludeEventIds;
+                var capturedIncludeTexts = includeMatchTexts;
+                var capturedExcludeTexts = excludeMatchTexts;
+
+                wrapper.OnAllEvents((IEventRecordDelegate)((IEventRecord record) =>
                 {
-                    // Register callback that excludes specific event IDs
-                    var capturedExcludeIds = excludeEventIds;
-                    wrapper.OnAllEvents((IEventRecordDelegate)((IEventRecord record) =>
+                    // Skip excluded event IDs
+                    if (capturedExcludeIds.Contains(record.Id))
                     {
-                        // Skip excluded event IDs
-                        if (!capturedExcludeIds.Contains(record.Id))
+                        return;
+                    }
+
+                    // Check exclude match texts first - if event matches any exclude text, skip it
+                    if (capturedExcludeTexts.Count > 0)
+                    {
+                        foreach (var excludeText in capturedExcludeTexts)
                         {
-                            OnEventReceived(record);
+                            if (MatchesText(record, excludeText))
+                            {
+                                return; // Excluded by text match
+                            }
                         }
-                    }));
-                }
-                else
-                {
-                    // Register callback to receive ALL events from this provider
-                    wrapper.OnAllEvents((IEventRecordDelegate)OnEventReceived);
-                }
+                    }
+
+                    // If there are include match text filters, event must match at least one (OR logic)
+                    // If there are NO include match text filters, allow all events through
+                    if (capturedIncludeTexts.Count > 0)
+                    {
+                        bool matchesAny = false;
+                        foreach (var includeText in capturedIncludeTexts)
+                        {
+                            if (MatchesText(record, includeText))
+                            {
+                                matchesAny = true;
+                                break;
+                            }
+                        }
+                        if (!matchesAny)
+                        {
+                            return; // Doesn't match any include text filter (OR logic)
+                        }
+                    }
+
+                    OnEventReceived(record);
+                }));
             }
 
             return wrapper;
@@ -809,7 +861,6 @@ namespace ETWSpyUI
 
                 // Reset the toolbar icon
                 StartPauseToolbarIcon.Text = "\uE768"; // Play icon
-                StatusTextBlock.Text = "Stopped";
             });
         }
 
@@ -878,6 +929,9 @@ namespace ETWSpyUI
 
             // Update the event count display
             EventCountText.Text = "Events: 0";
+
+            // Disable Clear and Export buttons when there are no events
+            UpdateEventButtonsEnabled();
 
             // Suggest garbage collection to reclaim memory from cleared items
             // Using Gen 2 collection to ensure large object heap is also collected
@@ -969,7 +1023,6 @@ namespace ETWSpyUI
                 {
                     StopTracing();
                     StartPauseToolbarIcon.Text = "\uE768"; // Play icon
-                    StatusTextBlock.Text = "Stopped";
                 }
 
                 MessageBox.Show("Configuration loaded successfully.", "Load Configuration", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -1374,7 +1427,7 @@ namespace ETWSpyUI
                 return;
             }
 
-            _providerConfigWindow = new ProviderConfigWindow(ProviderConfigEntries, OnProvidersChangedFromWindow, IsDarkMode);
+            _providerConfigWindow = new ProviderConfigWindow(ProviderConfigEntries, FilterEntries, OnProvidersChangedFromWindow, IsDarkMode);
             _providerConfigWindow.Owner = this;
             _providerConfigWindow.Closed += (_, _) => _providerConfigWindow = null;
             _providerConfigWindow.Show();
