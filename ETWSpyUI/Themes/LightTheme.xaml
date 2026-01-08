@@ -17,8 +17,9 @@
     <SolidColorBrush x:Key="AccentPressedBrush" Color="#005A9E"/>
     <SolidColorBrush x:Key="SelectionBrush" Color="#CCE4F7"/>
     <SolidColorBrush x:Key="SelectionInactiveBrush" Color="#D0D0D0"/>
-    <SolidColorBrush x:Key="HoverBrush" Color="#E8E8E8"/>
+    <SolidColorBrush x:Key="HoverBrush" Color="#D0D0D0"/>
     <SolidColorBrush x:Key="ErrorBrush" Color="#D32F2F"/>
     <SolidColorBrush x:Key="WarningBrush" Color="#FFA726"/>
     <SolidColorBrush x:Key="SuccessBrush" Color="#66BB6A"/>
+
 </ResourceDictionary>

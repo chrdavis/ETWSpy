@@ -7,7 +7,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
 using System.Text.Json;
@@ -16,7 +15,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Navigation;
 using System.Windows.Threading;
 using ETWSpyLib;
 using Microsoft.O365.Security.ETW;
@@ -104,8 +102,10 @@ namespace ETWSpyUI
         };
 
         private bool _isDarkMode;
+        private bool _useSystemTheme;
         private bool _showTimestampsInUTC;
         private int _maxEventsToShow = DefaultMaxEventsToDisplay;
+        private bool _autoscroll = true;
         private EtwTraceSession? _traceSession;
         private CancellationTokenSource? _traceCancellation;
 
@@ -127,10 +127,20 @@ namespace ETWSpyUI
         // Keep provider wrappers alive to prevent GC from collecting them and their callbacks
         private readonly List<EtwProviderWrapper> _activeProviders = [];
 
+        // Track open windows to avoid duplicates
+        private FiltersWindow? _filtersWindow;
+        private SettingsWindow? _settingsWindow;
+        private ProviderConfigWindow? _providerConfigWindow;
+
         /// <summary>
         /// Collection of filter entries added by the user.
         /// </summary>
         public ObservableCollection<FilterEntry> FilterEntries { get; } = [];
+
+        /// <summary>
+        /// Collection of provider configuration entries added by the user.
+        /// </summary>
+        public ObservableCollection<ProviderConfigEntry> ProviderConfigEntries { get; } = [];
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -142,8 +152,22 @@ namespace ETWSpyUI
                 if (_isDarkMode == value) return;
                 _isDarkMode = value;
                 OnPropertyChanged(nameof(IsDarkMode));
-                SetDarkMode(_isDarkMode);
+                ApplyTheme();
                 RegistrySettings.SaveBool(RegistrySettings.DarkMode, _isDarkMode);
+            }
+        }
+
+        public bool UseSystemTheme
+        {
+            get => _useSystemTheme;
+            set
+            {
+                if (_useSystemTheme == value) return;
+                _useSystemTheme = value;
+                OnPropertyChanged(nameof(UseSystemTheme));
+                ApplyTheme();
+                RegistrySettings.SaveBool(RegistrySettings.UseSystemTheme, _useSystemTheme);
+                UpdateThemeMenuCheckmarks();
             }
         }
 
@@ -171,6 +195,19 @@ namespace ETWSpyUI
             }
         }
 
+        public bool Autoscroll
+        {
+            get => _autoscroll;
+            set
+            {
+                if (_autoscroll == value) return;
+                _autoscroll = value;
+                OnPropertyChanged(nameof(Autoscroll));
+                RegistrySettings.SaveBool(RegistrySettings.Autoscroll, _autoscroll);
+                UpdateAutoscrollMenuCheckmark();
+            }
+        }
+
         /// <summary>
         /// Gets the application version string for display in the About tab.
         /// </summary>
@@ -186,10 +223,9 @@ namespace ETWSpyUI
         public MainWindow()
         {
             HandleAdminPrivileges();
-            //Opacity = 0; // Start fully transparent to prevent white flash
             InitializeComponent();
 
-            // Bind settings (checkbox) to this window
+            // Bind settings to this window
             DataContext = this;
 
             // Initialize batch timer for UI updates
@@ -199,18 +235,13 @@ namespace ETWSpyUI
             };
             _batchTimer.Tick += BatchTimer_Tick;
 
-            PopulateProviderComboBox();
-            PopulateFilterTypeComboBox();
-            PopulateTraceLevelComboBox();
-
-            // Bind the FiltersListView to the FilterEntries collection
-            FiltersListView.ItemsSource = FilterEntries;
-
             // Subscribe to filter changes to auto-start/restart trace session
             FilterEntries.CollectionChanged += OnFilterEntriesChanged;
 
+            // Subscribe to provider config changes to enable/disable Filters menu
+            ProviderConfigEntries.CollectionChanged += OnProviderConfigEntriesChanged;
+
             // EventsDataGrid uses a plain List<T> to avoid ObservableCollection overhead
-            // ItemsSource is set/reset in FlushPendingEvents to trigger UI refresh
             EventsDataGrid.ItemsSource = _eventRecordsList;
 
             // Load settings from registry and apply theme after window is loaded
@@ -218,12 +249,6 @@ namespace ETWSpyUI
             {
                 LoadSettingsFromRegistry();
             };
-
-            //ContentRendered += (_, _) =>
-           // {
-            //    // Apply title bar theme after window is shown
-            //    Opacity = 1;
-            //};
 
             // Clean up on close
             Closing += MainWindow_Closing;
@@ -347,13 +372,39 @@ namespace ETWSpyUI
 
             // Update the event count display with current interval info
             EventCountText.Text = $"Events: {_eventRecordsList.Count:N0} (max {MaxEventsToShow:N0}) | Interval: {_currentBatchIntervalMs}ms";
+
+            // Autoscroll to the last item if enabled
+            if (_autoscroll && _eventRecordsList.Count > 0)
+            {
+                EventsDataGrid.ScrollIntoView(_eventRecordsList[^1]);
+            }
         }
 
         private void MainWindow_Closing(object? sender, CancelEventArgs e)
         {
             _batchTimer.Stop();
             FilterEntries.CollectionChanged -= OnFilterEntriesChanged;
+            ProviderConfigEntries.CollectionChanged -= OnProviderConfigEntriesChanged;
             StopTracing();
+        }
+
+        /// <summary>
+        /// Handles changes to the ProviderConfigEntries collection.
+        /// Enables or disables the Filters menu based on whether providers exist.
+        /// </summary>
+        private void OnProviderConfigEntriesChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            UpdateFiltersEnabled();
+        }
+
+        /// <summary>
+        /// Updates the enabled state of the Filters menu and button based on whether providers exist.
+        /// </summary>
+        private void UpdateFiltersEnabled()
+        {
+            bool hasProviders = ProviderConfigEntries.Count > 0;
+            FiltersMenuItem.IsEnabled = hasProviders;
+            FiltersToolbarButton.IsEnabled = hasProviders;
         }
 
         /// <summary>
@@ -371,7 +422,7 @@ namespace ETWSpyUI
             {
                 // No filters remaining - stop the trace session
                 StopTracing();
-                PauseResumeButton.Content = "Pause";
+                StartPauseToolbarIcon.Text = "\uE768"; // Play icon
                 StatusTextBlock.Text = "Stopped";
             }
         }
@@ -445,14 +496,14 @@ namespace ETWSpyUI
 
                 // Update UI to reflect running state
                 _isPaused = false;
-                PauseResumeButton.Content = "Pause";
+                StartPauseToolbarIcon.Text = "\uE769"; // Pause icon
                 StatusTextBlock.Text = "Running...";
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed to start tracing: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 StopTracing();
-                PauseResumeButton.Content = "Pause";
+                StartPauseToolbarIcon.Text = "\uE768"; // Play icon
                 StatusTextBlock.Text = "Stopped";
             }
         }
@@ -465,76 +516,59 @@ namespace ETWSpyUI
         /// </summary>
         private void LoadSettingsFromRegistry()
         {
-            IsDarkMode = RegistrySettings.LoadBool(RegistrySettings.DarkMode);
-            ShowTimestampsInUTC = RegistrySettings.LoadBool(RegistrySettings.ShowTimestampsInUTC);
-            MaxEventsToShow = RegistrySettings.LoadInt(RegistrySettings.MaxEventsToShow, DefaultMaxEventsToDisplay);
-        }
-
-        private void PopulateProviderComboBox()
-        {
-            // Get all providers (defaults + user-added from registry), sorted alphabetically
-            var providers = ProviderManager.GetAllProviders();
-
-            ProviderComboBox.ItemsSource = providers;
-            if (ProviderComboBox.Items.Count > 0)
-            {
-                ProviderComboBox.SelectedIndex = 0;
-            }
+            _useSystemTheme = RegistrySettings.LoadBool(RegistrySettings.UseSystemTheme);
+            _isDarkMode = RegistrySettings.LoadBool(RegistrySettings.DarkMode);
+            _showTimestampsInUTC = RegistrySettings.LoadBool(RegistrySettings.ShowTimestampsInUTC);
+            _maxEventsToShow = RegistrySettings.LoadInt(RegistrySettings.MaxEventsToShow, DefaultMaxEventsToDisplay);
+            _autoscroll = RegistrySettings.LoadBool(RegistrySettings.Autoscroll, true);
+            
+            // Apply the theme based on settings
+            ApplyTheme();
+            UpdateThemeMenuCheckmarks();
+            UpdateTimeFormatMenuCheckmarks();
+            UpdateMaxEventsMenuCheckmarks();
+            UpdateAutoscrollMenuCheckmark();
         }
 
         /// <summary>
-        /// Refreshes the provider combo box to include any newly added providers.
+        /// Applies the current theme based on UseSystemTheme and IsDarkMode settings.
         /// </summary>
-        private void RefreshProviderComboBox()
+        private void ApplyTheme()
         {
-            var currentText = ProviderComboBox.Text;
-            var providers = ProviderManager.GetAllProviders();
-            ProviderComboBox.ItemsSource = providers;
-
-            // Try to restore the previous selection
-            var matchingProvider = providers.FirstOrDefault(p => 
-                string.Equals(p.Name, currentText, StringComparison.OrdinalIgnoreCase));
-            
-            if (matchingProvider != null)
-            {
-                ProviderComboBox.SelectedItem = matchingProvider;
-            }
-            else if (ProviderComboBox.Items.Count > 0)
-            {
-                ProviderComboBox.SelectedIndex = 0;
-            }
+            bool useDarkMode = _useSystemTheme ? IsSystemInDarkMode() : _isDarkMode;
+            SwitchTheme(useDarkMode ? "Themes/DarkTheme.xaml" : "Themes/LightTheme.xaml");
+            WindowHelper.ApplyTitleBarTheme(this, useDarkMode);
         }
 
-        private void PopulateFilterTypeComboBox()
+        /// <summary>
+        /// Detects if the Windows system is using dark mode.
+        /// </summary>
+        private static bool IsSystemInDarkMode()
         {
-            var filterTypes = new List<string>
+            try
             {
-                "Include",
-                "Exclude"
-            };
-            FilterTypeComboBox.ItemsSource = filterTypes;
-            if (FilterTypeComboBox.Items.Count > 0)
-            {
-                FilterTypeComboBox.SelectedIndex = 0;
+                using var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(
+                    @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
+                if (key?.GetValue("AppsUseLightTheme") is int value)
+                {
+                    return value == 0; // 0 = dark mode, 1 = light mode
+                }
             }
+            catch
+            {
+                // Ignore registry access errors
+            }
+            return false; // Default to light mode
         }
 
-        private void PopulateTraceLevelComboBox()
+        /// <summary>
+        /// Updates the checkmarks on the theme menu items.
+        /// </summary>
+        private void UpdateThemeMenuCheckmarks()
         {
-            var traceLevels = new List<string>
-            {
-                "Critical",
-                "Error",
-                "Warning",
-                "Information",
-                "Verbose"
-            };
-            TraceLevelComboBox.ItemsSource = traceLevels;
-            if (TraceLevelComboBox.Items.Count > 0)
-            {
-                // Default to verbose
-                TraceLevelComboBox.SelectedIndex = 4;
-            }
+            LightThemeMenuItem.IsChecked = !_useSystemTheme && !_isDarkMode;
+            DarkThemeMenuItem.IsChecked = !_useSystemTheme && _isDarkMode;
+            SystemThemeMenuItem.IsChecked = _useSystemTheme;
         }
 
         private void SetDarkMode(bool enable)
@@ -567,20 +601,14 @@ namespace ETWSpyUI
             {
                 // Paused - stop the batch timer but keep the trace session running
                 _batchTimer.Stop();
-                if (sender is Button pauseResumeButton)
-                {
-                    pauseResumeButton.Content = "Resume";
-                }
+                StartPauseToolbarIcon.Text = "\uE768"; // Play icon
                 StatusTextBlock.Text = "Paused";
             }
             else
             {
                 // Resumed - restart the batch timer
                 _batchTimer.Start();
-                if (sender is Button pauseResumeButton)
-                {
-                    pauseResumeButton.Content = "Pause";
-                }
+                StartPauseToolbarIcon.Text = "\uE769"; // Pause icon
                 StatusTextBlock.Text = "Running...";
             }
         }
@@ -779,8 +807,8 @@ namespace ETWSpyUI
                 // Stop tracing and reset UI
                 StopTracing();
 
-                // Reset the Pause/Resume button text
-                PauseResumeButton.Content = "Resume";
+                // Reset the toolbar icon
+                StartPauseToolbarIcon.Text = "\uE768"; // Play icon
                 StatusTextBlock.Text = "Stopped";
             });
         }
@@ -854,73 +882,6 @@ namespace ETWSpyUI
             // Suggest garbage collection to reclaim memory from cleared items
             // Using Gen 2 collection to ensure large object heap is also collected
             GC.Collect(2, GCCollectionMode.Optimized, blocking: false);
-        }
-
-        private void AddFilter(object sender, RoutedEventArgs e)
-        {
-            // Validate provider is specified
-            if (string.IsNullOrWhiteSpace(ProviderComboBox.Text))
-            {
-                MessageBox.Show("Please specify a provider name or GUID.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            // Validate and parse event IDs
-            string eventIdInput = EventTextBox.Text.Trim();
-            if (!TryParseEventIds(eventIdInput, out _, out string? errorMessage))
-            {
-                MessageBox.Show(errorMessage, "Invalid Event ID", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            var filter = new FilterEntry
-            {
-                Provider = ProviderComboBox.Text,
-                EventId = eventIdInput,
-                MatchText = TextToMatchBox.Text,
-                FilterType = FilterTypeComboBox.Text,
-                Keywords = KeywordsTextBox.Text,
-                TraceLevel = TraceLevelComboBox.Text,
-                TraceFlags = TraceFlagsTextBox.Text
-            };
-
-            // Check if an exact duplicate filter already exists
-            bool isDuplicate = FilterEntries.Any(existing =>
-                string.Equals(existing.Provider, filter.Provider, StringComparison.OrdinalIgnoreCase) &&
-                string.Equals(existing.EventId, filter.EventId, StringComparison.Ordinal) &&
-                string.Equals(existing.MatchText, filter.MatchText, StringComparison.OrdinalIgnoreCase) &&
-                string.Equals(existing.FilterType, filter.FilterType, StringComparison.Ordinal) &&
-                string.Equals(existing.Keywords, filter.Keywords, StringComparison.OrdinalIgnoreCase) &&
-                string.Equals(existing.TraceLevel, filter.TraceLevel, StringComparison.OrdinalIgnoreCase) &&
-                string.Equals(existing.TraceFlags, filter.TraceFlags, StringComparison.Ordinal));
-
-            if (isDuplicate)
-            {
-                MessageBox.Show("This filter has already been added.", "Duplicate Filter", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            FilterEntries.Add(filter);
-
-            // Save the provider to registry if it's a new one (not in defaults or registry)
-            if (ProviderManager.AddProvider(filter.Provider))
-            {
-                // Refresh the combo box to include the newly added provider
-                RefreshProviderComboBox();
-            }
-        }
-
-        private void RemoveFilter(object sender, RoutedEventArgs e)
-        {
-            if (FiltersListView.SelectedItem is FilterEntry selectedFilter)
-            {
-                FilterEntries.Remove(selectedFilter);
-            }
-        }
-
-        private void ClearFilters(object sender, RoutedEventArgs e)
-        {
-            FilterEntries.Clear();
         }
 
         private void SaveToFile(object sender, RoutedEventArgs e)
@@ -1007,7 +968,7 @@ namespace ETWSpyUI
                 else
                 {
                     StopTracing();
-                    PauseResumeButton.Content = "Pause";
+                    StartPauseToolbarIcon.Text = "\uE768"; // Play icon
                     StatusTextBlock.Text = "Stopped";
                 }
 
@@ -1020,16 +981,6 @@ namespace ETWSpyUI
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed to load configuration: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void ProviderComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var cb = (ComboBox)sender;
-            // Keep Text synchronized with the selected item (ProviderInfo objects in ItemsSource)
-            if (cb.SelectedItem is ProviderInfo provider)
-            {
-                cb.Text = provider.Name;
             }
         }
 
@@ -1359,6 +1310,18 @@ namespace ETWSpyUI
             ShowEventDetails();
         }
 
+        private void EventsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            bool hasSelection = EventsDataGrid.SelectedItems.Count > 0;
+            EventDetailsToolbarButton.IsEnabled = hasSelection;
+            CopyToolbarButton.IsEnabled = hasSelection;
+        }
+
+        private void ShowEventDetailsButton_Click(object sender, RoutedEventArgs e)
+        {
+            ShowEventDetails();
+        }
+
         private void ShowEventDetails()
         {
             if (EventsDataGrid.SelectedItem is EventRecord selectedRecord)
@@ -1370,10 +1333,170 @@ namespace ETWSpyUI
             }
         }
 
-        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
-            e.Handled = true;
+            Application.Current.Shutdown();
+        }
+
+        private void CheckForUpdates_Click(object sender, RoutedEventArgs e)
+        {
+            // Open the GitHub releases page
+            Process.Start(new ProcessStartInfo("https://github.com/chrdavis/ETWSpy/releases") { UseShellExecute = true });
+        }
+
+        private void ShowFilters_Click(object sender, RoutedEventArgs e)
+        {
+            // If the window is already open, just activate it
+            if (_filtersWindow != null && _filtersWindow.IsLoaded)
+            {
+                _filtersWindow.Activate();
+                return;
+            }
+
+            _filtersWindow = new FiltersWindow(FilterEntries, ProviderConfigEntries, OnFiltersChangedFromWindow, IsDarkMode);
+            _filtersWindow.Owner = this;
+            _filtersWindow.Closed += (_, _) => _filtersWindow = null;
+            _filtersWindow.Show();
+        }
+
+        private void OnFiltersChangedFromWindow()
+        {
+            // This is called when filters are added/removed from the FiltersWindow
+            // The CollectionChanged event will handle restarting the trace session
+        }
+
+        private void ShowProviders_Click(object sender, RoutedEventArgs e)
+        {
+            // If the window is already open, just activate it
+            if (_providerConfigWindow != null && _providerConfigWindow.IsLoaded)
+            {
+                _providerConfigWindow.Activate();
+                return;
+            }
+
+            _providerConfigWindow = new ProviderConfigWindow(ProviderConfigEntries, OnProvidersChangedFromWindow, IsDarkMode);
+            _providerConfigWindow.Owner = this;
+            _providerConfigWindow.Closed += (_, _) => _providerConfigWindow = null;
+            _providerConfigWindow.Show();
+        }
+
+        private void OnProvidersChangedFromWindow()
+        {
+            // This is called when provider configurations are added/removed from the ProviderConfigWindow
+            // Enable or disable the Filters menu/button based on whether providers exist
+            UpdateFiltersEnabled();
+        }
+
+        private void ShowSettings_Click(object sender, RoutedEventArgs e)
+        {
+            // If the window is already open, just activate it
+            if (_settingsWindow != null && _settingsWindow.IsLoaded)
+            {
+                _settingsWindow.Activate();
+                return;
+            }
+
+            _settingsWindow = new SettingsWindow(this, IsDarkMode);
+            _settingsWindow.Owner = this;
+            _settingsWindow.Closed += (_, _) => _settingsWindow = null;
+            _settingsWindow.Show();
+        }
+
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+            var aboutWindow = new AboutWindow(IsDarkMode, AppVersion);
+            aboutWindow.Owner = this;
+            aboutWindow.ShowDialog();
+        }
+
+        private void LightTheme_Click(object sender, RoutedEventArgs e)
+        {
+            _useSystemTheme = false;
+            _isDarkMode = false;
+            RegistrySettings.SaveBool(RegistrySettings.UseSystemTheme, false);
+            RegistrySettings.SaveBool(RegistrySettings.DarkMode, false);
+            ApplyTheme();
+            UpdateThemeMenuCheckmarks();
+        }
+
+        private void DarkTheme_Click(object sender, RoutedEventArgs e)
+        {
+            _useSystemTheme = false;
+            _isDarkMode = true;
+            RegistrySettings.SaveBool(RegistrySettings.UseSystemTheme, false);
+            RegistrySettings.SaveBool(RegistrySettings.DarkMode, true);
+            ApplyTheme();
+            UpdateThemeMenuCheckmarks();
+        }
+
+        private void SystemTheme_Click(object sender, RoutedEventArgs e)
+        {
+            _useSystemTheme = true;
+            RegistrySettings.SaveBool(RegistrySettings.UseSystemTheme, true);
+            ApplyTheme();
+            UpdateThemeMenuCheckmarks();
+        }
+
+        private void TimeFormatLocal_Click(object sender, RoutedEventArgs e)
+        {
+            ShowTimestampsInUTC = false;
+            UpdateTimeFormatMenuCheckmarks();
+        }
+
+        private void TimeFormatUTC_Click(object sender, RoutedEventArgs e)
+        {
+            ShowTimestampsInUTC = true;
+            UpdateTimeFormatMenuCheckmarks();
+        }
+
+        /// <summary>
+        /// Updates the checkmarks on the time format menu items.
+        /// </summary>
+        private void UpdateTimeFormatMenuCheckmarks()
+        {
+            TimeFormatLocalMenuItem.IsChecked = !_showTimestampsInUTC;
+            TimeFormatUTCMenuItem.IsChecked = _showTimestampsInUTC;
+        }
+
+        private void MaxEvents1000_Click(object sender, RoutedEventArgs e)
+        {
+            MaxEventsToShow = 1000;
+            UpdateMaxEventsMenuCheckmarks();
+        }
+
+        private void MaxEvents10000_Click(object sender, RoutedEventArgs e)
+        {
+            MaxEventsToShow = 10000;
+            UpdateMaxEventsMenuCheckmarks();
+        }
+
+        private void MaxEvents100000_Click(object sender, RoutedEventArgs e)
+        {
+            MaxEventsToShow = 100000;
+            UpdateMaxEventsMenuCheckmarks();
+        }
+
+        /// <summary>
+        /// Updates the checkmarks on the max events menu items.
+        /// </summary>
+        private void UpdateMaxEventsMenuCheckmarks()
+        {
+            MaxEvents1000MenuItem.IsChecked = _maxEventsToShow == 1000;
+            MaxEvents10000MenuItem.IsChecked = _maxEventsToShow == 10000;
+            MaxEvents100000MenuItem.IsChecked = _maxEventsToShow == 100000;
+        }
+
+        private void Autoscroll_Click(object sender, RoutedEventArgs e)
+        {
+            Autoscroll = !Autoscroll;
+        }
+
+        /// <summary>
+        /// Updates the checkmark on the autoscroll menu item.
+        /// </summary>
+        private void UpdateAutoscrollMenuCheckmark()
+        {
+            AutoscrollMenuItem.IsChecked = _autoscroll;
         }
     }
 

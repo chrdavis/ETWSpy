@@ -14,244 +14,166 @@
         MinWidth="600">
     <Grid Background="{DynamicResource SecondaryBackgroundBrush}">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Main Content -->
-        <TabControl Grid.Row="0" Margin="10">
-            <TabItem Header="Filters">
-                <Grid Background="{DynamicResource SecondaryBackgroundBrush}" Margin="10">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+        <!-- Menu Bar -->
+        <Menu Grid.Row="0" Background="{DynamicResource TertiaryBackgroundBrush}" Padding="2">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open..." Click="LoadFromFile" InputGestureText="Ctrl+O">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE8E5;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="_Save..." Click="SaveToFile" InputGestureText="Ctrl+S">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="E_xit" Click="Exit_Click" InputGestureText="Alt+F4">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="_View">
+                <MenuItem Header="_Providers..." Click="ShowProviders_Click">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE74C;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="FiltersMenuItem" Header="_Filters..." Click="ShowFilters_Click" IsEnabled="False">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE71C;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="_Settings">
+                <MenuItem Header="_Theme">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE790;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                    </MenuItem.Icon>
+                    <MenuItem x:Name="LightThemeMenuItem" Header="_Light" Click="LightTheme_Click" IsCheckable="True"/>
+                    <MenuItem x:Name="DarkThemeMenuItem" Header="_Dark" Click="DarkTheme_Click" IsCheckable="True"/>
+                    <MenuItem x:Name="SystemThemeMenuItem" Header="_Use System Theme" Click="SystemTheme_Click" IsCheckable="True"/>
+                </MenuItem>
+                <MenuItem Header="Time _Format">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE823;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                    </MenuItem.Icon>
+                    <MenuItem x:Name="TimeFormatLocalMenuItem" Header="_Local" Click="TimeFormatLocal_Click" IsCheckable="True"/>
+                    <MenuItem x:Name="TimeFormatUTCMenuItem" Header="_UTC" Click="TimeFormatUTC_Click" IsCheckable="True"/>
+                </MenuItem>
+                <MenuItem Header="_Max Events to Show">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                    </MenuItem.Icon>
+                    <MenuItem x:Name="MaxEvents1000MenuItem" Header="_1,000" Click="MaxEvents1000_Click" IsCheckable="True"/>
+                    <MenuItem x:Name="MaxEvents10000MenuItem" Header="1_0,000" Click="MaxEvents10000_Click" IsCheckable="True"/>
+                    <MenuItem x:Name="MaxEvents100000MenuItem" Header="10_0,000" Click="MaxEvents100000_Click" IsCheckable="True"/>
+                </MenuItem>
+                <MenuItem x:Name="AutoscrollMenuItem" Header="_Autoscroll" Click="Autoscroll_Click" IsCheckable="True" IsChecked="True">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE74B;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_Check for Updates" Click="CheckForUpdates_Click">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE895;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="_About" Click="About_Click">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE946;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
 
-                    <!-- form -->
-                    <Grid Grid.Row="0" Background="{DynamicResource SecondaryBackgroundBrush}" Margin="2">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+        <!-- Toolbar -->
+        <ToolBarTray Grid.Row="1" Background="{DynamicResource TertiaryBackgroundBrush}" IsLocked="True">
+            <ToolBar Background="{DynamicResource TertiaryBackgroundBrush}" Padding="6,4" Band="0" BandIndex="0">
+                <Button Click="LoadFromFile" ToolTip="Open Configuration (Ctrl+O)" Style="{DynamicResource ToolbarButtonStyle}">
+                    <TextBlock Text="&#xE8E5;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
+                </Button>
+                <Button Click="SaveToFile" ToolTip="Save Configuration (Ctrl+S)" Style="{DynamicResource ToolbarButtonStyle}">
+                    <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
+                </Button>
+                <Separator/>
+                <Button Click="ShowProviders_Click" ToolTip="Providers - Configure ETW providers" Style="{DynamicResource ToolbarButtonStyle}">
+                    <TextBlock Text="&#xE74C;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
+                </Button>
+                <Button x:Name="FiltersToolbarButton" Click="ShowFilters_Click" ToolTip="Filters - Configure event filters" IsEnabled="False" Style="{DynamicResource ToolbarButtonStyle}">
+                    <TextBlock Text="&#xE71C;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
+                </Button>
+                <Separator/>
+                <Button x:Name="StartPauseToolbarButton" Click="PauseResumeTracing" ToolTip="Start/Pause event capture" Style="{DynamicResource ToolbarButtonStyle}">
+                    <TextBlock x:Name="StartPauseToolbarIcon" Text="&#xE768;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
+                </Button>
+                <Button x:Name="EventDetailsToolbarButton" Click="ShowEventDetailsButton_Click" ToolTip="View event details" IsEnabled="False" Style="{DynamicResource ToolbarButtonStyle}">
+                    <TextBlock Text="&#xE90F;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
+                </Button>
+                <Button x:Name="CopyToolbarButton" Click="CopySelectedEvents" ToolTip="Copy selected events (Ctrl+C)" IsEnabled="False" Style="{DynamicResource ToolbarButtonStyle}">
+                    <TextBlock Text="&#xE8C8;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
+                </Button>
+                <Button Click="ClearEvents" ToolTip="Clear all captured events" Style="{DynamicResource ToolbarButtonStyle}">
+                    <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
+                </Button>
+                <Button Click="ExportToCsv" ToolTip="Export events to CSV file" Style="{DynamicResource ToolbarButtonStyle}">
+                    <TextBlock Text="&#xEDE1;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
 
-                        <Label Grid.Row="0" Grid.Column="0" Content="Provider:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2"/>
-                        <ComboBox Grid.Row="0"
-                                  Grid.Column="1"
-                                  x:Name="ProviderComboBox"
-                                  Margin="2"
-                                  HorizontalAlignment="Left"
-                                  VerticalAlignment="Center"
-                                  Width="400"
-                                  IsEditable="True"
-                                  IsReadOnly="False"
-                                  IsTextSearchEnabled="True"/>
-                        <Label Grid.Row="0" Grid.Column="2" Content="(Name or GUID, select or enter new provider)" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2"/>
+        <!-- Main Content - Events -->
+        <Grid Grid.Row="2" Background="{DynamicResource SecondaryBackgroundBrush}" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-                        <Label Grid.Row="1" Grid.Column="0" Content="Event:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2"/>
-                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="EventTextBox" Height="26" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="400"/>
-                        <Label Grid.Row="1" Grid.Column="2" Content="(Separate IDs with ','; Specify range with '-'; Empty = All" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2"/>
+            <DataGrid Grid.Row="0" 
+                      x:Name="EventsDataGrid"
+                      AutoGenerateColumns="True"
+                      AutoGeneratingColumn="EventsDataGrid_AutoGeneratingColumn"
+                      IsReadOnly="True"
+                      SelectionMode="Extended"
+                      SelectionChanged="EventsDataGrid_SelectionChanged"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Auto"
+                      EnableRowVirtualization="True"
+                      EnableColumnVirtualization="True"
+                      VirtualizingPanel.IsVirtualizing="True"
+                      VirtualizingPanel.VirtualizationMode="Recycling"
+                      VirtualizingPanel.ScrollUnit="Pixel"
+                      ScrollViewer.IsDeferredScrollingEnabled="True"
+                      PreviewKeyDown="EventsDataGrid_PreviewKeyDown"
+                      MouseDoubleClick="EventsDataGrid_MouseDoubleClick">
+            </DataGrid>
 
-                        <Label Grid.Row="2" Grid.Column="0" Content="Match Text:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2"/>
-                        <TextBox Grid.Row="2" Grid.Column="1" x:Name="TextToMatchBox" Height="26" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Top" Width="400"/>
-                        <Label Grid.Row="2" Grid.Column="2" Content="(Case-insensitive sub-string match in event/task name)" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2"/>
-
-                        <Label Grid.Row="3" Grid.Column="0" Content="Filter Type:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2"/>
-                        <ComboBox Grid.Row="3" Grid.Column="1" x:Name="FilterTypeComboBox" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150"/>
-
-                        <Label Grid.Row="4" Grid.Column="0" Content="Keywords:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2"/>
-                        <TextBox Grid.Row="4" Grid.Column="1" x:Name="KeywordsTextBox" Text="" Height="26" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150"/>
-
-                        <Label Grid.Row="5" Grid.Column="0" Content="Trace Level:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2"/>
-                        <ComboBox Grid.Row="5"
-                            Grid.Column="1"
-                            x:Name="TraceLevelComboBox"
-                            Margin="2"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Width="150"
-                            IsEditable="True"
-                            IsReadOnly="False"
-                            IsTextSearchEnabled="True"/>
-                        
-                        <Label Grid.Row="6" Grid.Column="0" Content="Trace Flags:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2"/>
-                        <TextBox Grid.Row="6" Grid.Column="1" x:Name="TraceFlagsTextBox" Height="26" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150"/>
-                    </Grid>
-
-                    <!-- buttons -->
-                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,10">
-                        <Button Content="Add" x:Name="AddFilterButton" Click="AddFilter" Margin="5,0" MinWidth="100"/>
-                        <Button Content="Remove" x:Name="RemoveFilterButton" Click="RemoveFilter" Margin="5,0" MinWidth="100"/>
-                        <Button Content="Clear" x:Name="ClearFiltersButton" Click="ClearFilters" Margin="5,0" MinWidth="100"/>
-                        <Button Content="Save..." x:Name="SaveButton" Click="SaveToFile" Margin="5,0" MinWidth="100"/>
-                        <Button Content="Load..." x:Name="LoadButton" Click="LoadFromFile" Margin="5,0" MinWidth="100"/>
-                    </StackPanel>
-
-                    <!-- list (fills remaining space) -->
-                    <ListView Grid.Row="2"
-                              x:Name="FiltersListView"
-                              VerticalAlignment="Stretch"
-                              HorizontalAlignment="Stretch"
-                              Margin="0"
-                              ScrollViewer.VerticalScrollBarVisibility="Auto"
-                              ScrollViewer.HorizontalScrollBarVisibility="Auto">
-                    <ListView.View>
-                            <GridView AllowsColumnReorder="True">
-                                <GridViewColumn Header="Provider" Width="300" DisplayMemberBinding="{Binding Provider}"/>
-                                <GridViewColumn Header="Event Id" Width="100">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock>
-                                                <TextBlock.Style>
-                                                    <Style TargetType="TextBlock">
-                                                        <Setter Property="Text" Value="{Binding EventId}"/>
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding EventId}" Value="">
-                                                                <Setter Property="Text" Value="(All)"/>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </TextBlock.Style>
-                                            </TextBlock>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="Match Text" Width="100" DisplayMemberBinding="{Binding MatchText}"/>
-                                <GridViewColumn Header="Filter Type" Width="100" DisplayMemberBinding="{Binding FilterType}"/>
-                                <GridViewColumn Header="Keywords" Width="100" DisplayMemberBinding="{Binding Keywords}"/>
-                                <GridViewColumn Header="Trace Level" Width="150" DisplayMemberBinding="{Binding TraceLevel}"/>
-                                <GridViewColumn Header="Trace Flags" Width="300" DisplayMemberBinding="{Binding TraceFlags}"/>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Events">
-                <Grid Background="{DynamicResource SecondaryBackgroundBrush}" Margin="10">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <DataGrid Grid.Row="0" 
-                              x:Name="EventsDataGrid"
-                              AutoGenerateColumns="True"
-                              AutoGeneratingColumn="EventsDataGrid_AutoGeneratingColumn"
-                              IsReadOnly="True"
-                              SelectionMode="Extended"
-                              VerticalScrollBarVisibility="Auto"
-                              HorizontalScrollBarVisibility="Auto"
-                              EnableRowVirtualization="True"
-                              EnableColumnVirtualization="True"
-                              VirtualizingPanel.IsVirtualizing="True"
-                              VirtualizingPanel.VirtualizationMode="Recycling"
-                              VirtualizingPanel.ScrollUnit="Pixel"
-                              ScrollViewer.IsDeferredScrollingEnabled="True"
-                              PreviewKeyDown="EventsDataGrid_PreviewKeyDown"
-                              MouseDoubleClick="EventsDataGrid_MouseDoubleClick">
-                    </DataGrid>
-
-                    <Grid Grid.Row="1" Background="{DynamicResource SecondaryBackgroundBrush}" Margin="10">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Row="0" Grid.Column="0" x:Name="EventCountText" 
-                                   Text="Events: 0" 
-                                   VerticalAlignment="Center"
-                                   Margin="0,0,20,0"/>
-                        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" 
-                                    HorizontalAlignment="Right">
-                            <Button Content="Pause" 
-                                    x:Name="PauseResumeButton"
-                                    Click="PauseResumeTracing"
-                                    Margin="5,0"
-                                    MinWidth="100"/>
-                            <Button Content="Clear" 
-                                    Click="ClearEvents"
-                                    Margin="5,0"
-                                    MinWidth="100"/>
-                            <Button Content="Export CSV..." 
-                                    Click="ExportToCsv"
-                                    Margin="5,0"
-                                    MinWidth="100"/>
-                            <Button Content="Copy" 
-                                    Click="CopySelectedEvents"
-                                    Margin="5,0"
-                                    MinWidth="100"
-                                    ToolTip="Copy selected rows (Ctrl+C)"/>
-                        </StackPanel>
-                    </Grid>
-                </Grid>
-            </TabItem>
-
-            <TabItem Header="Settings">
-                <Grid Background="{DynamicResource SecondaryBackgroundBrush}" Margin="10">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Label Grid.Row="0" Grid.Column="0" Content="Dark Mode:" HorizontalAlignment="Left"  VerticalAlignment="Center" Margin="4"/>
-                    <CheckBox Grid.Row="0" Grid.Column="1" IsChecked="{Binding IsDarkMode}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="4" />
-                    <Label Grid.Row="1" Grid.Column="0" Content="Show Timestamps in UTC:" HorizontalAlignment="Left"  VerticalAlignment="Center" Margin="4"/>
-                    <CheckBox Grid.Row="1" Grid.Column="1" IsChecked="{Binding ShowTimestampsInUTC}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="4" />
-                    <Label Grid.Row="2" Grid.Column="0" Content="Max Events to Show:" HorizontalAlignment="Left"  VerticalAlignment="Center" Margin="4"/>
-                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="4">
-                        <Slider x:Name="MaxEventsSlider" 
-                                Minimum="1000" 
-                                Maximum="100000" 
-                                Value="{Binding MaxEventsToShow}" 
-                                VerticalAlignment="Center" 
-                                Width="250"
-                                TickFrequency="10000"
-                                IsSnapToTickEnabled="False"
-                                SmallChange="1000"
-                                LargeChange="10000"/>
-                        <TextBlock Text="{Binding Value, ElementName=MaxEventsSlider, StringFormat={}{0:N0}}" 
-                                   VerticalAlignment="Center" 
-                                   Margin="10,0,0,0"
-                                   MinWidth="60"/>
-                    </StackPanel>
-                </Grid>
-            </TabItem>
-            <TabItem Header="About">
-                <Grid Background="{DynamicResource SecondaryBackgroundBrush}" Margin="10">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Label Grid.Row="0" Content="ETWSpy - Event Tracing Monitor for Windows" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
-                    <Label Grid.Row="1" Content="{Binding AppVersion}" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
-                    <TextBlock Grid.Row="2" HorizontalAlignment="Left" Margin="14,10,10,10" VerticalAlignment="Top">
-                        <Hyperlink NavigateUri="https://github.com/chrdavis/ETWSpy" RequestNavigate="Hyperlink_RequestNavigate">
-                            https://github.com/chrdavis/ETWSpy
-                        </Hyperlink>
-                    </TextBlock>
-                </Grid>
-            </TabItem>
-        </TabControl>
+            <Grid Grid.Row="1" Background="{DynamicResource SecondaryBackgroundBrush}" Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" x:Name="EventCountText" 
+                           Text="Events: 0" 
+                           VerticalAlignment="Center"
+                           Margin="0,0,20,0"/>
+            </Grid>
+        </Grid>
 
         <!-- Status Bar -->
-        <Border Grid.Row="1" 
+        <Border Grid.Row="3" 
                 Background="{DynamicResource TertiaryBackgroundBrush}" 
                 BorderBrush="{DynamicResource BorderBrush}" 
                 BorderThickness="0,1,0,0"

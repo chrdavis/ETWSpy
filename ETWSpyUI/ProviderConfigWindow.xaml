@@ -1,0 +1,97 @@
+<Window x:Class="ETWSpyUI.ProviderConfigWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ETWSpyUI"
+        mc:Ignorable="d"
+        Style="{StaticResource ThemedWindow}"
+        Title="ETWSpy - Provider Configuration" 
+        Height="450" 
+        Width="750"
+        MinHeight="350"
+        MinWidth="600"
+        WindowStartupLocation="CenterOwner">
+    <Grid Background="{DynamicResource SecondaryBackgroundBrush}" Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Form -->
+        <Grid Grid.Row="0" Background="{DynamicResource SecondaryBackgroundBrush}" Margin="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" Content="Provider:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2"/>
+            <ComboBox Grid.Row="0"
+                      Grid.Column="1"
+                      x:Name="ProviderComboBox"
+                      Margin="2"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Center"
+                      Width="350"
+                      IsEditable="True"
+                      IsReadOnly="False"
+                      IsTextSearchEnabled="True"/>
+            <Label Grid.Row="0" Grid.Column="2" Content="(Name or GUID, select or enter new provider)" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2"/>
+
+            <Label Grid.Row="1" Grid.Column="0" Content="Keywords:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2"/>
+            <TextBox Grid.Row="1" Grid.Column="1" x:Name="KeywordsTextBox" Text="" Height="26" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="200"
+                     ToolTip="Hex value (e.g., 0xFFFFFFFF) or decimal. Empty = All keywords"/>
+            <Label Grid.Row="1" Grid.Column="2" Content="(Hex value e.g., 0xFFFFFFFF or decimal; Empty = All)" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2"/>
+
+            <Label Grid.Row="2" Grid.Column="0" Content="Trace Level:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2"/>
+            <ComboBox Grid.Row="2"
+                      Grid.Column="1"
+                      x:Name="TraceLevelComboBox"
+                      Margin="2"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Center"
+                      Width="150"/>
+            
+            <Label Grid.Row="3" Grid.Column="0" Content="Trace Flags:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2"/>
+            <TextBox Grid.Row="3" Grid.Column="1" x:Name="TraceFlagsTextBox" Height="26" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150"/>
+            <Label Grid.Row="3" Grid.Column="2" Content="(Raw trace flags value 0-255)" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2"/>
+        </Grid>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,10">
+            <Button Content="Add" x:Name="AddButton" Click="AddButton_Click" Margin="5,0" MinWidth="100"/>
+            <Button Content="Remove" x:Name="RemoveButton" Click="RemoveButton_Click" Margin="5,0" MinWidth="100"/>
+            <Button Content="Clear" x:Name="ClearButton" Click="ClearButton_Click" Margin="5,0" MinWidth="100"/>
+        </StackPanel>
+
+        <!-- List (fills remaining space) -->
+        <ListView Grid.Row="2"
+                  x:Name="ProvidersListView"
+                  VerticalAlignment="Stretch"
+                  HorizontalAlignment="Stretch"
+                  Margin="0"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto">
+            <ListView.View>
+                <GridView AllowsColumnReorder="True">
+                    <GridViewColumn Header="Provider" Width="300" DisplayMemberBinding="{Binding Provider}"/>
+                    <GridViewColumn Header="Keywords" Width="120" DisplayMemberBinding="{Binding Keywords}"/>
+                    <GridViewColumn Header="Trace Level" Width="100" DisplayMemberBinding="{Binding TraceLevel}"/>
+                    <GridViewColumn Header="Trace Flags" Width="100" DisplayMemberBinding="{Binding TraceFlags}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <!-- Close button -->
+        <Button Grid.Row="3" Content="Close" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Click="CloseButton_Click" MinWidth="100"/>
+    </Grid>
+</Window>

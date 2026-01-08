@@ -11,8 +11,10 @@ namespace ETWSpyUI
 
         // Registry value names
         public const string DarkMode = "DarkMode";
+        public const string UseSystemTheme = "UseSystemTheme";
         public const string ShowTimestampsInUTC = "ShowTimestampsInUTC";
         public const string MaxEventsToShow = "MaxEventsToShow";
+        public const string Autoscroll = "Autoscroll";
 
         /// <summary>
         /// Loads a boolean setting from the Windows registry.
