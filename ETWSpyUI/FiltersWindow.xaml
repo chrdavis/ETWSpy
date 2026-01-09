@@ -9,9 +9,9 @@
         Background="{DynamicResource PrimaryBackgroundBrush}"
         Title="ETWSpy - Filters" 
         Height="500" 
-        Width="900"
+        Width="750"
         MinHeight="400"
-        MinWidth="700">
+        MinWidth="750">
     <Grid Background="{DynamicResource SecondaryBackgroundBrush}" Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -41,7 +41,7 @@
                       Margin="2"
                       HorizontalAlignment="Left"
                       VerticalAlignment="Center"
-                      Width="400"
+                      Width="300"
                       IsEditable="False"
                       IsReadOnly="True"
                       IsTextSearchEnabled="True"/>
@@ -57,8 +57,9 @@
                       SelectionChanged="FilterCategoryComboBox_SelectionChanged"/>
 
             <Label Grid.Row="2" Grid.Column="0" Content="Value:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2"/>
-            <TextBox Grid.Row="2" Grid.Column="1" x:Name="ValueTextBox" Height="26" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="400"/>
-            <Label Grid.Row="2" Grid.Column="2" x:Name="ValueInstructionLabel" Content="(Separate IDs with ','; Specify range with '-')" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2"/>
+            <TextBox Grid.Row="2" Grid.Column="1" x:Name="ValueTextBox" Height="26" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="300"/>
+
+            <Label Grid.Row="2" Grid.Column="2" x:Name="ValueInstructionLabel" Content="(Separate IDs with ','; Specify range with '-'; Empty matches all)" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2"/>
 
             <Label Grid.Row="3" Grid.Column="0" Content="Action:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2"/>
             <ComboBox Grid.Row="3" Grid.Column="1" x:Name="ActionComboBox" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150"/>
@@ -80,6 +81,20 @@
                       SelectionChanged="FiltersListView_SelectionChanged"
                       ScrollViewer.VerticalScrollBarVisibility="Auto"
                       ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem x:Name="ContextMenuRemoveMenuItem" Header="_Remove" Click="RemoveFilter_Click" IsEnabled="False">
+                            <MenuItem.Icon>
+                                <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem x:Name="ContextMenuClearMenuItem" Header="C_lear" Click="ClearFilters_Click" IsEnabled="False">
+                            <MenuItem.Icon>
+                                <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </ListView.ContextMenu>
                 <ListView.View>
                     <GridView AllowsColumnReorder="True">
                         <GridViewColumn Header="Provider" Width="300" DisplayMemberBinding="{Binding Provider}"/>

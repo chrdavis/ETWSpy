@@ -178,6 +178,20 @@
                       ScrollViewer.IsDeferredScrollingEnabled="True"
                       PreviewKeyDown="EventsDataGrid_PreviewKeyDown"
                       MouseDoubleClick="EventsDataGrid_MouseDoubleClick">
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem x:Name="ContextMenuCopyMenuItem" Header="_Copy" Click="CopySelectedEvents" InputGestureText="Ctrl+C" IsEnabled="False">
+                            <MenuItem.Icon>
+                                <TextBlock Text="&#xE8C8;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem x:Name="ContextMenuClearMenuItem" Header="C_lear" Click="ClearEvents" IsEnabled="False">
+                            <MenuItem.Icon>
+                                <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
             </DataGrid>
             
             <!-- Empty state placeholder -->

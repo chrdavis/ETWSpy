@@ -132,6 +132,10 @@ namespace ETWSpyUI
         // Tracks whether event processing is paused (trace session still runs, but events are not processed)
         private bool _isPaused;
 
+        // Tracks whether the user wants event capture to be active (user explicitly started/stopped)
+        // This is separate from _isPaused - when true, we should be capturing when filters exist
+        private bool _wantsCaptureActive;
+
         // Use a simple List as backing store to avoid ObservableCollection overhead
         private List<EventRecord> _eventRecordsList = new(DefaultMaxEventsToDisplay);
 
@@ -449,6 +453,7 @@ namespace ETWSpyUI
             bool hasEvents = _eventRecordsList.Count > 0;
             ClearEventsToolbarButton.IsEnabled = hasEvents;
             ClearMenuItem.IsEnabled = hasEvents;
+            ContextMenuClearMenuItem.IsEnabled = hasEvents;
             ExportToolbarButton.IsEnabled = hasEvents;
             ExportMenuItem.IsEnabled = hasEvents;
             
@@ -480,18 +485,33 @@ namespace ETWSpyUI
 
         /// <summary>
         /// Handles changes to the FilterEntries collection.
-        /// Automatically starts, restarts, or stops the trace session based on filter changes.
+        /// Reconfigures the trace session based on filter changes, respecting the current capture state.
         /// </summary>
         private void OnFilterEntriesChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
-            // If filters were added or removed, restart the trace session with new providers
             if (FilterEntries.Count > 0)
             {
-                RestartTraceSession();
+                // Only restart if user wants capture active, otherwise just update the session config
+                if (_wantsCaptureActive)
+                {
+                    RestartTraceSession();
+                }
+                else
+                {
+                    // Stop any existing session but don't start a new one
+                    // The session will be started when user clicks Start
+                    StopTracing();
+                    // Keep UI showing paused state
+                    StartPauseToolbarIcon.Text = "\uE768"; // Play icon
+                    StartPauseToolbarButton.ToolTip = "Start event capture";
+                    StartPauseMenuItem.Header = "_Start event capture";
+                    StartPauseMenuIcon.Text = "\uE768"; // Play icon
+                }
             }
             else
             {
                 // No filters remaining - stop the trace session
+                _wantsCaptureActive = false;
                 StopTracing();
                 StartPauseToolbarIcon.Text = "\uE768"; // Play icon
                 StartPauseToolbarButton.ToolTip = "Start event capture";
@@ -569,7 +589,14 @@ namespace ETWSpyUI
                     }
 
                     _activeProviders.Add(wrapper); // Keep reference alive
-                    _traceSession.EnableProvider(wrapper);
+                    try
+                    {
+                        _traceSession.EnableProvider(wrapper);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Failed to add provider: {wrapper.Name} {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
 
                 // Subscribe to error events from the trace session
@@ -583,6 +610,7 @@ namespace ETWSpyUI
 
                 // Update UI to reflect running state
                 _isPaused = false;
+                _wantsCaptureActive = true;
                 StartPauseToolbarIcon.Text = "\uE769"; // Pause icon
                 StartPauseToolbarButton.ToolTip = "Pause event capture";
                 StartPauseMenuItem.Header = "_Pause event capture";
@@ -682,15 +710,24 @@ namespace ETWSpyUI
 
         private void PauseResumeTracing(object sender, RoutedEventArgs e)
         {
-            // If no trace session exists, nothing to pause/resume
+            // If no filters configured, can't start
+            if (FilterEntries.Count == 0)
+            {
+                MessageBox.Show("No providers configured. Add a provider to start capturing events.", "No Providers", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            // If no trace session exists, start one
             if (_traceSession == null)
             {
-                MessageBox.Show("No active trace session. Add a filter to start tracing.", "No Session", MessageBoxButton.OK, MessageBoxImage.Information);
+                _wantsCaptureActive = true;
+                RestartTraceSession();
                 return;
             }
 
             // Toggle pause state
             _isPaused = !_isPaused;
+            _wantsCaptureActive = !_isPaused;
 
             if (_isPaused)
             {
@@ -934,6 +971,7 @@ namespace ETWSpyUI
         {
             _batchTimer.Stop();
             _isPaused = false;
+            // Note: Don't reset _wantsCaptureActive here - let the caller decide
             _traceCancellation?.Cancel();
 
             // Unsubscribe from error events before stopping
@@ -1082,19 +1120,14 @@ namespace ETWSpyUI
                 // Update UI state based on loaded data
                 UpdateFiltersEnabled();
 
-                // Now restart the trace session once with all filters loaded
-                if (FilterEntries.Count > 0)
-                {
-                    RestartTraceSession();
-                }
-                else
-                {
-                    StopTracing();
-                    StartPauseToolbarIcon.Text = "\uE768"; // Play icon
-                    StartPauseToolbarButton.ToolTip = "Start event capture";
-                    StartPauseMenuItem.Header = "_Start event capture";
-                    StartPauseMenuIcon.Text = "\uE768"; // Play icon
-                }
+                // After loading, don't automatically start capturing - let user decide
+                // Stop any existing session and reset to paused state
+                _wantsCaptureActive = false;
+                StopTracing();
+                StartPauseToolbarIcon.Text = "\uE768"; // Play icon
+                StartPauseToolbarButton.ToolTip = "Start event capture";
+                StartPauseMenuItem.Header = "_Start event capture";
+                StartPauseMenuIcon.Text = "\uE768"; // Play icon
 
                 MessageBox.Show("Configuration loaded successfully.", "Load Configuration", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -1440,6 +1473,7 @@ namespace ETWSpyUI
             EventDetailsToolbarButton.IsEnabled = hasSelection;
             CopyToolbarButton.IsEnabled = hasSelection;
             CopyMenuItem.IsEnabled = hasSelection;
+            ContextMenuCopyMenuItem.IsEnabled = hasSelection;
         }
 
         private void ShowEventDetailsButton_Click(object sender, RoutedEventArgs e)

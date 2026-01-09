@@ -1,3 +1,5 @@
+using ETWSpyLib;
+using Microsoft.O365.Security.ETW;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -65,11 +67,18 @@ namespace ETWSpyUI
 
         private void UpdateButtonStates()
         {
-            RemoveButton.IsEnabled = ProvidersListView.SelectedItem != null;
-            ClearButton.IsEnabled = _providerEntries.Count > 0;
+            bool hasSelection = ProvidersListView.SelectedItem != null;
+            bool hasItems = _providerEntries.Count > 0;
+            
+            RemoveButton.IsEnabled = hasSelection;
+            ClearButton.IsEnabled = hasItems;
+            
+            // Update context menu items
+            ContextMenuRemoveMenuItem.IsEnabled = hasSelection;
+            ContextMenuClearMenuItem.IsEnabled = hasItems;
             
             // Show/hide empty placeholder text
-            EmptyPlaceholderText.Visibility = _providerEntries.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            EmptyPlaceholderText.Visibility = hasItems ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void PopulateProviderComboBox()
@@ -157,6 +166,16 @@ namespace ETWSpyUI
                 return;
             }
 
+            // Not a known provider - validate it
+            string providerInput = ProviderComboBox.Text.Trim();
+            var knownProvider = ProviderManager.FindByName(providerInput);
+
+            if (!EtwProviderValidator.IsValidProvider(providerInput, knownProvider?.Guid, out var errorMessage))
+            {
+                MessageBox.Show(errorMessage, "Invalid Provider", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             _providerEntries.Add(entry);
 
             // Add a default "Include all events" filter for this provider
@@ -185,6 +204,15 @@ namespace ETWSpyUI
         {
             if (ProvidersListView.SelectedItem is ProviderConfigEntry selectedEntry)
             {
+                // Remove all filter entries associated with this provider
+                var filtersToRemove = _filterEntries
+                    .Where(f => string.Equals(f.Provider, selectedEntry.Provider, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+                foreach (var filter in filtersToRemove)
+                {
+                    _filterEntries.Remove(filter);
+                }
+
                 _providerEntries.Remove(selectedEntry);
                 _onProvidersChanged?.Invoke();
             }
@@ -192,6 +220,8 @@ namespace ETWSpyUI
 
         private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
+            // Clear all filter entries as well since they're associated with providers
+            _filterEntries.Clear();
             _providerEntries.Clear();
             _onProvidersChanged?.Invoke();
         }

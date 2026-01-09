@@ -7,10 +7,10 @@
         mc:Ignorable="d"
         Style="{StaticResource ThemedWindow}"
         Title="ETWSpy - Provider Configuration" 
-        Height="450" 
+        Height="500" 
         Width="750"
-        MinHeight="350"
-        MinWidth="600"
+        MinHeight="400"
+        MinWidth="700"
         WindowStartupLocation="CenterOwner">
     <Grid Background="{DynamicResource SecondaryBackgroundBrush}" Margin="10">
         <Grid.RowDefinitions>
@@ -41,14 +41,14 @@
                       Margin="2"
                       HorizontalAlignment="Left"
                       VerticalAlignment="Center"
-                      Width="350"
+                      Width="300"
                       IsEditable="True"
                       IsReadOnly="False"
                       IsTextSearchEnabled="True"/>
             <Label Grid.Row="0" Grid.Column="2" Content="(Name or GUID, select or enter new provider)" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2"/>
 
             <Label Grid.Row="1" Grid.Column="0" Content="Keywords:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2"/>
-            <TextBox Grid.Row="1" Grid.Column="1" x:Name="KeywordsTextBox" Text="" Height="26" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="200"
+            <TextBox Grid.Row="1" Grid.Column="1" x:Name="KeywordsTextBox" Text="" Height="26" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150"
                      ToolTip="Hex value (e.g., 0xFFFFFFFF) or decimal. Empty = All keywords"/>
             <Label Grid.Row="1" Grid.Column="2" Content="(Hex value e.g., 0xFFFFFFFF or decimal; Empty = All)" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2"/>
 
@@ -82,6 +82,20 @@
                       SelectionChanged="ProvidersListView_SelectionChanged"
                       ScrollViewer.VerticalScrollBarVisibility="Auto"
                       ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem x:Name="ContextMenuRemoveMenuItem" Header="_Remove" Click="RemoveButton_Click" IsEnabled="False">
+                            <MenuItem.Icon>
+                                <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem x:Name="ContextMenuClearMenuItem" Header="C_lear" Click="ClearButton_Click" IsEnabled="False">
+                            <MenuItem.Icon>
+                                <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </ListView.ContextMenu>
                 <ListView.View>
                     <GridView AllowsColumnReorder="True">
                         <GridViewColumn Header="Provider" Width="300" DisplayMemberBinding="{Binding Provider}"/>

@@ -91,11 +91,18 @@ namespace ETWSpyUI
 
         private void UpdateButtonStates()
         {
-            RemoveFilterButton.IsEnabled = FiltersListView.SelectedItem != null;
-            ClearFiltersButton.IsEnabled = _filterEntries.Count > 0;
+            bool hasSelection = FiltersListView.SelectedItem != null;
+            bool hasItems = _filterEntries.Count > 0;
+            
+            RemoveFilterButton.IsEnabled = hasSelection;
+            ClearFiltersButton.IsEnabled = hasItems;
+            
+            // Update context menu items
+            ContextMenuRemoveMenuItem.IsEnabled = hasSelection;
+            ContextMenuClearMenuItem.IsEnabled = hasItems;
             
             // Show/hide empty placeholder text
-            EmptyPlaceholderText.Visibility = _filterEntries.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            EmptyPlaceholderText.Visibility = hasItems ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void PopulateProviderComboBox()
@@ -132,8 +139,8 @@ namespace ETWSpyUI
             if (FilterCategoryComboBox.SelectedItem is string category)
             {
                 ValueInstructionLabel.Content = category == EventIdCategory
-                    ? "(Separate IDs with ','; Specify range with '-')"
-                    : "(Case-insensitive sub-string match in event/task name)";
+                    ? "(Separate IDs with ','; Specify range with '-'; Empty matches all)"
+                    : "(Case-insensitive sub-string match in event/task name; Empty matches all)";
             }
         }
 
