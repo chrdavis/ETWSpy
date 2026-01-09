@@ -93,6 +93,9 @@ namespace ETWSpyUI
         {
             RemoveFilterButton.IsEnabled = FiltersListView.SelectedItem != null;
             ClearFiltersButton.IsEnabled = _filterEntries.Count > 0;
+            
+            // Show/hide empty placeholder text
+            EmptyPlaceholderText.Visibility = _filterEntries.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void PopulateProviderComboBox()

@@ -73,24 +73,36 @@
             <Button Content="Clear" x:Name="ClearButton" Click="ClearButton_Click" Margin="5,0" MinWidth="100" IsEnabled="False"/>
         </StackPanel>
 
-        <!-- List (fills remaining space) -->
-        <ListView Grid.Row="2"
-                  x:Name="ProvidersListView"
-                  VerticalAlignment="Stretch"
-                  HorizontalAlignment="Stretch"
-                  Margin="0"
-                  SelectionChanged="ProvidersListView_SelectionChanged"
-                  ScrollViewer.VerticalScrollBarVisibility="Auto"
-                  ScrollViewer.HorizontalScrollBarVisibility="Auto">
-            <ListView.View>
-                <GridView AllowsColumnReorder="True">
-                    <GridViewColumn Header="Provider" Width="300" DisplayMemberBinding="{Binding Provider}"/>
-                    <GridViewColumn Header="Keywords" Width="120" DisplayMemberBinding="{Binding Keywords}"/>
-                    <GridViewColumn Header="Trace Level" Width="100" DisplayMemberBinding="{Binding TraceLevel}"/>
-                    <GridViewColumn Header="Trace Flags" Width="100" DisplayMemberBinding="{Binding TraceFlags}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <!-- List (fills remaining space) with empty state placeholder -->
+        <Grid Grid.Row="2">
+            <ListView x:Name="ProvidersListView"
+                      VerticalAlignment="Stretch"
+                      HorizontalAlignment="Stretch"
+                      Margin="0"
+                      SelectionChanged="ProvidersListView_SelectionChanged"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                <ListView.View>
+                    <GridView AllowsColumnReorder="True">
+                        <GridViewColumn Header="Provider" Width="300" DisplayMemberBinding="{Binding Provider}"/>
+                        <GridViewColumn Header="Keywords" Width="120" DisplayMemberBinding="{Binding Keywords}"/>
+                        <GridViewColumn Header="Trace Level" Width="100" DisplayMemberBinding="{Binding TraceLevel}"/>
+                        <GridViewColumn Header="Trace Flags" Width="100" DisplayMemberBinding="{Binding TraceFlags}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            
+            <!-- Empty state placeholder -->
+            <TextBlock x:Name="EmptyPlaceholderText"
+                       Text="No providers configured.&#x0a;&#x0a;Select a provider from the dropdown above and click Add to start capturing ETW events."
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       TextAlignment="Center"
+                       Foreground="{DynamicResource SecondaryForegroundBrush}"
+                       FontSize="14"
+                       Margin="20"
+                       IsHitTestVisible="False"/>
+        </Grid>
 
         <!-- Close button -->
         <Button Grid.Row="3" Content="Close" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Click="CloseButton_Click" MinWidth="100"/>

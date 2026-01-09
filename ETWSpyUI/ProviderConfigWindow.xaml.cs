@@ -67,6 +67,9 @@ namespace ETWSpyUI
         {
             RemoveButton.IsEnabled = ProvidersListView.SelectedItem != null;
             ClearButton.IsEnabled = _providerEntries.Count > 0;
+            
+            // Show/hide empty placeholder text
+            EmptyPlaceholderText.Visibility = _providerEntries.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void PopulateProviderComboBox()

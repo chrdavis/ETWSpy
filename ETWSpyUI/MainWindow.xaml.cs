@@ -87,6 +87,7 @@ namespace ETWSpyUI
     public class ConfigurationData
     {
         public List<FilterEntry> Filters { get; set; } = new();
+        public List<ProviderConfigEntry> Providers { get; set; } = new();
     }
 
     /// <summary>
@@ -422,16 +423,45 @@ namespace ETWSpyUI
             StartPauseToolbarButton.IsEnabled = hasProviders;
             SaveMenuItem.IsEnabled = hasProviders;
             SaveToolbarButton.IsEnabled = hasProviders;
+            
+            // Update placeholder visibility when provider state changes
+            UpdateEmptyPlaceholderVisibility();
         }
 
         /// <summary>
         /// Updates the enabled state of the Clear and Export buttons based on whether events exist.
+        /// Also updates the empty placeholder visibility.
         /// </summary>
         private void UpdateEventButtonsEnabled()
         {
             bool hasEvents = _eventRecordsList.Count > 0;
             ClearEventsToolbarButton.IsEnabled = hasEvents;
             ExportToolbarButton.IsEnabled = hasEvents;
+            
+            // Show/hide empty placeholder text based on whether there are events or providers
+            UpdateEmptyPlaceholderVisibility();
+        }
+
+        /// <summary>
+        /// Updates the visibility of the empty placeholder text in the main event grid.
+        /// </summary>
+        private void UpdateEmptyPlaceholderVisibility()
+        {
+            bool hasEvents = _eventRecordsList.Count > 0;
+            bool hasProviders = ProviderConfigEntries.Count > 0;
+            
+            // Hide placeholder when there are events, or show appropriate message
+            if (hasEvents)
+            {
+                EmptyPlaceholderText.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                EmptyPlaceholderText.Visibility = Visibility.Visible;
+                EmptyPlaceholderText.Text = hasProviders 
+                    ? "No events captured yet.\n\nEvents will appear here as they are received from the configured providers."
+                    : "No events captured.\n\nClick the Providers button in the toolbar to add an ETW provider and start capturing events.";
+            }
         }
 
         /// <summary>
@@ -956,7 +986,8 @@ namespace ETWSpyUI
             {
                 var config = new ConfigurationData
                 {
-                    Filters = [.. FilterEntries]
+                    Filters = [.. FilterEntries],
+                    Providers = [.. ProviderConfigEntries]
                 };
 
                 string json = JsonSerializer.Serialize(config, JsonOptions);
@@ -998,11 +1029,21 @@ namespace ETWSpyUI
                 // Temporarily unsubscribe from CollectionChanged to avoid restarting the trace session
                 // for each filter added during loading
                 FilterEntries.CollectionChanged -= OnFilterEntriesChanged;
+                ProviderConfigEntries.CollectionChanged -= OnProviderConfigEntriesChanged;
 
                 try
                 {
                     // Clear existing data and load from file
                     FilterEntries.Clear();
+                    ProviderConfigEntries.Clear();
+
+                    // Load providers first
+                    foreach (var provider in config.Providers)
+                    {
+                        ProviderConfigEntries.Add(provider);
+                    }
+
+                    // Load filters
                     foreach (var filter in config.Filters)
                     {
                         FilterEntries.Add(filter);
@@ -1012,7 +1053,11 @@ namespace ETWSpyUI
                 {
                     // Re-subscribe to CollectionChanged
                     FilterEntries.CollectionChanged += OnFilterEntriesChanged;
+                    ProviderConfigEntries.CollectionChanged += OnProviderConfigEntriesChanged;
                 }
+
+                // Update UI state based on loaded data
+                UpdateFiltersEnabled();
 
                 // Now restart the trace session once with all filters loaded
                 if (FilterEntries.Count > 0)

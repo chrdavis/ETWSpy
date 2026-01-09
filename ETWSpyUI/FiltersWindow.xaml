@@ -71,41 +71,53 @@
             <Button Content="Clear" x:Name="ClearFiltersButton" Click="ClearFilters_Click" Margin="5,0" MinWidth="100" IsEnabled="False"/>
         </StackPanel>
 
-        <!-- list (fills remaining space) -->
-        <ListView Grid.Row="2"
-                  x:Name="FiltersListView"
-                  VerticalAlignment="Stretch"
-                  HorizontalAlignment="Stretch"
-                  Margin="0"
-                  SelectionChanged="FiltersListView_SelectionChanged"
-                  ScrollViewer.VerticalScrollBarVisibility="Auto"
-                  ScrollViewer.HorizontalScrollBarVisibility="Auto">
-            <ListView.View>
-                <GridView AllowsColumnReorder="True">
-                    <GridViewColumn Header="Provider" Width="300" DisplayMemberBinding="{Binding Provider}"/>
-                    <GridViewColumn Header="Filter Type" Width="100" DisplayMemberBinding="{Binding FilterCategory}"/>
-                    <GridViewColumn Header="Value" Width="200">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock>
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Text" Value="{Binding Value}"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Value}" Value="">
-                                                    <Setter Property="Text" Value="(All)"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="Action" Width="100" DisplayMemberBinding="{Binding FilterLogic}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <!-- list (fills remaining space) with empty state placeholder -->
+        <Grid Grid.Row="2">
+            <ListView x:Name="FiltersListView"
+                      VerticalAlignment="Stretch"
+                      HorizontalAlignment="Stretch"
+                      Margin="0"
+                      SelectionChanged="FiltersListView_SelectionChanged"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                <ListView.View>
+                    <GridView AllowsColumnReorder="True">
+                        <GridViewColumn Header="Provider" Width="300" DisplayMemberBinding="{Binding Provider}"/>
+                        <GridViewColumn Header="Filter Type" Width="100" DisplayMemberBinding="{Binding FilterCategory}"/>
+                        <GridViewColumn Header="Value" Width="200">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock>
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Text" Value="{Binding Value}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Value}" Value="">
+                                                        <Setter Property="Text" Value="(All)"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Action" Width="100" DisplayMemberBinding="{Binding FilterLogic}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            
+            <!-- Empty state placeholder -->
+            <TextBlock x:Name="EmptyPlaceholderText"
+                       Text="No additional filters configured.&#x0a;&#x0a;Select the provider(s) and filter(s) you would like to apply."
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       TextAlignment="Center"
+                       Foreground="{DynamicResource SecondaryForegroundBrush}"
+                       FontSize="14"
+                       Margin="20"
+                       IsHitTestVisible="False"/>
+        </Grid>
 
         <!-- Close button -->
         <Button Grid.Row="3" Content="Close" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Click="CloseButton_Click" MinWidth="100"/>

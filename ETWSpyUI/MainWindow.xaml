@@ -132,14 +132,9 @@
             </ToolBar>
         </ToolBarTray>
 
-        <!-- Main Content - Events -->
+        <!-- Main Content - Events with empty state placeholder -->
         <Grid Grid.Row="2" Background="{DynamicResource SecondaryBackgroundBrush}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <DataGrid Grid.Row="0" 
-                      x:Name="EventsDataGrid"
+            <DataGrid x:Name="EventsDataGrid"
                       AutoGenerateColumns="True"
                       AutoGeneratingColumn="EventsDataGrid_AutoGeneratingColumn"
                       IsReadOnly="True"
@@ -156,6 +151,17 @@
                       PreviewKeyDown="EventsDataGrid_PreviewKeyDown"
                       MouseDoubleClick="EventsDataGrid_MouseDoubleClick">
             </DataGrid>
+            
+            <!-- Empty state placeholder -->
+            <TextBlock x:Name="EmptyPlaceholderText"
+                       Text="No events captured.&#x0a;&#x0a;Click the Providers button in the toolbar to add ETW providers and start capturing events."
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       TextAlignment="Center"
+                       Foreground="{DynamicResource SecondaryForegroundBrush}"
+                       FontSize="16"
+                       Margin="20"
+                       IsHitTestVisible="False"/>
         </Grid>
 
         <!-- Status Bar -->
