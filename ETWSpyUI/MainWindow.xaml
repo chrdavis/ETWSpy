@@ -34,13 +34,36 @@
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator/>
+                <MenuItem x:Name="StartPauseMenuItem" Header="_Start event capture" Click="PauseResumeTracing" IsEnabled="False">
+                    <MenuItem.Icon>
+                        <TextBlock x:Name="StartPauseMenuIcon" Text="&#xE768;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="ExportMenuItem" Header="_Export events..." Click="ExportToCsv" IsEnabled="False">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xEE71;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator/>
                 <MenuItem Header="E_xit" Click="Exit_Click" InputGestureText="Alt+F4">
                     <MenuItem.Icon>
                         <TextBlock Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
-            <MenuItem Header="_View">
+            <MenuItem Header="_Edit">
+                <MenuItem x:Name="CopyMenuItem" Header="_Copy" Click="CopySelectedEvents" InputGestureText="Ctrl+C" IsEnabled="False">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE8C8;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="ClearMenuItem" Header="C_lear" Click="ClearEvents" IsEnabled="False">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="_Events">
                 <MenuItem Header="_Providers..." Click="ShowProviders_Click">
                     <MenuItem.Icon>
                         <TextBlock Text="&#xE74C;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
@@ -52,7 +75,7 @@
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
-            <MenuItem Header="_Settings">
+            <MenuItem Header="_View">
                 <MenuItem Header="_Theme">
                     <MenuItem.Icon>
                         <TextBlock Text="&#xE790;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
@@ -83,6 +106,11 @@
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="_Help">
+                <MenuItem Header="_Help..." Click="Help_Click">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE897;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
                 <MenuItem Header="_Check for Updates" Click="CheckForUpdates_Click">
                     <MenuItem.Icon>
                         <TextBlock Text="&#xE895;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
@@ -107,14 +135,14 @@
                     <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
                 </Button>
                 <Separator/>
-                <Button Click="ShowProviders_Click" ToolTip="Providers - Configure ETW providers" Style="{DynamicResource ToolbarButtonStyle}">
+                <Button Click="ShowProviders_Click" ToolTip="Providers" Style="{DynamicResource ToolbarButtonStyle}">
                     <TextBlock Text="&#xE74C;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
                 </Button>
-                <Button x:Name="FiltersToolbarButton" Click="ShowFilters_Click" ToolTip="Filters - Configure event filters" IsEnabled="False" Style="{DynamicResource ToolbarButtonStyle}">
+                <Button x:Name="FiltersToolbarButton" Click="ShowFilters_Click" ToolTip="Filters" IsEnabled="False" Style="{DynamicResource ToolbarButtonStyle}">
                     <TextBlock Text="&#xE71C;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
                 </Button>
                 <Separator/>
-                <Button x:Name="StartPauseToolbarButton" Click="PauseResumeTracing" ToolTip="Start/Pause event capture" IsEnabled="False" Style="{DynamicResource ToolbarButtonStyle}">
+                <Button x:Name="StartPauseToolbarButton" Click="PauseResumeTracing" ToolTip="Start event capture" IsEnabled="False" Style="{DynamicResource ToolbarButtonStyle}">
                     <TextBlock x:Name="StartPauseToolbarIcon" Text="&#xE768;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
                 </Button>
                 <Button x:Name="EventDetailsToolbarButton" Click="ShowEventDetailsButton_Click" ToolTip="View event details" IsEnabled="False" Style="{DynamicResource ToolbarButtonStyle}">
@@ -123,10 +151,10 @@
                 <Button x:Name="CopyToolbarButton" Click="CopySelectedEvents" ToolTip="Copy selected events (Ctrl+C)" IsEnabled="False" Style="{DynamicResource ToolbarButtonStyle}">
                     <TextBlock Text="&#xE8C8;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
                 </Button>
-                <Button x:Name="ClearEventsToolbarButton" Click="ClearEvents" ToolTip="Clear all captured events" IsEnabled="False" Style="{DynamicResource ToolbarButtonStyle}">
+                <Button x:Name="ClearEventsToolbarButton" Click="ClearEvents" ToolTip="Clear events" IsEnabled="False" Style="{DynamicResource ToolbarButtonStyle}">
                     <TextBlock Text="&#xE75C;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
                 </Button>
-                <Button x:Name="ExportToolbarButton" Click="ExportToCsv" ToolTip="Export events to CSV file" IsEnabled="False" Style="{DynamicResource ToolbarButtonStyle}">
+                <Button x:Name="ExportToolbarButton" Click="ExportToCsv" ToolTip="Export events" IsEnabled="False" Style="{DynamicResource ToolbarButtonStyle}">
                     <TextBlock Text="&#xEE71;" FontFamily="Segoe MDL2 Assets" FontSize="20"/>
                 </Button>
             </ToolBar>

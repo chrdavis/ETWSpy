@@ -8,29 +8,41 @@
         Style="{StaticResource ThemedWindow}"
         Background="{DynamicResource PrimaryBackgroundBrush}"
         Title="ETWSpy - About" 
-        Height="180" 
-        Width="400"
-        MinHeight="180"
-        MinWidth="400"
+        Height="200" 
+        Width="450"
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterOwner">
-    <Grid Background="{DynamicResource SecondaryBackgroundBrush}" Margin="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        
-        <Label Grid.Row="0" Content="ETWSpy - Event Tracing Monitor for Windows" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
-        <Label Grid.Row="1" x:Name="VersionLabel" Content="Version: Unknown" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
-        <TextBlock Grid.Row="2" HorizontalAlignment="Left" Margin="14,10,10,10" VerticalAlignment="Top">
+        WindowStartupLocation="CenterOwner"
+        SizeToContent="Height">
+	<Grid Background="{DynamicResource SecondaryBackgroundBrush}" Margin="10">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+
+		<!-- App Icon -->
+		<Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="6" 
+               Source="pack://application:,,,/ETWSpy.ico" 
+               Width="64" Height="64" 
+               Margin="10" 
+               VerticalAlignment="Top"/>
+
+		<Label Grid.Column="1" Grid.Row="0" Content="ETWSpy - Event Tracing Monitor for Windows" HorizontalAlignment="Left" Margin="10,10,10,2" VerticalAlignment="Center"/>
+		<Label Grid.Column="1" Grid.Row="1" x:Name="VersionLabel" Content="Version: Unknown" HorizontalAlignment="Left" Margin="10,2,10,2" VerticalAlignment="Center"/>
+		<Label Grid.Column="1" Grid.Row="2" Content="Copyright © 2026 Chris Davis" HorizontalAlignment="Left" Margin="10,2,10,2" VerticalAlignment="Center"/>
+		<TextBlock Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Margin="10,5,10,10" VerticalAlignment="Center">
             <Hyperlink NavigateUri="https://github.com/chrdavis/ETWSpy" RequestNavigate="Hyperlink_RequestNavigate">
                 https://github.com/chrdavis/ETWSpy
             </Hyperlink>
-        </TextBlock>
+		</TextBlock>
 
-        <Button Grid.Row="4" Content="Close" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Click="CloseButton_Click" MinWidth="100"/>
-    </Grid>
+		<Button Grid.Column="1" Grid.Row="5" Content="OK" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Click="CloseButton_Click" MinWidth="100"/>
+	</Grid>
 </Window>

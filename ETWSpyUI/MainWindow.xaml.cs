@@ -140,7 +140,6 @@ namespace ETWSpyUI
 
         // Track open windows to avoid duplicates
         private FiltersWindow? _filtersWindow;
-        private SettingsWindow? _settingsWindow;
         private ProviderConfigWindow? _providerConfigWindow;
 
         /// <summary>
@@ -231,10 +230,22 @@ namespace ETWSpyUI
             }
         }
 
+        /// <summary>
+        /// Gets the effective dark mode state, considering UseSystemTheme setting.
+        /// </summary>
+        public bool EffectiveDarkMode => _useSystemTheme ? IsSystemInDarkMode() : _isDarkMode;
+
         public MainWindow()
         {
             HandleAdminPrivileges();
             InitializeComponent();
+
+            // Apply title bar theme immediately after window handle is available
+            SourceInitialized += (_, _) =>
+            {
+                bool useDarkMode = _useSystemTheme ? IsSystemInDarkMode() : _isDarkMode;
+                WindowHelper.ApplyTitleBarTheme(this, useDarkMode);
+            };
 
             // Bind settings to this window
             DataContext = this;
@@ -421,6 +432,7 @@ namespace ETWSpyUI
             FiltersMenuItem.IsEnabled = hasProviders;
             FiltersToolbarButton.IsEnabled = hasProviders;
             StartPauseToolbarButton.IsEnabled = hasProviders;
+            StartPauseMenuItem.IsEnabled = hasProviders;
             SaveMenuItem.IsEnabled = hasProviders;
             SaveToolbarButton.IsEnabled = hasProviders;
             
@@ -436,7 +448,9 @@ namespace ETWSpyUI
         {
             bool hasEvents = _eventRecordsList.Count > 0;
             ClearEventsToolbarButton.IsEnabled = hasEvents;
+            ClearMenuItem.IsEnabled = hasEvents;
             ExportToolbarButton.IsEnabled = hasEvents;
+            ExportMenuItem.IsEnabled = hasEvents;
             
             // Show/hide empty placeholder text based on whether there are events or providers
             UpdateEmptyPlaceholderVisibility();
@@ -480,6 +494,9 @@ namespace ETWSpyUI
                 // No filters remaining - stop the trace session
                 StopTracing();
                 StartPauseToolbarIcon.Text = "\uE768"; // Play icon
+                StartPauseToolbarButton.ToolTip = "Start event capture";
+                StartPauseMenuItem.Header = "_Start event capture";
+                StartPauseMenuIcon.Text = "\uE768"; // Play icon
             }
         }
 
@@ -567,12 +584,18 @@ namespace ETWSpyUI
                 // Update UI to reflect running state
                 _isPaused = false;
                 StartPauseToolbarIcon.Text = "\uE769"; // Pause icon
+                StartPauseToolbarButton.ToolTip = "Pause event capture";
+                StartPauseMenuItem.Header = "_Pause event capture";
+                StartPauseMenuIcon.Text = "\uE769"; // Pause icon
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed to start tracing: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 StopTracing();
                 StartPauseToolbarIcon.Text = "\uE768"; // Play icon
+                StartPauseToolbarButton.ToolTip = "Start event capture";
+                StartPauseMenuItem.Header = "_Start event capture";
+                StartPauseMenuIcon.Text = "\uE768"; // Play icon
             }
         }
 
@@ -606,6 +629,16 @@ namespace ETWSpyUI
             bool useDarkMode = _useSystemTheme ? IsSystemInDarkMode() : _isDarkMode;
             SwitchTheme(useDarkMode ? "Themes/DarkTheme.xaml" : "Themes/LightTheme.xaml");
             WindowHelper.ApplyTitleBarTheme(this, useDarkMode);
+            
+            // Update title bar theme for any open child windows
+            if (_filtersWindow != null && _filtersWindow.IsLoaded)
+            {
+                WindowHelper.ApplyTitleBarTheme(_filtersWindow, useDarkMode);
+            }
+            if (_providerConfigWindow != null && _providerConfigWindow.IsLoaded)
+            {
+                WindowHelper.ApplyTitleBarTheme(_providerConfigWindow, useDarkMode);
+            }
         }
 
         /// <summary>
@@ -639,12 +672,6 @@ namespace ETWSpyUI
             SystemThemeMenuItem.IsChecked = _useSystemTheme;
         }
 
-        private void SetDarkMode(bool enable)
-        {
-            SwitchTheme(enable ? "Themes/DarkTheme.xaml" : "Themes/LightTheme.xaml");
-            WindowHelper.ApplyTitleBarTheme(this, enable);
-        }
-
         private void SwitchTheme(string themePath)
         {
             var uri = new Uri(themePath, UriKind.Relative);
@@ -670,12 +697,18 @@ namespace ETWSpyUI
                 // Paused - stop the batch timer but keep the trace session running
                 _batchTimer.Stop();
                 StartPauseToolbarIcon.Text = "\uE768"; // Play icon
+                StartPauseToolbarButton.ToolTip = "Start event capture";
+                StartPauseMenuItem.Header = "_Start event capture";
+                StartPauseMenuIcon.Text = "\uE768"; // Play icon
             }
             else
             {
                 // Resumed - restart the batch timer
                 _batchTimer.Start();
                 StartPauseToolbarIcon.Text = "\uE769"; // Pause icon
+                StartPauseToolbarButton.ToolTip = "Pause event capture";
+                StartPauseMenuItem.Header = "_Pause event capture";
+                StartPauseMenuIcon.Text = "\uE769"; // Pause icon
             }
         }
 
@@ -891,20 +924,10 @@ namespace ETWSpyUI
 
                 // Reset the toolbar icon
                 StartPauseToolbarIcon.Text = "\uE768"; // Play icon
+                StartPauseToolbarButton.ToolTip = "Start event capture";
+                StartPauseMenuItem.Header = "_Start event capture";
+                StartPauseMenuIcon.Text = "\uE768"; // Play icon
             });
-        }
-
-        private static string FormatEventMessage(IEventRecord record)
-        {
-            try
-            {
-                // IEventRecord doesn't expose Task/Opcode directly, so we provide basic event info
-                return $"Event ID: {record.Id}, PID: {record.ProcessId}, TID: {record.ThreadId}";
-            }
-            catch
-            {
-                return string.Empty;
-            }
         }
 
         private void StopTracing()
@@ -1068,6 +1091,9 @@ namespace ETWSpyUI
                 {
                     StopTracing();
                     StartPauseToolbarIcon.Text = "\uE768"; // Play icon
+                    StartPauseToolbarButton.ToolTip = "Start event capture";
+                    StartPauseMenuItem.Header = "_Start event capture";
+                    StartPauseMenuIcon.Text = "\uE768"; // Play icon
                 }
 
                 MessageBox.Show("Configuration loaded successfully.", "Load Configuration", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -1413,6 +1439,7 @@ namespace ETWSpyUI
             bool hasSelection = EventsDataGrid.SelectedItems.Count > 0;
             EventDetailsToolbarButton.IsEnabled = hasSelection;
             CopyToolbarButton.IsEnabled = hasSelection;
+            CopyMenuItem.IsEnabled = hasSelection;
         }
 
         private void ShowEventDetailsButton_Click(object sender, RoutedEventArgs e)
@@ -1424,7 +1451,7 @@ namespace ETWSpyUI
         {
             if (EventsDataGrid.SelectedItem is EventRecord selectedRecord)
             {
-                var detailsWindow = new EventDetailsWindow(IsDarkMode);
+                var detailsWindow = new EventDetailsWindow(EffectiveDarkMode);
                 detailsWindow.SetEventRecord(selectedRecord, ShowTimestampsInUTC);
                 detailsWindow.Owner = this;
                 WindowHelper.ShowWithoutFlash(detailsWindow, centerOnScreen: false);
@@ -1442,6 +1469,12 @@ namespace ETWSpyUI
             Process.Start(new ProcessStartInfo("https://github.com/chrdavis/ETWSpy/releases") { UseShellExecute = true });
         }
 
+        private void Help_Click(object sender, RoutedEventArgs e)
+        {
+            // Open the GitHub repository page
+            Process.Start(new ProcessStartInfo("https://github.com/chrdavis/ETWSpy") { UseShellExecute = true });
+        }
+
         private void ShowFilters_Click(object sender, RoutedEventArgs e)
         {
             // If the window is already open, just activate it
@@ -1451,7 +1484,7 @@ namespace ETWSpyUI
                 return;
             }
 
-            _filtersWindow = new FiltersWindow(FilterEntries, ProviderConfigEntries, OnFiltersChangedFromWindow, IsDarkMode);
+            _filtersWindow = new FiltersWindow(FilterEntries, ProviderConfigEntries, OnFiltersChangedFromWindow, EffectiveDarkMode);
             _filtersWindow.Owner = this;
             _filtersWindow.Closed += (_, _) => _filtersWindow = null;
             _filtersWindow.Show();
@@ -1472,7 +1505,7 @@ namespace ETWSpyUI
                 return;
             }
 
-            _providerConfigWindow = new ProviderConfigWindow(ProviderConfigEntries, FilterEntries, OnProvidersChangedFromWindow, IsDarkMode);
+            _providerConfigWindow = new ProviderConfigWindow(ProviderConfigEntries, FilterEntries, OnProvidersChangedFromWindow, EffectiveDarkMode);
             _providerConfigWindow.Owner = this;
             _providerConfigWindow.Closed += (_, _) => _providerConfigWindow = null;
             _providerConfigWindow.Show();
@@ -1485,24 +1518,9 @@ namespace ETWSpyUI
             UpdateFiltersEnabled();
         }
 
-        private void ShowSettings_Click(object sender, RoutedEventArgs e)
-        {
-            // If the window is already open, just activate it
-            if (_settingsWindow != null && _settingsWindow.IsLoaded)
-            {
-                _settingsWindow.Activate();
-                return;
-            }
-
-            _settingsWindow = new SettingsWindow(this, IsDarkMode);
-            _settingsWindow.Owner = this;
-            _settingsWindow.Closed += (_, _) => _settingsWindow = null;
-            _settingsWindow.Show();
-        }
-
         private void About_Click(object sender, RoutedEventArgs e)
         {
-            var aboutWindow = new AboutWindow(IsDarkMode, AppVersion);
+            var aboutWindow = new AboutWindow(EffectiveDarkMode, AppVersion);
             aboutWindow.Owner = this;
             aboutWindow.ShowDialog();
         }

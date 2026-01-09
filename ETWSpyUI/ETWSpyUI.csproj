@@ -24,7 +24,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="ETWSpy.ico" />
+    <Resource Include="ETWSpy.ico" />
   </ItemGroup>
 
   <ItemGroup>

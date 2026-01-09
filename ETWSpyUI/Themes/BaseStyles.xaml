@@ -1106,6 +1106,20 @@
         <Setter Property="FontSize" Value="12"/>
     </Style>
 
+    <!-- Hyperlink: Themed with consistent color (no hover/focus color change) -->
+    <Style TargetType="Hyperlink">
+        <Setter Property="Foreground" Value="{DynamicResource AccentBrush}"/>
+        <Setter Property="TextDecorations" Value="Underline"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource AccentBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource SecondaryForegroundBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <!-- Slider: Themed -->
     <Style TargetType="Slider">
         <Setter Property="Background" Value="{DynamicResource TertiaryBackgroundBrush}"/>
