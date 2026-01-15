@@ -11,4 +11,10 @@
     <PackageReference Include="Microsoft.O365.Security.Native.ETW" Version="4.4.6" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="ProviderNameGuid.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

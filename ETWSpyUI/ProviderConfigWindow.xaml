@@ -44,7 +44,15 @@
                       Width="300"
                       IsEditable="True"
                       IsReadOnly="False"
-                      IsTextSearchEnabled="True"/>
+                      IsTextSearchEnabled="True"
+                      VirtualizingPanel.IsVirtualizing="True"
+                      VirtualizingPanel.VirtualizationMode="Recycling">
+                <ComboBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel />
+                    </ItemsPanelTemplate>
+                </ComboBox.ItemsPanel>
+            </ComboBox>
             <Label Grid.Row="0" Grid.Column="2" Content="(Name or GUID, select or enter new provider)" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2"/>
 
             <Label Grid.Row="1" Grid.Column="0" Content="Keywords:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2"/>

@@ -2,10 +2,9 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Threading.Tasks;
 
-namespace ETWSpyUI
+namespace ETWSpyLib
 {
     /// <summary>
     /// Represents an ETW provider with its name, optional GUID, and optional description.
@@ -54,107 +53,144 @@ namespace ETWSpyUI
 
     /// <summary>
     /// Manages the list of ETW providers with support for persistence to the Windows registry.
-    /// Combines hardcoded default providers with user-added providers stored in the registry.
+    /// Combines providers from CSV file with user-added providers stored in the registry.
     /// </summary>
     public static class ProviderManager
     {
         private const string RegistryKeyPath = @"SOFTWARE\ETWSpy\Providers";
 
+        private static List<ProviderInfo>? _cachedDefaultProviders;
+        private static List<ProviderInfo>? _cachedAllProviders;
+        private static readonly object _cacheLock = new();
+        private static Task? _preloadTask;
+
         /// <summary>
-        /// Hardcoded list of common ETW providers.
+        /// Gets the default providers loaded from the CSV file.
+        /// Uses cached value if available.
         /// </summary>
-        private static readonly List<ProviderInfo> DefaultProviders =
-        [
-            new("Google.Chrome", "d2d578d9-2936-45b6-a09f-30e32715f42d"),
-            new("Microsoft-Antimalware-AMFilter"),
-            new("Microsoft-Antimalware-Engine"),
-            new("Microsoft-Antimalware-Protection"),
-            new("Microsoft-Antimalware-RTP"),
-            new("Microsoft-Antimalware-Service"),
-            new("Microsoft-Windows-AppLifeCycle-UI", "ee97cdc4-b095-5c70-6e37-a541eb74c2b5"),
-            new("Microsoft-Windows-COMRuntime"),
-            new("Microsoft-Windows-D3D10"),
-            new("Microsoft-Windows-D3D10_1"),
-            new("Microsoft-Windows-D3D10Level9"),
-            new("Microsoft-Windows-D3D11"),
-            new("Microsoft-Windows-DNS-Client"),
-            new("Microsoft-Windows-DotNETRuntime"),
-            new("Microsoft-Windows-Dwm", "d29d56ea-4867-4221-b02e-cfd998834075"),
-            new("Microsoft-Windows-Dwm-Api", "292a52c4-fa27-4461-b526-54a46430bd54"),
-            new("Microsoft-Windows-Dwm-Core", "9e9bba3c-2e38-40cb-99f4-9e8281425164"),
-            new("Microsoft-Windows-Dwm-Redir", "7d99f6a4-1bec-4c09-9703-3aaa8148347f"),
-            new("Microsoft-Windows-DXGI"),
-            new("Microsoft-Windows-DxgKrnl"),
-            new("Microsoft-Windows-DXVA2"),
-            new("Microsoft-Windows-Energy-Estimation-Engine"),
-            new("Microsoft-Windows-FaultReporting"),
-            new("Microsoft-Windows-HangReporting"),
-            new("Microsoft-Windows-ImageLoad"),
-            new("Microsoft-Windows-Kernel-Acpi"),
-            new("Microsoft-Windows-Kernel-File"),
-            new("Microsoft-Windows-Kernel-Memory"),
-            new("Microsoft-Windows-Kernel-Network"),
-            new("Microsoft-Windows-Kernel-Pep"),
-            new("Microsoft-Windows-Kernel-Power"),
-            new("Microsoft-Windows-Kernel-Process"),
-            new("Microsoft-Windows-Kernel-Processor-Power"),
-            new("Microsoft-Windows-Kernel-Registry"),
-            new("Microsoft-Windows-LDAP-Client"),
-            new("Microsoft-Windows-LimitsManagement"),
-            new("Microsoft-Windows-Networking-Correlation"),
-            new("Microsoft-Windows-PDC"),
-            new("Microsoft-Windows-PowerShell"),
-            new("Microsoft-Windows-RPC"),
-            new("Microsoft.Windows.Launcher.Desktop", "e3185da8-ecf4-4051-8bf1-8b6602e3577d"),
-            new("Microsoft-Windows-Shell-DefaultAssoc", "e305fb0f-da8e-52b5-a918-7a4f17a2531a"),
-            new("Microsoft-Windows-Shell-Taskbar", "df8dab3f-b1c9-58d3-2ea1-4c08592bb71b"),
-            new("Microsoft-Windows-Shell-Launcher", "3d6120a6-0986-51c4-213a-e2975903051d"),
-            new("Microsoft-Windows-ShellExecute", "382b5e24-181e-417f-a8d6-2155f749e724"),
-            new("Microsoft-Windows-Security-Auditing"),
-            new("Microsoft-Windows-TCPIP"),
-            new("Microsoft-Windows-Thermal-Polling"),
-            new("Microsoft-Windows-UMD"),
-            new("Microsoft-Windows-Warp"),
-            new("Microsoft-Windows-Win32k"),
-            new("Microsoft-Windows-WindowsErrorReporting"),
-            new("Microsoft-Windows-WinHttp"),
-            new("Microsoft-Windows-WinINet"),
-            new("MSEdge.Beta", "BD089BAA-4E52-4794-A887-9E96868570D2"),
-            new("MSEdge.Canary", "C56B8664-45C5-4E65-B3C7-A8D6BD3F2E67"),
-            new("MSEdge.Dev", "D30B5C9F-B58F-4DC9-AFAF-134405D72107"),
-            new("MSEdge.Internal", "49C85E08-E8A5-49D6-81EA-7270531EC8AF"),
-            new("MSEdge.Stable", "3A5F2396-5C8F-4F1F-9B67-6CCA6C990E61"),
-            new("MSEdge.WebView", "E16EC3D2-BB0F-4E8F-BDB8-DE0BEA82DC3D"),
-        ];
+        private static List<ProviderInfo> DefaultProviders
+        {
+            get
+            {
+                if (_cachedDefaultProviders != null)
+                {
+                    return _cachedDefaultProviders;
+                }
+
+                lock (_cacheLock)
+                {
+                    _cachedDefaultProviders ??= LoadDefaultProvidersFromCsv();
+                    return _cachedDefaultProviders;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Starts pre-loading providers in the background.
+        /// Call this early in app startup to minimize delay when opening provider window.
+        /// </summary>
+        public static void PreloadProvidersAsync()
+        {
+            if (_preloadTask != null)
+            {
+                return;
+            }
+
+            _preloadTask = Task.Run(() =>
+            {
+                // Force loading of default providers
+                _ = DefaultProviders;
+                // Also pre-compute the full provider list
+                _ = GetAllProviders();
+            });
+        }
+
+        /// <summary>
+        /// Waits for the preload task to complete if it's running.
+        /// </summary>
+        public static void WaitForPreload()
+        {
+            _preloadTask?.Wait();
+        }
+
+        /// <summary>
+        /// Invalidates the cached provider list, forcing a reload on next access.
+        /// Call this after adding new providers.
+        /// </summary>
+        public static void InvalidateCache()
+        {
+            lock (_cacheLock)
+            {
+                _cachedAllProviders = null;
+            }
+        }
+
+        /// <summary>
+        /// Loads default providers from the ProviderNameGuid.csv file.
+        /// </summary>
+        private static List<ProviderInfo> LoadDefaultProvidersFromCsv()
+        {
+            try
+            {
+                var csvPath = ProviderCsvReader.GetDefaultCsvPath();
+                var csvEntries = ProviderCsvReader.ReadFromFile(csvPath);
+                
+                return csvEntries
+                    .Select(e => new ProviderInfo(e.Name, e.Guid))
+                    .ToList();
+            }
+            catch
+            {
+                // If CSV file is not found or cannot be read, return empty list
+                return [];
+            }
+        }
 
         /// <summary>
         /// Gets all providers (default + user-added from registry), sorted alphabetically by name.
-        /// Duplicates are automatically excluded.
+        /// Duplicates are automatically excluded. Results are cached for performance.
         /// </summary>
         /// <returns>List of unique providers sorted by name.</returns>
         public static List<ProviderInfo> GetAllProviders()
         {
-            var providers = new Dictionary<string, ProviderInfo>(StringComparer.OrdinalIgnoreCase);
-
-            // Add default providers first
-            foreach (var provider in DefaultProviders)
+            // Return cached list if available
+            if (_cachedAllProviders != null)
             {
-                providers[provider.Name] = provider;
+                return _cachedAllProviders;
             }
 
-            // Add user providers from registry (won't overwrite existing defaults)
-            foreach (var provider in LoadProvidersFromRegistry())
+            lock (_cacheLock)
             {
-                if (!providers.ContainsKey(provider.Name))
+                // Double-check after acquiring lock
+                if (_cachedAllProviders != null)
+                {
+                    return _cachedAllProviders;
+                }
+
+                var providers = new Dictionary<string, ProviderInfo>(StringComparer.OrdinalIgnoreCase);
+
+                // Add default providers first
+                foreach (var provider in DefaultProviders)
                 {
                     providers[provider.Name] = provider;
                 }
-            }
 
-            // Return sorted by name
-            return providers.Values
-                .OrderBy(p => p.Name, StringComparer.OrdinalIgnoreCase)
-                .ToList();
+                // Add user providers from registry (won't overwrite existing defaults)
+                foreach (var provider in LoadProvidersFromRegistry())
+                {
+                    if (!providers.ContainsKey(provider.Name))
+                    {
+                        providers[provider.Name] = provider;
+                    }
+                }
+
+                // Cache and return sorted by name
+                _cachedAllProviders = providers.Values
+                    .OrderBy(p => p.Name, StringComparer.OrdinalIgnoreCase)
+                    .ToList();
+
+                return _cachedAllProviders;
+            }
         }
 
         /// <summary>
@@ -184,8 +220,9 @@ namespace ETWSpyUI
                 return false;
             }
 
-            // Add to registry
+            // Add to registry and invalidate cache
             SaveProviderToRegistry(name, guid, description);
+            InvalidateCache();
             return true;
         }
 
