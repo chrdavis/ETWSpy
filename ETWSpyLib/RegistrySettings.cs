@@ -15,6 +15,8 @@ namespace ETWSpyLib
         public const string ShowTimestampsInUTC = "ShowTimestampsInUTC";
         public const string MaxEventsToShow = "MaxEventsToShow";
         public const string Autoscroll = "Autoscroll";
+        public const string RestoreSessionOnLaunch = "RestoreSessionOnLaunch";
+        public const string FileAssociationRegistered = "FileAssociationRegistered";
 
         /// <summary>
         /// Loads a boolean setting from the Windows registry.

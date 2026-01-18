@@ -1120,3 +1120,10 @@ WSAT_TraceProvider,{7f3fe630-462b-47c5-ab07-67ca84934abd}
 WudfUsbccidDriver,{22c370a7-a3db-4390-ade5-3a1accf4b5d5}
 Wudfx02000_KmdfTraceGuid,{485e7de9-0a80-11d8-ad15-505054503030}
 XWizard Framework,{777ba8ff-2498-4875-933a-3067de883070}
+Microsoft.MSEdgeBeta,{bd089baa-4e52-4794-a887-9e96868570d2}
+Microsoft.MSEdgeCanary,{c56b8664-45c5-4e65-b3c7-a8d6bd3f2e67}
+Microsoft.MSEdgeDev.LifecycleUnit,{d30b5c9f-b58f-4dc9-afaf-134405d72107}
+Microsoft.MSEdgeStable,{3a5f2396-5c8f-4f1f-9b67-6cca6c990e61}
+Microsoft.MSEdgeStable.Omnibox,{3A5F2396-5C8F-4F1F-9B67-6CCA6C990E61}
+Microsoft.MSEdgeWebView,{e16ec3d2-bb0f-4e8f-bdb8-de0bea82dc3d}
+Microsoft.MSEdgeWebView.Loader,{951ddd7e-f2ff-5b3f-7137-e2f1a0dd9804}

@@ -104,6 +104,17 @@
                         <TextBlock Text="&#xE74B;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
                     </MenuItem.Icon>
                 </MenuItem>
+                <Separator/>
+                <MenuItem x:Name="RestoreSessionMenuItem" Header="_Restore Session on Launch" Click="RestoreSession_Click" IsCheckable="True" IsChecked="True">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE777;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="FileAssociationMenuItem" Header="Associate ._etwconfig Files" Click="FileAssociation_Click" IsCheckable="True">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="_Help..." Click="Help_Click">

@@ -15,6 +15,7 @@ namespace ETWSpyUI
     public class ProviderConfigEntry
     {
         public string Provider { get; set; } = string.Empty;
+        public string? ProviderGuid { get; set; }
         public string Keywords { get; set; } = string.Empty;
         public string TraceLevel { get; set; } = string.Empty;
         public string TraceFlags { get; set; } = string.Empty;
@@ -176,12 +177,27 @@ namespace ETWSpyUI
                 return;
             }
 
+            // Get the GUID - either from the known provider or try to parse from input
+            string? providerGuid = null;
+            if (knownProvider?.Guid != null)
+            {
+                providerGuid = knownProvider.Guid.Value.ToString();
+            }
+            else if (Guid.TryParse(providerInput, out var parsedGuid))
+            {
+                providerGuid = parsedGuid.ToString();
+            }
+
+            // Set the GUID on the entry
+            entry.ProviderGuid = providerGuid;
+
             _providerEntries.Add(entry);
 
             // Add a default "Include all events" filter for this provider
             var defaultFilter = new FilterEntry
             {
                 Provider = entry.Provider,
+                ProviderGuid = entry.ProviderGuid,
                 FilterCategory = "Event Id", // Default to Event Id filter type
                 Value = string.Empty, // Empty value = All event IDs
                 FilterLogic = "Include",
@@ -192,12 +208,6 @@ namespace ETWSpyUI
             _filterEntries.Add(defaultFilter);
 
             _onProvidersChanged?.Invoke();
-
-            // Save the provider to registry if it's a new one
-            if (ProviderManager.AddProvider(entry.Provider))
-            {
-                RefreshProviderComboBox();
-            }
         }
 
         private void RemoveButton_Click(object sender, RoutedEventArgs e)

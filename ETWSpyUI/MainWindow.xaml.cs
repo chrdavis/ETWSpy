@@ -28,6 +28,7 @@ namespace ETWSpyUI
     public class FilterEntry
     {
         public string Provider { get; set; } = string.Empty;
+        public string? ProviderGuid { get; set; }
         /// <summary>
         /// The type of filter: "Event Id" or "Match Text". Defaults to "Event Id".
         /// </summary>
@@ -117,6 +118,7 @@ namespace ETWSpyUI
         private bool _showTimestampsInUTC;
         private int _maxEventsToShow = DefaultMaxEventsToDisplay;
         private bool _autoscroll = true;
+        private bool _restoreSessionOnLaunch = true;
         private EtwTraceSession? _traceSession;
         private CancellationTokenSource? _traceCancellation;
 
@@ -219,6 +221,19 @@ namespace ETWSpyUI
                 OnPropertyChanged(nameof(Autoscroll));
                 RegistrySettings.SaveBool(RegistrySettings.Autoscroll, _autoscroll);
                 UpdateAutoscrollMenuCheckmark();
+            }
+        }
+
+        public bool RestoreSessionOnLaunch
+        {
+            get => _restoreSessionOnLaunch;
+            set
+            {
+                if (_restoreSessionOnLaunch == value) return;
+                _restoreSessionOnLaunch = value;
+                OnPropertyChanged(nameof(RestoreSessionOnLaunch));
+                RegistrySettings.SaveBool(RegistrySettings.RestoreSessionOnLaunch, _restoreSessionOnLaunch);
+                UpdateRestoreSessionMenuCheckmark();
             }
         }
 
@@ -415,6 +430,12 @@ namespace ETWSpyUI
             FilterEntries.CollectionChanged -= OnFilterEntriesChanged;
             ProviderConfigEntries.CollectionChanged -= OnProviderConfigEntriesChanged;
             StopTracing();
+
+            // Save session state if enabled
+            if (_restoreSessionOnLaunch)
+            {
+                SaveLastSession();
+            }
         }
 
         /// <summary>
@@ -640,6 +661,7 @@ namespace ETWSpyUI
             _showTimestampsInUTC = RegistrySettings.LoadBool(RegistrySettings.ShowTimestampsInUTC);
             _maxEventsToShow = RegistrySettings.LoadInt(RegistrySettings.MaxEventsToShow, DefaultMaxEventsToDisplay);
             _autoscroll = RegistrySettings.LoadBool(RegistrySettings.Autoscroll, true);
+            _restoreSessionOnLaunch = RegistrySettings.LoadBool(RegistrySettings.RestoreSessionOnLaunch, true);
             
             // Apply the theme based on settings
             ApplyTheme();
@@ -647,6 +669,19 @@ namespace ETWSpyUI
             UpdateTimeFormatMenuCheckmarks();
             UpdateMaxEventsMenuCheckmarks();
             UpdateAutoscrollMenuCheckmark();
+            UpdateRestoreSessionMenuCheckmark();
+            UpdateFileAssociationMenuCheckmark();
+
+            // Check if a file was passed via command line - this takes priority over session restore
+            if (!string.IsNullOrEmpty(App.StartupFilePath) && File.Exists(App.StartupFilePath))
+            {
+                LoadConfigurationFile(App.StartupFilePath);
+            }
+            // Restore last session if enabled and no file was passed
+            else if (_restoreSessionOnLaunch)
+            {
+                TryRestoreLastSession();
+            }
         }
 
         /// <summary>
@@ -954,8 +989,22 @@ namespace ETWSpyUI
                     ? "No Trace Sessions Available"
                     : "Tracing Error";
 
-                MessageBox.Show(e.Message, title, MessageBoxButton.OK, MessageBoxImage.Error);
+                string message = e.IsNoSessionsRemaining
+                    ? "No ETW trace sessions are available. Windows has a limited number of trace sessions. Would you like to open Performance Monitor and stop some currently running trace sessions?"
+                    : e.Message;
 
+                if (e.IsNoSessionsRemaining)
+                {
+                    if (MessageBox.Show(message, title, MessageBoxButton.YesNo, MessageBoxImage.Error) == MessageBoxResult.Yes)
+                    {
+                        // Open Performance Monitor to the Trace Sessions view
+                        Process.Start(new ProcessStartInfo("perfmon.exe") { UseShellExecute = true });
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Error);
+                }
                 // Stop tracing and reset UI
                 StopTracing();
 
@@ -1053,8 +1102,6 @@ namespace ETWSpyUI
 
                 string json = JsonSerializer.Serialize(config, JsonOptions);
                 File.WriteAllText(dialog.FileName, json);
-
-                MessageBox.Show("Configuration saved successfully.", "Save Configuration", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
@@ -1128,8 +1175,6 @@ namespace ETWSpyUI
                 StartPauseToolbarButton.ToolTip = "Start event capture";
                 StartPauseMenuItem.Header = "_Start event capture";
                 StartPauseMenuIcon.Text = "\uE768"; // Play icon
-
-                MessageBox.Show("Configuration loaded successfully.", "Load Configuration", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (JsonException)
             {
@@ -1647,6 +1692,228 @@ namespace ETWSpyUI
         private void UpdateAutoscrollMenuCheckmark()
         {
             AutoscrollMenuItem.IsChecked = _autoscroll;
+        }
+
+        private void RestoreSession_Click(object sender, RoutedEventArgs e)
+        {
+            RestoreSessionOnLaunch = !RestoreSessionOnLaunch;
+        }
+
+        /// <summary>
+        /// Updates the checkmark on the restore session menu item.
+        /// </summary>
+        private void UpdateRestoreSessionMenuCheckmark()
+        {
+            RestoreSessionMenuItem.IsChecked = _restoreSessionOnLaunch;
+        }
+
+        /// <summary>
+        /// Gets the path to the last session configuration file.
+        /// </summary>
+        private static string GetLastSessionFilePath()
+        {
+            var exeDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            return Path.Combine(exeDirectory, "lastsession.etwconfig");
+        }
+
+        /// <summary>
+        /// Saves the current provider and filter configuration to the last session file.
+        /// </summary>
+        private void SaveLastSession()
+        {
+            // Only save if there's something to save
+            if (ProviderConfigEntries.Count == 0 && FilterEntries.Count == 0)
+            {
+                // Delete the last session file if it exists since there's nothing to restore
+                try
+                {
+                    var filePath = GetLastSessionFilePath();
+                    if (File.Exists(filePath))
+                    {
+                        File.Delete(filePath);
+                    }
+                }
+                catch
+                {
+                    // Silently ignore file deletion errors
+                }
+                return;
+            }
+
+            try
+            {
+                var config = new ConfigurationData
+                {
+                    Filters = [.. FilterEntries],
+                    Providers = [.. ProviderConfigEntries]
+                };
+
+                string json = JsonSerializer.Serialize(config, JsonOptions);
+                File.WriteAllText(GetLastSessionFilePath(), json);
+            }
+            catch
+            {
+                // Silently ignore save errors - don't interrupt app closing
+            }
+        }
+
+        /// <summary>
+        /// Tries to restore the last session configuration from the last session file.
+        /// </summary>
+        private void TryRestoreLastSession()
+        {
+            var filePath = GetLastSessionFilePath();
+            if (!File.Exists(filePath))
+            {
+                return;
+            }
+
+            try
+            {
+                string json = File.ReadAllText(filePath);
+                var config = JsonSerializer.Deserialize<ConfigurationData>(json);
+
+                if (config is null)
+                {
+                    return;
+                }
+
+                // Temporarily unsubscribe from CollectionChanged to avoid restarting the trace session
+                // for each filter added during loading
+                FilterEntries.CollectionChanged -= OnFilterEntriesChanged;
+                ProviderConfigEntries.CollectionChanged -= OnProviderConfigEntriesChanged;
+
+                try
+                {
+                    // Load providers first
+                    foreach (var provider in config.Providers)
+                    {
+                        ProviderConfigEntries.Add(provider);
+                    }
+
+                    // Load filters
+                    foreach (var filter in config.Filters)
+                    {
+                        FilterEntries.Add(filter);
+                    }
+                }
+                finally
+                {
+                    // Re-subscribe to CollectionChanged
+                    FilterEntries.CollectionChanged += OnFilterEntriesChanged;
+                    ProviderConfigEntries.CollectionChanged += OnProviderConfigEntriesChanged;
+                }
+
+                // Update UI state based on loaded data
+                UpdateFiltersEnabled();
+
+                // Don't automatically start capturing - let user decide
+                _wantsCaptureActive = false;
+                StartPauseToolbarIcon.Text = "\uE768"; // Play icon
+                StartPauseToolbarButton.ToolTip = "Start event capture";
+                StartPauseMenuItem.Header = "_Start event capture";
+                StartPauseMenuIcon.Text = "\uE768"; // Play icon
+            }
+            catch
+            {
+                // Silently ignore restore errors - don't prevent app from starting
+            }
+        }
+
+        private void FileAssociation_Click(object sender, RoutedEventArgs e)
+        {
+            if (FileAssociationHelper.IsFileAssociationRegistered())
+            {
+                // Unregister
+                if (FileAssociationHelper.UnregisterFileAssociation())
+                {
+                    RegistrySettings.SaveBool(RegistrySettings.FileAssociationRegistered, false);
+                }
+            }
+            else
+            {
+                // Register
+                if (FileAssociationHelper.RegisterFileAssociation())
+                {
+                    RegistrySettings.SaveBool(RegistrySettings.FileAssociationRegistered, true);
+                }
+            }
+            UpdateFileAssociationMenuCheckmark();
+        }
+
+        /// <summary>
+        /// Updates the checkmark on the file association menu item based on actual registry state.
+        /// </summary>
+        private void UpdateFileAssociationMenuCheckmark()
+        {
+            FileAssociationMenuItem.IsChecked = FileAssociationHelper.IsFileAssociationRegistered();
+        }
+
+        /// <summary>
+        /// Loads a configuration file from the specified path.
+        /// </summary>
+        private void LoadConfigurationFile(string filePath)
+        {
+            try
+            {
+                string json = File.ReadAllText(filePath);
+                var config = JsonSerializer.Deserialize<ConfigurationData>(json);
+
+                if (config is null)
+                {
+                    MessageBox.Show("Invalid configuration file.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                // Temporarily unsubscribe from CollectionChanged to avoid restarting the trace session
+                // for each filter added during loading
+                FilterEntries.CollectionChanged -= OnFilterEntriesChanged;
+                ProviderConfigEntries.CollectionChanged -= OnProviderConfigEntriesChanged;
+
+                try
+                {
+                    // Clear existing data and load from file
+                    FilterEntries.Clear();
+                    ProviderConfigEntries.Clear();
+
+                    // Load providers first
+                    foreach (var provider in config.Providers)
+                    {
+                        ProviderConfigEntries.Add(provider);
+                    }
+
+                    // Load filters
+                    foreach (var filter in config.Filters)
+                    {
+                        FilterEntries.Add(filter);
+                    }
+                }
+                finally
+                {
+                    // Re-subscribe to CollectionChanged
+                    FilterEntries.CollectionChanged += OnFilterEntriesChanged;
+                    ProviderConfigEntries.CollectionChanged += OnProviderConfigEntriesChanged;
+                }
+
+                // Update UI state based on loaded data
+                UpdateFiltersEnabled();
+
+                // After loading, don't automatically start capturing - let user decide
+                _wantsCaptureActive = false;
+                StopTracing();
+                StartPauseToolbarIcon.Text = "\uE768"; // Play icon
+                StartPauseToolbarButton.ToolTip = "Start event capture";
+                StartPauseMenuItem.Header = "_Start event capture";
+                StartPauseMenuIcon.Text = "\uE768"; // Play icon
+            }
+            catch (JsonException)
+            {
+                MessageBox.Show("The file contains invalid JSON data.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to load configuration: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 
