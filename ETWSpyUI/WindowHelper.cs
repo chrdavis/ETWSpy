@@ -1,7 +1,6 @@
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
-using System.Windows.Threading;
 
 namespace ETWSpyUI
 {
@@ -15,56 +14,6 @@ namespace ETWSpyUI
 
         [DllImport("dwmapi.dll", PreserveSig = true)]
         private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
-
-        /// <summary>
-        /// Shows a window without the white flash that can occur in dark mode.
-        /// This works by performing the first layout and render pass off-screen,
-        /// then moving the window to its final position before showing it.
-        /// </summary>
-        /// <param name="window">The window to show.</param>
-        /// <param name="centerOnScreen">If true, centers the window on screen. If false, centers on owner if available, otherwise centers on screen.</param>
-        public static void ShowWithoutFlash(Window window, bool centerOnScreen = true)
-        {
-            window.Opacity = 0;
-            window.ContentRendered += (_, _) =>
-            {
-                window.Opacity = 1;
-            };
-            // Save original settings
-            var originalShowInTaskbar = window.ShowInTaskbar;
-
-            // Force one layout+render pass off-screen
-            window.WindowStartupLocation = WindowStartupLocation.Manual;
-            window.Left = -10000;
-            window.Top = -10000;
-            window.ShowInTaskbar = false;
-
-            // Show creates HWND + composition, but it's off-screen
-            window.Show();
-            window.Dispatcher.Invoke(() => { }, DispatcherPriority.Render);
-            window.Hide();
-
-            // Restore taskbar visibility
-            window.ShowInTaskbar = originalShowInTaskbar;
-
-            // Position the window
-            if (centerOnScreen || window.Owner == null)
-            {
-                // Center on screen
-                window.Left = (SystemParameters.WorkArea.Width - window.Width) / 2;
-                window.Top = (SystemParameters.WorkArea.Height - window.Height) / 2;
-            }
-            else
-            {
-                // Center on owner
-                window.Left = window.Owner.Left + (window.Owner.Width - window.Width) / 2;
-                window.Top = window.Owner.Top + (window.Owner.Height - window.Height) / 2;
-            }
-
-            // Show for real
-            window.Show();
-            window.Activate();
-        }
 
         /// <summary>
         /// Applies the dark or light mode theme to the window's title bar.

@@ -177,7 +177,7 @@ namespace ETWSpyLib
                 {
                     Start();
                 }
-                catch (Exception ex) when (cancellationToken.IsCancellationRequested || _stopRequested)
+                catch (Exception) when (cancellationToken.IsCancellationRequested || _stopRequested)
                 {
                     // Expected when cancelled - ignore
                 }

@@ -33,9 +33,9 @@ namespace ETWSpyUI
                 SwitchTheme("Themes/DarkTheme.xaml");
             }
 
-            // Create and show the main window using flash-free display
+            // Create and show the main window
             var mainWindow = new MainWindow();
-            WindowHelper.ShowWithoutFlash(mainWindow, centerOnScreen: true);
+            mainWindow.Show();
         }
 
         private void SwitchTheme(string themePath)

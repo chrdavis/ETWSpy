@@ -68,8 +68,9 @@ namespace ETWSpyLib
         /// that include name, type, and value.
         /// </summary>
         /// <param name="record">The ETW event record.</param>
+        /// <param name="interner">Optional string interner for deduplicating strings. If null, no interning is performed.</param>
         /// <returns>List of formatted properties with type information.</returns>
-        public static List<FormattedProperty> GetFormattedPropertiesWithTypes(IEventRecord record)
+        public static List<FormattedProperty> GetFormattedPropertiesWithTypes(IEventRecord record, StringInterner? interner = null)
         {
             var result = new List<FormattedProperty>();
 
@@ -85,8 +86,9 @@ namespace ETWSpyLib
                     {
                         result.Add(new FormattedProperty
                         {
-                            Name = name,
-                            TypeName = typeName,
+                            // Intern name and typeName (highly repetitive), but not value (often unique)
+                            Name = interner?.Intern(name) ?? name,
+                            TypeName = interner?.Intern(typeName) ?? typeName,
                             Value = value
                         });
                     }

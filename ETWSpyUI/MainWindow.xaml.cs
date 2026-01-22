@@ -144,6 +144,10 @@ namespace ETWSpyUI
         // Keep provider wrappers alive to prevent GC from collecting them and their callbacks
         private readonly List<EtwProviderWrapper> _activeProviders = [];
 
+        // String interner for deduplicating repeated strings in EventRecord objects
+        // Provider names, event names, task names, and property names are highly repetitive
+        private readonly StringInterner _stringInterner = new();
+
         // Track open windows to avoid duplicates
         private FiltersWindow? _filtersWindow;
         private ProviderConfigWindow? _providerConfigWindow;
@@ -412,7 +416,7 @@ namespace ETWSpyUI
             EventsDataGrid.ItemsSource = displayList;
 
             // Update the event count display with current interval info
-            EventCountText.Text = $"Events: {_eventRecordsList.Count:N0} (max {MaxEventsToShow:N0}) | Interval: {_currentBatchIntervalMs}ms";
+            EventCountText.Text = $"Events: {_eventRecordsList.Count:N0} (max {MaxEventsToShow:N0})";
 
             // Enable Clear and Export buttons when there are events
             UpdateEventButtonsEnabled();
@@ -960,17 +964,29 @@ namespace ETWSpyUI
                 return;
             }
 
-            var payloadWithTypes = EtwPropertyFormatter.GetFormattedPropertiesWithTypes(record);
-            var payload = payloadWithTypes.ToDictionary(p => p.Name, p => p.Value);
+            // Use string interner to deduplicate repeated strings (provider names, event names, etc.)
+            // Property names and type names are also interned inside GetFormattedPropertiesWithTypes
+            var payloadWithTypes = EtwPropertyFormatter.GetFormattedPropertiesWithTypes(record, _stringInterner);
+            
+            // Create payload dictionary with quotes trimmed from values
+            var payload = payloadWithTypes.ToDictionary(p => p.Name, p => TrimQuotes(p.Value));
+            
+            // Also update the PayloadWithTypes values to have trimmed quotes for consistency
+            foreach (var prop in payloadWithTypes)
+            {
+                prop.Value = TrimQuotes(prop.Value);
+            }
+            
             var eventRecord = new EventRecord
             {
                 Timestamp = record.Timestamp,
-                ProviderName = record.ProviderName ?? "Unknown",
+                // Intern frequently repeated strings to reduce memory allocations
+                ProviderName = _stringInterner.Intern(record.ProviderName) ?? "Unknown",
                 EventId = record.Id,
                 ProcessId = record.ProcessId,
                 ThreadId = record.ThreadId,
-                EventName = record.Name ?? "Unknown",
-                TaskName = record.TaskName ?? "Unknown",
+                EventName = _stringInterner.Intern(record.Name) ?? "Unknown",
+                TaskName = _stringInterner.Intern(record.TaskName) ?? "Unknown",
                 Payload = payload,
                 PayloadWithTypes = payloadWithTypes,
                 PayloadDisplay = FormatPayloadForCopy(payload)
@@ -1050,6 +1066,9 @@ namespace ETWSpyUI
         {
             // Clear pending queue as well
             while (_pendingEvents.TryDequeue(out _)) { }
+
+            // Clear interned strings to release memory from old events
+            _stringInterner.Clear();
 
             // To properly release DataGrid internal caching (ItemContainerGenerator, 
             // row containers, dictionaries, etc.), we must:
@@ -1396,6 +1415,32 @@ namespace ETWSpyUI
             return field;
         }
 
+        /// <summary>
+        /// Removes leading and trailing quote characters from a string.
+        /// Handles both double quotes (") and single quotes (').
+        /// </summary>
+        private static string TrimQuotes(string? value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return value ?? string.Empty;
+            }
+
+            // Check for double quotes
+            if (value.Length >= 2 && value[0] == '"' && value[^1] == '"')
+            {
+                return value[1..^1];
+            }
+
+            // Check for single quotes
+            if (value.Length >= 2 && value[0] == '\'' && value[^1] == '\'')
+            {
+                return value[1..^1];
+            }
+
+            return value;
+        }
+
         private static string FormatPayloadForCopy(Dictionary<string, string> payload)
         {
             if (payload.Count == 0)
@@ -1533,7 +1578,7 @@ namespace ETWSpyUI
                 var detailsWindow = new EventDetailsWindow(EffectiveDarkMode);
                 detailsWindow.SetEventRecord(selectedRecord, ShowTimestampsInUTC);
                 detailsWindow.Owner = this;
-                WindowHelper.ShowWithoutFlash(detailsWindow, centerOnScreen: false);
+                detailsWindow.Show();
             }
         }
 
