@@ -1,5 +1,18 @@
 <Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+    <Platform Name="ARM64" />
+  </Configurations>
   <Project Path="ETWSpy/ETWSpy.csproj" />
+  <Project Path="ETWSpyInstaller/ETWSpyInstaller.wixproj" Type="b7dd6f7e-def8-4e67-b5b7-07ef123db6f0">
+    <Configuration Solution="Debug|x64" Project="Debug|x64" />
+    <Configuration Solution="Debug|x86" Project="Debug|x86" />
+    <Configuration Solution="Debug|ARM64" Project="Debug|ARM64" />
+    <Configuration Solution="Release|x64" Project="Release|x64" />
+    <Configuration Solution="Release|x86" Project="Release|x86" />
+    <Configuration Solution="Release|ARM64" Project="Release|ARM64" />
+  </Project>
   <Project Path="ETWSpyLib.Tests/ETWSpyLib.Tests.csproj" />
   <Project Path="ETWSpyLib/ETWSpyLib.csproj" />
   <Project Path="ETWSpyUI/ETWSpyUI.csproj" />

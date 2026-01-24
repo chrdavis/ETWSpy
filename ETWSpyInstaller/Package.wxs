@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+
+  <Package Name="ETWSpy" Manufacturer="ETWSpy" Version="1.0.0" UpgradeCode="8B7E1A2C-3F4D-5E6A-9B0C-1D2E3F4A5B6C">
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <Feature Id="Main">
+      <ComponentGroupRef Id="ProductComponents" />
+      <ComponentRef Id="ProgramMenuShortcut" />
+    </Feature>
+  </Package>
+
+  <Fragment>
+    <StandardDirectory Id="ProgramFiles6432Folder">
+      <Directory Id="INSTALLFOLDER" Name="ETWSpy" />
+    </StandardDirectory>
+  </Fragment>
+
+  <Fragment>
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Directory Id="ApplicationProgramsFolder" Name="ETWSpy" />
+    </StandardDirectory>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="ETWSpyUIExe">
+        <File Id="ETWSpyUIExe" Source="$(var.ETWSpyUI.TargetDir)ETWSpyUI.exe" KeyPath="yes" />
+      </Component>
+      <Component Id="ETWSpyUIDll">
+        <File Id="ETWSpyUIDll" Source="$(var.ETWSpyUI.TargetDir)ETWSpyUI.dll" KeyPath="yes" />
+      </Component>
+      <Component Id="ETWSpyLibDll">
+        <File Id="ETWSpyLibDll" Source="$(var.ETWSpyUI.TargetDir)ETWSpyLib.dll" KeyPath="yes" />
+      </Component>
+      <Component Id="ETWSpyUIRuntimeConfig">
+        <File Id="ETWSpyUIRuntimeConfig" Source="$(var.ETWSpyUI.TargetDir)ETWSpyUI.runtimeconfig.json" KeyPath="yes" />
+      </Component>
+      <Component Id="ETWSpyUIDepsJson">
+        <File Id="ETWSpyUIDepsJson" Source="$(var.ETWSpyUI.TargetDir)ETWSpyUI.deps.json" KeyPath="yes" />
+      </Component>
+      <Component Id="IjwhostDll">
+        <File Id="IjwhostDll" Source="$(var.ETWSpyUI.TargetDir)Ijwhost.dll" KeyPath="yes" />
+      </Component>
+      <Component Id="MicrosoftETWDll">
+        <File Id="MicrosoftETWDll" Source="$(var.ETWSpyUI.TargetDir)Microsoft.O365.Security.Native.ETW.dll" KeyPath="yes" />
+      </Component>
+      <Component Id="ProviderNameGuidCsv">
+        <File Id="ProviderNameGuidCsv" Source="$(var.ETWSpyUI.TargetDir)ProviderNameGuid.csv" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <Component Id="ProgramMenuShortcut" Guid="A1B2C3D4-E5F6-7890-ABCD-EF1234567890" Directory="ApplicationProgramsFolder">
+      <Shortcut Id="ApplicationStartMenuShortcut" 
+                Name="ETWSpy" 
+                Description="ETW Event Tracing Spy Tool" 
+                Target="[INSTALLFOLDER]ETWSpyUI.exe" 
+                WorkingDirectory="INSTALLFOLDER" />
+      <RemoveFolder Id="CleanUpShortCut" Directory="ApplicationProgramsFolder" On="uninstall" />
+      <RegistryValue Root="HKCU" Key="Software\ETWSpy" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+    </Component>
+  </Fragment>
+
+</Wix>
