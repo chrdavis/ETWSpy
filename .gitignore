@@ -31,3 +31,7 @@ ETWSpyLib/bin/
 ETWSpyLib/obj/
 ETWSpyUI/bin/
 ETWSpyUI/obj/
+/ETWSpyInstaller/publish/ProviderNameGuid.csv
+/ETWSpyInstaller/publish/ETWSpyUI.pdb
+/ETWSpyInstaller/publish/ETWSpyUI.exe
+/ETWSpyInstaller/publish/ETWSpyLib.pdb
