@@ -1642,6 +1642,13 @@ namespace ETWSpyUI
             UpdateFiltersEnabled();
         }
 
+        private void EditProviderList_Click(object sender, RoutedEventArgs e)
+        {
+            var editorWindow = new ProviderListEditorWindow(EffectiveDarkMode);
+            editorWindow.Owner = this;
+            editorWindow.ShowDialog();
+        }
+
         private void About_Click(object sender, RoutedEventArgs e)
         {
             var aboutWindow = new AboutWindow(EffectiveDarkMode, AppVersion);

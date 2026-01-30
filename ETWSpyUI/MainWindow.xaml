@@ -74,6 +74,12 @@
                         <TextBlock Text="&#xE71C;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
                     </MenuItem.Icon>
                 </MenuItem>
+                <Separator/>
+                <MenuItem Header="_Edit Provider List..." Click="EditProviderList_Click">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE70F;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="_View">
                 <MenuItem Header="_Theme">
