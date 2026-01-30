@@ -44,7 +44,8 @@
                       Width="300"
                       IsEditable="True"
                       IsReadOnly="False"
-                      IsTextSearchEnabled="True"
+                      IsTextSearchEnabled="False"
+                      StaysOpenOnEdit="True"
                       VirtualizingPanel.IsVirtualizing="True"
                       VirtualizingPanel.VirtualizationMode="Recycling">
                 <ComboBox.ItemsPanel>

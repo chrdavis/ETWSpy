@@ -1,11 +1,17 @@
 using ETWSpyLib;
 using Microsoft.O365.Security.ETW;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+
 
 namespace ETWSpyUI
 {
@@ -30,6 +36,8 @@ namespace ETWSpyUI
         private readonly ObservableCollection<FilterEntry> _filterEntries;
         private readonly Action _onProvidersChanged;
         private readonly bool _isDarkMode;
+        private List<ProviderInfo> _allProviders = [];
+        private ICollectionView? _providerView;
 
         public ProviderConfigWindow(ObservableCollection<ProviderConfigEntry> providerEntries, ObservableCollection<FilterEntry> filterEntries, Action onProvidersChanged, bool isDarkMode)
         {
@@ -84,21 +92,116 @@ namespace ETWSpyUI
 
         private void PopulateProviderComboBox()
         {
-            var providers = ProviderManager.GetAllProviders();
-            ProviderComboBox.ItemsSource = providers;
+            _allProviders = ProviderManager.GetAllProviders();
+            _providerView = CollectionViewSource.GetDefaultView(_allProviders);
+            _providerView.Filter = ProviderFilter;
+            ProviderComboBox.ItemsSource = _providerView;
+            
+            // Subscribe to dropdown events to manage filtering state
+            ProviderComboBox.DropDownOpened += ProviderComboBox_DropDownOpened;
+            ProviderComboBox.DropDownClosed += ProviderComboBox_DropDownClosed;
+            
             if (ProviderComboBox.Items.Count > 0)
             {
                 ProviderComboBox.SelectedIndex = 0;
             }
+            
+            // Subscribe to text changes AFTER initial selection to avoid opening dropdown on launch
+            ProviderComboBox.AddHandler(System.Windows.Controls.Primitives.TextBoxBase.TextChangedEvent, 
+                new TextChangedEventHandler(ProviderComboBox_TextChanged));
+            
+            // Mark initialization complete after layout is done
+            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Loaded, () => _isInitialized = true);
+        }
+
+        private string _filterText = string.Empty;
+        private bool _isUserTyping;
+        private bool _isInitialized;
+        private CancellationTokenSource? _filterCts;
+        private const int FilterDebounceMs = 150;
+
+        private bool ProviderFilter(object item)
+        {
+            if (string.IsNullOrEmpty(_filterText))
+            {
+                return true;
+            }
+
+            if (item is ProviderInfo provider)
+            {
+                return provider.Name.Contains(_filterText, StringComparison.OrdinalIgnoreCase);
+            }
+
+            return false;
+        }
+
+        private void ProviderComboBox_DropDownOpened(object? sender, EventArgs e)
+        {
+            _isUserTyping = true;
+        }
+
+        private void ProviderComboBox_DropDownClosed(object? sender, EventArgs e)
+        {
+            _isUserTyping = false;
+            // Clear filter when dropdown closes so all items are available next time
+            _filterText = string.Empty;
+            _providerView?.Refresh();
+        }
+
+        private void ProviderComboBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            // Don't process text changes until initialization is complete
+            if (!_isInitialized)
+            {
+                return;
+            }
+            
+            // Only filter when the user is actively typing in the dropdown
+            if (!_isUserTyping)
+            {
+                // If dropdown is closed and user starts typing, open it and start filtering
+                if (!ProviderComboBox.IsDropDownOpen && !string.IsNullOrEmpty(ProviderComboBox.Text))
+                {
+                    _isUserTyping = true;
+                    ProviderComboBox.IsDropDownOpen = true;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            // Cancel any pending filter operation
+            _filterCts?.Cancel();
+            _filterCts = new CancellationTokenSource();
+            var token = _filterCts.Token;
+            var filterText = ProviderComboBox.Text ?? string.Empty;
+
+            // Debounce the filter to avoid filtering on every keystroke
+            Task.Delay(FilterDebounceMs, token).ContinueWith(_ =>
+            {
+                if (token.IsCancellationRequested)
+                {
+                    return;
+                }
+
+                Dispatcher.Invoke(() =>
+                {
+                    _filterText = filterText;
+                    _providerView?.Refresh();
+                });
+            }, token, TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.Default);
         }
 
         private void RefreshProviderComboBox()
         {
             var currentText = ProviderComboBox.Text;
-            var providers = ProviderManager.GetAllProviders();
-            ProviderComboBox.ItemsSource = providers;
+            _allProviders = ProviderManager.GetAllProviders();
+            _providerView = CollectionViewSource.GetDefaultView(_allProviders);
+            _providerView.Filter = ProviderFilter;
+            ProviderComboBox.ItemsSource = _providerView;
 
-            var matchingProvider = providers.FirstOrDefault(p =>
+            var matchingProvider = _allProviders.FirstOrDefault(p =>
                 string.Equals(p.Name, currentText, StringComparison.OrdinalIgnoreCase));
 
             if (matchingProvider != null)
