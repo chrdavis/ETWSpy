@@ -51,7 +51,7 @@ namespace ETWSpyLib
     }
 
     /// <summary>
-    /// Manages the list of ETW providers loaded from CSV file.
+    /// Manages the list of ETW providers loaded from JSON file.
     /// </summary>
     public static class ProviderManager
     {
@@ -60,7 +60,7 @@ namespace ETWSpyLib
         private static Task? _preloadTask;
 
         /// <summary>
-        /// Gets the providers loaded from the CSV file.
+        /// Gets the providers loaded from the JSON file.
         /// Uses cached value if available.
         /// </summary>
         private static List<ProviderInfo> Providers
@@ -74,7 +74,7 @@ namespace ETWSpyLib
 
                 lock (_cacheLock)
                 {
-                    _cachedProviders ??= LoadProvidersFromCsv();
+                    _cachedProviders ??= LoadProvidersFromJson();
                     return _cachedProviders;
                 }
             }
@@ -118,22 +118,21 @@ namespace ETWSpyLib
         }
 
         /// <summary>
-        /// Loads providers from the ProviderNameGuid.csv file.
+        /// Loads providers from the ProviderNameGuid.json file.
         /// </summary>
-        private static List<ProviderInfo> LoadProvidersFromCsv()
+        private static List<ProviderInfo> LoadProvidersFromJson()
         {
             try
             {
-                var csvPath = ProviderCsvReader.GetDefaultCsvPath();
-                var csvEntries = ProviderCsvReader.ReadFromFile(csvPath);
+                var entries = ProviderJsonReader.ReadProviders();
                 
-                return csvEntries
+                return entries
                     .Select(e => new ProviderInfo(e.Name, e.Guid))
                     .ToList();
             }
             catch
             {
-                // If CSV file is not found or cannot be read, return empty list
+                // If JSON file is not found or cannot be read, return empty list
                 return [];
             }
         }

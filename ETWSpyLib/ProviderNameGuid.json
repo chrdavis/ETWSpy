@@ -1,0 +1,4518 @@
+﻿[
+    {
+        "Name":  "ACPI Driver Trace Provider",
+        "Guid":  "{dab01d4d-2d48-477d-b1c3-daad0ce6f06b}"
+    },
+    {
+        "Name":  "Active Directory Domain Services: SAM",
+        "Guid":  "{8e598056-8993-11d2-819e-0000f875a064}"
+    },
+    {
+        "Name":  "Active Directory: Kerberos Client",
+        "Guid":  "{bba3add2-c229-4cdb-ae2b-57eb6966b0c4}"
+    },
+    {
+        "Name":  "Active Directory: NetLogon",
+        "Guid":  "{f33959b4-dbec-11d2-895b-00c04f79ab69}"
+    },
+    {
+        "Name":  "ADODB.1",
+        "Guid":  "{04c8a86f-3369-12f8-4769-24e484a9e725}"
+    },
+    {
+        "Name":  "ADOMD.1",
+        "Guid":  "{7ea56435-3f2f-3f63-a829-f0b35b5cad41}"
+    },
+    {
+        "Name":  "Application Error",
+        "Guid":  "{a0e9b465-b939-57d7-b27d-95d8e925ff57}"
+    },
+    {
+        "Name":  "Application Hang",
+        "Guid":  "{c631c3dc-c676-59e4-2db3-5c0af00f9675}"
+    },
+    {
+        "Name":  "Application Popup",
+        "Guid":  "{47bfa2b7-bd54-4fac-b70b-29021084ca8f}"
+    },
+    {
+        "Name":  "Application-Addon-Event-Provider",
+        "Guid":  "{a83fa99f-c356-4ded-9fd6-5a5eb8546d68}"
+    },
+    {
+        "Name":  "ATA Port Driver Tracing Provider",
+        "Guid":  "{d08bd885-501e-489a-bac6-b7d24bfe6bbf}"
+    },
+    {
+        "Name":  "AuthFw NetShell Plugin",
+        "Guid":  "{935f4ae6-845d-41c6-97fa-380dad429b72}"
+    },
+    {
+        "Name":  "BCP.1",
+        "Guid":  "{24722b88-df97-4ff6-e395-db533ac42a1e}"
+    },
+    {
+        "Name":  "BFE Trace Provider",
+        "Guid":  "{106b464a-8043-46b1-8cb8-e92a0cd7a560}"
+    },
+    {
+        "Name":  "BITS Service Trace",
+        "Guid":  "{4a8aaa94-cfc4-46a7-8e4e-17bc45608f0a}"
+    },
+    {
+        "Name":  "Certificate Services Client CredentialRoaming Trace",
+        "Guid":  "{ef4109dc-68fc-45af-b329-ca2825437209}"
+    },
+    {
+        "Name":  "Certificate Services Client Trace",
+        "Guid":  "{f01b7774-7ed7-401e-8088-b576793d7841}"
+    },
+    {
+        "Name":  "Circular Kernel Session Provider",
+        "Guid":  "{54dea73a-ed1f-42a4-af71-3e63d056f174}"
+    },
+    {
+        "Name":  "Classpnp Driver Tracing Provider",
+        "Guid":  "{fa8de7c4-acde-4443-9994-c4e2359a9edb}"
+    },
+    {
+        "Name":  "Critical Section Trace Provider",
+        "Guid":  "{3ac66736-cc59-4cff-8115-8df50e39816b}"
+    },
+    {
+        "Name":  "DBNETLIB.1",
+        "Guid":  "{bd568f20-fccd-b948-054e-db3421115d61}"
+    },
+    {
+        "Name":  "Deduplication Tracing Provider",
+        "Guid":  "{5ebb59d1-4739-4e45-872d-b8703956d84b}"
+    },
+    {
+        "Name":  "Disk Class Driver Tracing Provider",
+        "Guid":  "{945186bf-3dd6-4f3f-9c8e-9edd3fc9d558}"
+    },
+    {
+        "Name":  "Downlevel IPsec API",
+        "Guid":  "{94335eb3-79ea-44d5-8ea9-306f49b3a041}"
+    },
+    {
+        "Name":  "Downlevel IPsec NetShell Plugin",
+        "Guid":  "{e4ff10d8-8a88-4fc6-82c8-8c23e9462fe5}"
+    },
+    {
+        "Name":  "Downlevel IPsec Policy Store",
+        "Guid":  "{94335eb3-79ea-44d5-8ea9-306f49b3a070}"
+    },
+    {
+        "Name":  "Downlevel IPsec Service",
+        "Guid":  "{94335eb3-79ea-44d5-8ea9-306f49b3a040}"
+    },
+    {
+        "Name":  "EA IME API",
+        "Guid":  "{e2a24a32-00dc-4025-9689-c108c01991c5}"
+    },
+    {
+        "Name":  "Error Instrument",
+        "Guid":  "{cd7cf0d0-02cc-4872-9b65-0dba0a90efe8}"
+    },
+    {
+        "Name":  "FD Core Trace",
+        "Guid":  "{480217a9-f824-4bd4-bbe8-f371caaf9a0d}"
+    },
+    {
+        "Name":  "FD Publication Trace",
+        "Guid":  "{649e3596-2620-4d58-a01f-17aefe8185db}"
+    },
+    {
+        "Name":  "FD SSDP Trace",
+        "Guid":  "{db1d0418-105a-4c77-9a25-8f96a19716a4}"
+    },
+    {
+        "Name":  "FD WNet Trace",
+        "Guid":  "{8b20d3e4-581f-4a27-8109-df01643a7a93}"
+    },
+    {
+        "Name":  "FD WSDAPI Trace",
+        "Guid":  "{7e2dbfc7-41e8-4987-bca7-76cadfad765f}"
+    },
+    {
+        "Name":  "FDPHost Service Trace",
+        "Guid":  "{f1c521ca-da82-4d79-9ee4-d7a375723b68}"
+    },
+    {
+        "Name":  "File Kernel Trace; Operation Set 1",
+        "Guid":  "{d75d8303-6c21-4bde-9c98-ecc6320f9291}"
+    },
+    {
+        "Name":  "File Kernel Trace; Operation Set 2",
+        "Guid":  "{058dd951-7604-414d-a5d6-a56d35367a46}"
+    },
+    {
+        "Name":  "File Kernel Trace; Optional Data",
+        "Guid":  "{7da1385c-f8f5-414d-b9d0-02fca090f1ec}"
+    },
+    {
+        "Name":  "File Kernel Trace; Volume To Log",
+        "Guid":  "{127d46af-4ad3-489f-9165-f00ba64d5467}"
+    },
+    {
+        "Name":  "FWPKCLNT Trace Provider",
+        "Guid":  "{ad33fa19-f2d2-46d1-8f4c-e3c3087e45ad}"
+    },
+    {
+        "Name":  "FWPUCLNT Trace Provider",
+        "Guid":  "{5a1600d2-68e5-4de7-bcf4-1c2d215fe0fe}"
+    },
+    {
+        "Name":  "Google.Chrome",
+        "Guid":  "{d2d578d9-2936-45b6-a09f-30e32715f42d}"
+    },
+    {
+        "Name":  "Heap Trace Provider",
+        "Guid":  "{222962ab-6180-4b88-a825-346b75f2a24a}"
+    },
+    {
+        "Name":  "IKEEXT Trace Provider",
+        "Guid":  "{106b464d-8043-46b1-8cb8-e92a0cd7a560}"
+    },
+    {
+        "Name":  "IMAPI1 Shim",
+        "Guid":  "{1ff10429-99ae-45bb-8a67-c9e945b9fb6c}"
+    },
+    {
+        "Name":  "IMAPI2 Concatenate Stream",
+        "Guid":  "{0e85a5a5-4d5c-44b7-8bda-5b7ab54f7e9d}"
+    },
+    {
+        "Name":  "IMAPI2 Disc Master",
+        "Guid":  "{0e85a5a5-4d5c-44b7-8bda-5b7ab54f7e91}"
+    },
+    {
+        "Name":  "IMAPI2 Disc Recorder",
+        "Guid":  "{0e85a5a5-4d5c-44b7-8bda-5b7ab54f7e93}"
+    },
+    {
+        "Name":  "IMAPI2 Disc Recorder Enumerator",
+        "Guid":  "{0e85a5a5-4d5c-44b7-8bda-5b7ab54f7e92}"
+    },
+    {
+        "Name":  "IMAPI2 dll",
+        "Guid":  "{0e85a5a5-4d5c-44b7-8bda-5b7ab54f7e90}"
+    },
+    {
+        "Name":  "IMAPI2 Interleave Stream",
+        "Guid":  "{0e85a5a5-4d5c-44b7-8bda-5b7ab54f7e9e}"
+    },
+    {
+        "Name":  "IMAPI2 Media Eraser",
+        "Guid":  "{0e85a5a5-4d5c-44b7-8bda-5b7ab54f7e97}"
+    },
+    {
+        "Name":  "IMAPI2 MSF",
+        "Guid":  "{0e85a5a5-4d5c-44b7-8bda-5b7ab54f7e9f}"
+    },
+    {
+        "Name":  "IMAPI2 Multisession Sequential",
+        "Guid":  "{0e85a5a5-4d5c-44b7-8bda-5b7ab54f7ea0}"
+    },
+    {
+        "Name":  "IMAPI2 Pseudo-Random Stream",
+        "Guid":  "{0e85a5a5-4d5c-44b7-8bda-5b7ab54f7e9c}"
+    },
+    {
+        "Name":  "IMAPI2 Raw CD Writer",
+        "Guid":  "{0e85a5a5-4d5c-44b7-8bda-5b7ab54f7e9a}"
+    },
+    {
+        "Name":  "IMAPI2 Raw Image Writer",
+        "Guid":  "{07e397ec-c240-4ed7-8a2a-b9ff0fe5d581}"
+    },
+    {
+        "Name":  "IMAPI2 Standard Data Writer",
+        "Guid":  "{0e85a5a5-4d5c-44b7-8bda-5b7ab54f7e98}"
+    },
+    {
+        "Name":  "IMAPI2 Track-at-Once CD Writer",
+        "Guid":  "{0e85a5a5-4d5c-44b7-8bda-5b7ab54f7e99}"
+    },
+    {
+        "Name":  "IMAPI2 Utilities",
+        "Guid":  "{0e85a5a5-4d5c-44b7-8bda-5b7ab54f7e94}"
+    },
+    {
+        "Name":  "IMAPI2 Write Engine",
+        "Guid":  "{0e85a5a5-4d5c-44b7-8bda-5b7ab54f7e96}"
+    },
+    {
+        "Name":  "IMAPI2 Zero Stream",
+        "Guid":  "{0e85a5a5-4d5c-44b7-8bda-5b7ab54f7e9b}"
+    },
+    {
+        "Name":  "IMAPI2FS Tracing",
+        "Guid":  "{f8036571-42d9-480a-babb-de7833cb059c}"
+    },
+    {
+        "Name":  "IPMI Driver Trace",
+        "Guid":  "{d5c6a3e9-fa9c-434e-9653-165b4fc869e4}"
+    },
+    {
+        "Name":  "IPMI Provider Trace",
+        "Guid":  "{651d672b-e11f-41b7-add3-c2f6a4023672}"
+    },
+    {
+        "Name":  "KMDFv1 Trace Provider",
+        "Guid":  "{544d4c9d-942c-46d5-bf50-df5cd9524a50}"
+    },
+    {
+        "Name":  "Local Security Authority (LSA)",
+        "Guid":  "{cc85922f-db41-11d2-9244-006008269001}"
+    },
+    {
+        "Name":  "LsaSrv",
+        "Guid":  "{199fe037-2b82-40a9-82ac-e1d46c792b99}"
+    },
+    {
+        "Name":  "Microsoft-Antimalware-AMFilter",
+        "Guid":  "{cfeb0608-330e-4410-b00d-56d8da9986e6}"
+    },
+    {
+        "Name":  "Microsoft-Antimalware-Engine",
+        "Guid":  "{0a002690-3839-4e3a-b3b6-96d8df868d99}"
+    },
+    {
+        "Name":  "Microsoft-Antimalware-Engine-Instrumentation",
+        "Guid":  "{68621c25-df8d-4a6b-aabc-19a22e296a7c}"
+    },
+    {
+        "Name":  "Microsoft-Antimalware-NIS",
+        "Guid":  "{102aab0a-9d9c-4887-a860-55de33b96595}"
+    },
+    {
+        "Name":  "Microsoft-Antimalware-Protection",
+        "Guid":  "{e4b70372-261f-4c54-8fa6-a5a7914d73da}"
+    },
+    {
+        "Name":  "Microsoft-Antimalware-RTP",
+        "Guid":  "{8e92deef-5e17-413b-b927-59b2f06a3cfc}"
+    },
+    {
+        "Name":  "Microsoft-Antimalware-Scan-Interface",
+        "Guid":  "{2a576b87-09a7-520e-c21a-4942f0271d67}"
+    },
+    {
+        "Name":  "Microsoft-Antimalware-Service",
+        "Guid":  "{751ef305-6c6e-4fed-b847-02ef79d26aef}"
+    },
+    {
+        "Name":  "Microsoft-Antimalware-UacScan",
+        "Guid":  "{d37e7910-79c8-57c4-da77-52bb646364cd}"
+    },
+    {
+        "Name":  "Microsoft-Autopilot-BootstrapperAgent",
+        "Guid":  "{cb1ff6d6-3248-4484-b96e-0973f64838c4}"
+    },
+    {
+        "Name":  "Microsoft-Client-License-Flexible-Platform",
+        "Guid":  "{6e0df32c-7f11-54f7-e8ee-5ad4032727ce}"
+    },
+    {
+        "Name":  "Microsoft-Client-Licensing-Platform",
+        "Guid":  "{b6cc0d55-9ecc-49a8-b929-2b9022426f2a}"
+    },
+    {
+        "Name":  "Microsoft-ConfigMgr",
+        "Guid":  "{fd6007de-16d4-4d5b-a6d7-19aad3211528}"
+    },
+    {
+        "Name":  "Microsoft-Epm-Events",
+        "Guid":  "{56b809b5-d9e6-4f21-a807-2a1e3ed4159e}"
+    },
+    {
+        "Name":  "Microsoft-Gaming-Services",
+        "Guid":  "{bc1bdb57-71a2-581a-147b-e0b49474a2d4}"
+    },
+    {
+        "Name":  "Microsoft-IE",
+        "Guid":  "{9e3b3947-ca5d-4614-91a2-7b624e0e7244}"
+    },
+    {
+        "Name":  "Microsoft-IE-JSDumpHeap",
+        "Guid":  "{7f8e35ca-68e8-41b9-86fe-d6adc5b327e7}"
+    },
+    {
+        "Name":  "Microsoft-IEFRAME",
+        "Guid":  "{5c8bb950-959e-4309-8908-67961a1205d5}"
+    },
+    {
+        "Name":  "Microsoft-Intune-ControlConfig-Client-Telemetry",
+        "Guid":  "{9d7adb63-2e58-4503-b3ce-9017d7c88537}"
+    },
+    {
+        "Name":  "Microsoft-Intune-Epm-Client-Telemetry",
+        "Guid":  "{8ad61205-8e7e-4be4-8d30-e2480500b39a}"
+    },
+    {
+        "Name":  "Microsoft-Intune-Sidecar-Client-Telemetry",
+        "Guid":  "{e20927af-32d7-4d5d-9f73-82f077a1c891}"
+    },
+    {
+        "Name":  "Microsoft-Inventory-Events",
+        "Guid":  "{5e6ac3d4-6a7e-4fdc-98f8-7017e4f177bf}"
+    },
+    {
+        "Name":  "Microsoft-JScript",
+        "Guid":  "{57277741-3638-4a4b-bdba-0ac6e45da56c}"
+    },
+    {
+        "Name":  "Microsoft-Office-Events",
+        "Guid":  "{8736922d-e8b2-47eb-8564-23e77e728cf3}"
+    },
+    {
+        "Name":  "Microsoft-Office-Word",
+        "Guid":  "{daf0b914-9c1c-450a-81b2-fea7244f6ffa}"
+    },
+    {
+        "Name":  "Microsoft-Office-Word2",
+        "Guid":  "{bb00e856-a12f-4ab7-b2c8-4e80caea5b07}"
+    },
+    {
+        "Name":  "Microsoft-Office-Word3",
+        "Guid":  "{a1b69d49-2195-4f59-9d33-bdf30c0fe473}"
+    },
+    {
+        "Name":  "Microsoft-OneCore-OnlineSetup",
+        "Guid":  "{41862974-da3b-4f0b-97d5-bb29fbb9b71e}"
+    },
+    {
+        "Name":  "Microsoft-PerfTrack-IEFRAME",
+        "Guid":  "{b2a40f1f-a05a-4dfd-886a-4c4f18c4334c}"
+    },
+    {
+        "Name":  "Microsoft-PerfTrack-MSHTML",
+        "Guid":  "{ffdb9886-80f3-4540-aa8b-b85192217ddf}"
+    },
+    {
+        "Name":  "Microsoft-Quic",
+        "Guid":  "{ff15e657-4f26-570e-88ab-0796b258d11c}"
+    },
+    {
+        "Name":  "Microsoft-Surface-SmfCpuClientDriver",
+        "Guid":  "{32760e2c-4ac2-40eb-9972-1c69c12ed757}"
+    },
+    {
+        "Name":  "Microsoft-Surface-SurfaceAcpiPlatformExtensionDriver",
+        "Guid":  "{aba759c2-2f7b-41c2-8cfc-71c370e17276}"
+    },
+    {
+        "Name":  "Microsoft-Surface-SurfaceBattery",
+        "Guid":  "{dcf09792-3c77-4d1c-8b99-a8a089841155}"
+    },
+    {
+        "Name":  "Microsoft-Surface-SurfaceCFUOverHid",
+        "Guid":  "{48589a65-4ec1-45ec-bdc1-5693df02043c}"
+    },
+    {
+        "Name":  "Microsoft-Surface-SurfaceDisplayHardware",
+        "Guid":  "{c55d6b1b-9b7e-47aa-9305-0d73c2c257d2}"
+    },
+    {
+        "Name":  "Microsoft-Surface-SurfaceHidMiniDriver",
+        "Guid":  "{2fea7205-b0b1-41ca-8609-5a1d16f3132f}"
+    },
+    {
+        "Name":  "Microsoft-Surface-SurfaceHotPlug",
+        "Guid":  "{69cd60e3-430f-4da4-b1b3-e3bdaf945875}"
+    },
+    {
+        "Name":  "Microsoft-Surface-SurfaceIhvAudioFilterDriver",
+        "Guid":  "{e87903e6-27b6-4216-95ef-129b4947cd2f}"
+    },
+    {
+        "Name":  "Microsoft-Surface-SurfaceMachineLearningService",
+        "Guid":  "{1e8d5623-6573-47f2-b69e-eea8923ce036}"
+    },
+    {
+        "Name":  "Microsoft-Surface-SurfacePanelDriver",
+        "Guid":  "{3d53356d-424b-496a-a094-2154d8d2b304}"
+    },
+    {
+        "Name":  "Microsoft-Surface-SurfacePowerMeter",
+        "Guid":  "{72e33992-7227-4c19-b37e-99a0bab20735}"
+    },
+    {
+        "Name":  "Microsoft-Surface-SurfacePowerState",
+        "Guid":  "{44f35d0a-a3fa-4248-a7cb-22fe08b3288d}"
+    },
+    {
+        "Name":  "Microsoft-Surface-SurfacePowerTrackerCore",
+        "Guid":  "{23ac50b3-680e-7ad3-a2b3-d5dbef945870}"
+    },
+    {
+        "Name":  "Microsoft-Surface-SurfaceRadioTelemetryDriver",
+        "Guid":  "{50831813-a9f1-54e2-634e-31ee5f06dc1d}"
+    },
+    {
+        "Name":  "Microsoft-Surface-SurfaceSerialHubDriver",
+        "Guid":  "{8ddb06d0-a54b-4014-b119-5a09fb550d18}"
+    },
+    {
+        "Name":  "Microsoft-Surface-SurfaceSmfClient",
+        "Guid":  "{a8d5fcb2-ff94-4166-920d-3338902e77e0}"
+    },
+    {
+        "Name":  "Microsoft-Surface-SurfaceSmfCoreDriver",
+        "Guid":  "{0ec12c6e-794a-4b5e-8e27-6d3dc98bbd38}"
+    },
+    {
+        "Name":  "Microsoft-Surface-SurfaceSystemTelemetryDriver",
+        "Guid":  "{fd325c17-372e-40d1-8388-1be314cb816a}"
+    },
+    {
+        "Name":  "Microsoft-System-Diagnostics-DiagnosticInvoker",
+        "Guid":  "{9068a924-f97e-5506-c3a3-5c020c00e8e0}"
+    },
+    {
+        "Name":  "Microsoft-Windows Networking VPN Plugin Platform",
+        "Guid":  "{e5fc4a0f-7198-492f-9b0f-88fdcbfded48}"
+    },
+    {
+        "Name":  "Microsoft-Windows-AAD",
+        "Guid":  "{4de9bc9c-b27a-43c9-8994-0915f1a5e24f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-AccelLib",
+        "Guid":  "{1dfda998-7f9c-5651-d262-07f4a04eaefe}"
+    },
+    {
+        "Name":  "Microsoft-Windows-AccelLib-AccelCx",
+        "Guid":  "{9c4cf201-dd11-5e35-9de5-2c2146832011}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ACL-UI",
+        "Guid":  "{ea4cc8b8-a150-47a3-afb9-c8d194b19452}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ActionQueue",
+        "Guid":  "{0dd4d48e-2bbf-452f-a7ec-ba3dba8407ae}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ADSI",
+        "Guid":  "{7288c9f8-d63c-4932-a345-89d6b060174d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-AIT",
+        "Guid":  "{6addabf4-8c54-4eab-bf4f-fbef61b62eb0}"
+    },
+    {
+        "Name":  "Microsoft-Windows-All-User-Install-Agent",
+        "Guid":  "{d2e990da-8504-4702-a5e5-367fc2f823bf}"
+    },
+    {
+        "Name":  "Microsoft-Windows-AppHost",
+        "Guid":  "{98e0765d-8c42-44a3-a57b-760d7f93225a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-AppID",
+        "Guid":  "{3cb2a168-fe19-4a4e-bdad-dcf422f13473}"
+    },
+    {
+        "Name":  "Microsoft-Windows-AppIDServiceTrigger",
+        "Guid":  "{d02a9c27-79b8-40d6-9b97-cf3f8b7b5d60}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ApplicabilityEngine",
+        "Guid":  "{10a208dd-a372-421c-9d99-4fad6db68b62}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Application Server-Applications",
+        "Guid":  "{c651f5f6-1c0d-492e-8ae1-b4efd7c9d503}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Application-Experience",
+        "Guid":  "{eef54e71-0661-422d-9a98-82fd4940b820}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ApplicationExperience-Cache",
+        "Guid":  "{6d8a3a60-40af-445a-98ca-99359e500146}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ApplicationExperience-LookupServiceTrigger",
+        "Guid":  "{18f4a5fd-fd3b-40a5-8fc2-e5d261c5d02e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ApplicationExperience-SwitchBack",
+        "Guid":  "{17d6e590-f5fe-11dc-95ff-0800200c9a66}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ApplicationExperienceInfrastructure",
+        "Guid":  "{5ec13d8e-4b3f-422e-a7e7-3121a1d90c7a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-AppLocker",
+        "Guid":  "{cbda4dbf-8d5d-4f69-9578-be14aa540d22}"
+    },
+    {
+        "Name":  "Microsoft-Windows-AppModel-Exec",
+        "Guid":  "{eb65a492-86c0-406a-bace-9912d595bd69}"
+    },
+    {
+        "Name":  "Microsoft-Windows-AppModel-MessagingDataModel",
+        "Guid":  "{1e2462be-b025-48da-8c1f-7b60b8ccae53}"
+    },
+    {
+        "Name":  "Microsoft-Windows-AppModel-Runtime",
+        "Guid":  "{f1ef270a-0d32-4352-ba52-dbab41e1d859}"
+    },
+    {
+        "Name":  "Microsoft-Windows-AppModel-State",
+        "Guid":  "{bff15e13-81bf-45ee-8b16-7cfead00da86}"
+    },
+    {
+        "Name":  "Microsoft-Windows-AppReadiness",
+        "Guid":  "{f0be35f8-237b-4814-86b5-ade51192e503}"
+    },
+    {
+        "Name":  "Microsoft-Windows-AppSruProv",
+        "Guid":  "{0cc157b3-cf07-4fc2-91ee-31ac92e05fe1}"
+    },
+    {
+        "Name":  "Microsoft-Windows-AppXDeployment",
+        "Guid":  "{8127f6d4-59f9-4abf-8952-3e3a02073d5f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-AppXDeployment-Server",
+        "Guid":  "{3f471139-acb7-4a01-b7a7-ff5da4ba2d43}"
+    },
+    {
+        "Name":  "Microsoft-Windows-AppXDeployment-Server-UndockedDeh",
+        "Guid":  "{43833e12-078d-4d7d-8aaf-ae8c8520f18c}"
+    },
+    {
+        "Name":  "Microsoft-Windows-AppxPackagingOM",
+        "Guid":  "{ba723d81-0d0c-4f1e-80c8-54740f508ddf}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ASN1",
+        "Guid":  "{d92ef8ac-99dd-4ab8-b91d-c6eba85f3755}"
+    },
+    {
+        "Name":  "Microsoft-Windows-AssignedAccess",
+        "Guid":  "{8530db6e-51c0-43d6-9d02-a8c2088526cd}"
+    },
+    {
+        "Name":  "Microsoft-Windows-AssignedAccessBroker",
+        "Guid":  "{f2311b48-32be-4902-a22a-7240371dbb2c}"
+    },
+    {
+        "Name":  "Microsoft-Windows-AsynchronousCausality",
+        "Guid":  "{19a4c69a-28eb-4d4b-8d94-5f19055a1b5c}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Audio",
+        "Guid":  "{ae4bd3be-f36f-45b6-8d21-bdd6fb832853}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Audit",
+        "Guid":  "{75ebc33e-0936-4a55-9d26-5f298f3180bf}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Audit-CVE",
+        "Guid":  "{85a62a0d-7e17-485f-9d4f-749a287193a6}"
+    },
+    {
+        "Name":  "Microsoft-Windows-AuthenticationProvider",
+        "Guid":  "{dddc1d91-51a1-4a8d-95b5-350c4ee3d809}"
+    },
+    {
+        "Name":  "Microsoft-Windows-AxInstallService",
+        "Guid":  "{dab3b18c-3c0f-43e8-80b1-e44bc0dad901}"
+    },
+    {
+        "Name":  "Microsoft-Windows-BackgroundTransfer-ContentPrefetcher",
+        "Guid":  "{648a0644-7d62-4fd3-8841-440064762f95}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Backup",
+        "Guid":  "{1db28f2e-8f80-4027-8c5a-a11f7f10f62d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Base-Filtering-Engine-Connections",
+        "Guid":  "{121d3da8-baf1-4dcb-929f-2d4c9a47f7ab}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Base-Filtering-Engine-Resource-Flows",
+        "Guid":  "{92765247-03a9-4ae3-a575-b42264616e78}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Battery",
+        "Guid":  "{59819d0a-adaf-46b2-8d7c-990bc39c7c15}"
+    },
+    {
+        "Name":  "Microsoft-Windows-BfeTriggerProvider",
+        "Guid":  "{54732ee5-61ca-4727-9da1-10be5a4f773d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Biometrics",
+        "Guid":  "{a0e3d8ea-c34f-4419-a1db-90435b8b21d0}"
+    },
+    {
+        "Name":  "Microsoft-Windows-BitLocker-API",
+        "Guid":  "{5d674230-ca9f-11da-a94d-0800200c9a66}"
+    },
+    {
+        "Name":  "Microsoft-Windows-BitLocker-DrivePreparationTool",
+        "Guid":  "{632f767e-0ec3-47b9-ba1c-a0e62a74728a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-BitLocker-Driver",
+        "Guid":  "{651df93b-5053-4d1e-94c5-f6e6d25908d0}"
+    },
+    {
+        "Name":  "Microsoft-Windows-BitLocker-Driver-Performance",
+        "Guid":  "{1de130e1-c026-4cbf-ba0f-ab608e40aeea}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Bits-Client",
+        "Guid":  "{ef1cc15b-46c1-414e-bb95-e76b077bd51e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Bluetooth-BthLEPrepairing",
+        "Guid":  "{4af188ac-e9c4-4c11-b07b-1fabc07dfeb2}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Bluetooth-Bthmini",
+        "Guid":  "{db25b328-a6f6-444f-9d97-a50e20217d16}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Bluetooth-MTPEnum",
+        "Guid":  "{04268430-d489-424d-b914-0cff741d6684}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Bluetooth-Policy",
+        "Guid":  "{0602ecef-6381-4bc0-aeda-eb9bb919b276}"
+    },
+    {
+        "Name":  "Microsoft-Windows-BootUX",
+        "Guid":  "{67d781bd-cbd2-4bd2-ad1f-6152fb891246}"
+    },
+    {
+        "Name":  "Microsoft-Windows-BranchCache",
+        "Guid":  "{7eafcf79-06a7-460b-8a55-bd0a0c9248aa}"
+    },
+    {
+        "Name":  "Microsoft-Windows-BranchCacheClientEventProvider",
+        "Guid":  "{e837619c-a2a8-4689-833f-47b48ebd2442}"
+    },
+    {
+        "Name":  "Microsoft-Windows-BranchCacheEventProvider",
+        "Guid":  "{dd85457f-4e2d-44a5-a7a7-6253362e34dc}"
+    },
+    {
+        "Name":  "Microsoft-Windows-BranchCacheMonitoring",
+        "Guid":  "{a2f55524-8ebc-45fd-88e4-a1b39f169e08}"
+    },
+    {
+        "Name":  "Microsoft-Windows-BranchCacheSMB",
+        "Guid":  "{4a933674-fb3d-4e8d-b01d-17ee14e91a3e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-BrokerInfrastructure",
+        "Guid":  "{e6835967-e0d2-41fb-bcec-58387404e25a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-BTH-BTHPORT",
+        "Guid":  "{8a1f9517-3a8c-4a9e-a018-4f17a200f277}"
+    },
+    {
+        "Name":  "Microsoft-Windows-BTH-BTHUSB",
+        "Guid":  "{33693e1d-246a-471b-83be-3e75f47a832d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Build-RegDll",
+        "Guid":  "{d39b6336-cfcb-483b-8c76-7c3e7d02bcb8}"
+    },
+    {
+        "Name":  "Microsoft-Windows-CAPI2",
+        "Guid":  "{5bbca4a8-b209-48dc-a8c7-b23d3e5216fb}"
+    },
+    {
+        "Name":  "Microsoft-Windows-CDROM",
+        "Guid":  "{9b6123dc-9af6-4430-80d7-7d36f054fb9f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-CertificateServicesClient",
+        "Guid":  "{73370bd6-85e5-430b-b60a-fea1285808a7}"
+    },
+    {
+        "Name":  "Microsoft-Windows-CertificateServicesClient-AutoEnrollment",
+        "Guid":  "{f0db7ef8-b6f3-4005-9937-feb77b9e1b43}"
+    },
+    {
+        "Name":  "Microsoft-Windows-CertificateServicesClient-CertEnroll",
+        "Guid":  "{54164045-7c50-4905-963f-e5bc1eef0cca}"
+    },
+    {
+        "Name":  "Microsoft-Windows-CertificateServicesClient-CredentialRoaming",
+        "Guid":  "{89a2278b-c662-4aff-a06c-46ad3f220bca}"
+    },
+    {
+        "Name":  "Microsoft-Windows-CertificateServicesClient-Lifecycle-System",
+        "Guid":  "{bc0669e1-a10d-4a78-834e-1ca3c806c93b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-CertificateServicesClient-Lifecycle-User",
+        "Guid":  "{bea18b89-126f-4155-9ee4-d36038b02680}"
+    },
+    {
+        "Name":  "Microsoft-Windows-CertificationAuthorityClient-CertCli",
+        "Guid":  "{98bf1cd3-583e-4926-95ee-a61bf3f46470}"
+    },
+    {
+        "Name":  "Microsoft-Windows-CertPolEng",
+        "Guid":  "{af9cc194-e9a8-42bd-b0d1-834e9cfab799}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Cleanmgr",
+        "Guid":  "{9ae87b12-a014-5288-92df-e3030981ebab}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ClearTypeTextTuner",
+        "Guid":  "{0a88862d-20a3-4c1f-b76f-162c55adbf93}"
+    },
+    {
+        "Name":  "Microsoft-Windows-CloudFiles-Filter",
+        "Guid":  "{4580bb06-baed-5b62-a4d5-92fa7156e7db}"
+    },
+    {
+        "Name":  "Microsoft-Windows-CloudRestoreLauncher",
+        "Guid":  "{dc327e90-7748-58ed-f39c-8a8987cfac58}"
+    },
+    {
+        "Name":  "Microsoft-Windows-CloudStore",
+        "Guid":  "{741bb90c-a7a3-49d6-bd82-1e6b858403f7}"
+    },
+    {
+        "Name":  "Microsoft-Windows-CmiSetup",
+        "Guid":  "{75ebc33e-0cc6-49da-8cd9-8903a5222aa0}"
+    },
+    {
+        "Name":  "Microsoft-Windows-CodeIntegrity",
+        "Guid":  "{4ee76bd8-3cf4-44a0-a0ac-3937643e37a3}"
+    },
+    {
+        "Name":  "Microsoft-Windows-COM",
+        "Guid":  "{d4263c98-310c-4d97-ba39-b55354f08584}"
+    },
+    {
+        "Name":  "Microsoft-Windows-COM-Perf",
+        "Guid":  "{b8d6861b-d20f-4eec-bbae-87e0dd80602b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-COM-RundownInstrumentation",
+        "Guid":  "{2957313d-fcaa-5d4a-2f69-32ce5f0ac44e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ComDlg32",
+        "Guid":  "{7f912b92-21ad-496e-b97a-88622a72bc42}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Compat-Appraiser",
+        "Guid":  "{442c11c5-304b-45a4-ae73-dc2194c4e876}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Complus",
+        "Guid":  "{0f177893-4a9c-4709-b921-f432d67f43d5}"
+    },
+    {
+        "Name":  "Microsoft-Windows-COMRuntime",
+        "Guid":  "{bf406804-6afa-46e7-8a48-6c357e1d6d61}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Configuration-Change-Monitor",
+        "Guid":  "{a148cf02-be6d-5f08-94e3-b68de60d8422}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Containers-BindFlt",
+        "Guid":  "{fc4e8f51-7a04-4bab-8b91-6321416f72ab}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Containers-Wcifs",
+        "Guid":  "{aec5c129-7c10-407d-be97-91a042c61aaa}"
+    },
+    {
+        "Name":  "Microsoft-Windows-CoreSystem-InitMachineConfig",
+        "Guid":  "{0b886108-1899-4d3a-9c0d-42d8fc4b9108}"
+    },
+    {
+        "Name":  "Microsoft-Windows-CoreSystem-NetProvision-JoinProviderOnline",
+        "Guid":  "{3629dd4d-d6f1-4302-a623-0768b51501c7}"
+    },
+    {
+        "Name":  "Microsoft-Windows-CoreSystem-SmsRouter",
+        "Guid":  "{a9c11050-9e93-4fa4-8fe0-7c4750a345b2}"
+    },
+    {
+        "Name":  "Microsoft-Windows-CoreWindow",
+        "Guid":  "{a3d95055-34cc-4e4a-b99f-ec88f5370495}"
+    },
+    {
+        "Name":  "Microsoft-Windows-CorruptedFileRecovery-Client",
+        "Guid":  "{ba093605-3909-4345-990b-26b746adee0a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-CorruptedFileRecovery-Server",
+        "Guid":  "{d6f68875-cdf5-43a5-a3e3-53ffd683311c}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Crashdump",
+        "Guid":  "{ecdaacfa-6fe9-477c-b5f0-85b76f8f50aa}"
+    },
+    {
+        "Name":  "Microsoft-Windows-CredUI",
+        "Guid":  "{5a24fcdb-1cf3-477b-b422-ef4909d51223}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Crypto-BCrypt",
+        "Guid":  "{c7e089ac-ba2a-11e0-9af7-68384824019b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Crypto-CNG",
+        "Guid":  "{e3e0e2f0-c9c5-11e0-8ab9-9ebc4824019b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Crypto-DPAPI",
+        "Guid":  "{89fe8f40-cdce-464e-8217-15ef97d4c7c3}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Crypto-DSSEnh",
+        "Guid":  "{43dad447-735f-4829-a6ff-9829a87419ff}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Crypto-NCrypt",
+        "Guid":  "{e8ed09dc-100c-45e2-9fc8-b53399ec1f70}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Crypto-RNG",
+        "Guid":  "{54d5ac20-e14f-4fda-92da-ebf7556ff176}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Crypto-RSAEnh",
+        "Guid":  "{152fdb2b-6e9d-4b60-b317-815d5f174c4a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-D3D10Level9",
+        "Guid":  "{7e7d3382-023c-43cb-95d2-6f0ca6d70381}"
+    },
+    {
+        "Name":  "Microsoft-Windows-D3D9",
+        "Guid":  "{783aca0a-790e-4d7f-8451-aa850511c6b9}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DAL-Provider",
+        "Guid":  "{7e87506f-bace-4bf1-bc09-3a1f37045c71}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Data-Pdf",
+        "Guid":  "{b97561fe-b27a-4c48-aa3e-7d3addc105b1}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DataIntegrityScan",
+        "Guid":  "{13bc4371-4e21-4e46-a84f-8c0ffb548ced}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DateTimeControlPanel",
+        "Guid":  "{741fc222-44ed-4ba7-98e3-f405b2d2c4b4}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DCLocator",
+        "Guid":  "{cfaa5446-c6c4-4f5c-866f-31c9b55b962d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DDisplay",
+        "Guid":  "{75051c9d-2833-4a29-8923-046db7a432ca}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Deduplication",
+        "Guid":  "{f9fe3908-44b8-48d9-9a32-5a763ff5ed79}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Deduplication-Change",
+        "Guid":  "{1d5e499d-739c-45a6-a3e1-8cbe0a352beb}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Defrag-Core",
+        "Guid":  "{e3257c8c-c7cb-444f-9da0-5d92a2625289}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DeliveryOptimization",
+        "Guid":  "{f8ad09ba-419c-5134-1750-270f4d0fb889}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Deplorch",
+        "Guid":  "{b9da9fe6-ae5f-4f3e-b2fa-8e623c11dc75}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DesktopActivityModerator",
+        "Guid":  "{32dd13df-9c0b-4c3b-b854-ee76c050f5f4}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DeviceAssociationService",
+        "Guid":  "{56c71c31-cfbd-4cdd-8559-505e042bbbe1}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DeviceConfidence",
+        "Guid":  "{1d5990c1-ec62-49f0-9e37-1f4db12db41e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DeviceGuard",
+        "Guid":  "{f717d024-f5b4-4f03-9ab9-331b2dc38ffb}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DeviceManagement-Enterprise-Diagnostics-Provider",
+        "Guid":  "{3da494e4-0fe2-415c-b895-fb5265c5c83b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DeviceManagement-Pushrouter",
+        "Guid":  "{f1201b5a-e170-42b6-8d20-b57ac57e6416}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Devices-AccessBroker",
+        "Guid":  "{64fb8d23-f0b6-5d2d-b1f6-488303c1761f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Devices-Background",
+        "Guid":  "{64ef2b1c-4ae1-4e64-8599-1636e441ec88}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Devices-Query",
+        "Guid":  "{df63d0dc-97c2-5e48-c1cc-7b46bfd4df88}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DeviceSetupManager",
+        "Guid":  "{fcbb06bb-6a2a-46e3-abaa-246cb4e508b2}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DeviceSync",
+        "Guid":  "{09ec9687-d7ad-40ca-9c5e-78a04a5ae993}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DeviceUpdateAgent",
+        "Guid":  "{e8f9af91-afbe-5a03-dfec-5d591686326c}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DeviceUx",
+        "Guid":  "{ded165cf-485d-4770-a3e7-9c5f0320e80c}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DevMgmt-UefiCsp",
+        "Guid":  "{739d66d8-76c4-4004-873f-169ae5c6eaca}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DfsSvc",
+        "Guid":  "{7da4fe0e-fd42-4708-9aa5-89b77a224885}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Dhcp-Client",
+        "Guid":  "{15a7a4f8-0072-4eab-abad-f98a4d666aed}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DHCPv6-Client",
+        "Guid":  "{6a1f2b00-6a90-4c38-95a5-5cab3b056778}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DiagCpl",
+        "Guid":  "{1a396961-5f3c-4c71-8310-44c653c0bf8a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Diagnosis-AdvancedTaskManager",
+        "Guid":  "{178dadaf-7ac4-4593-ab3e-a45fda6d0d55}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Diagnosis-DPS",
+        "Guid":  "{6bba3851-2c7e-4dea-8f54-31e5afd029e3}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Diagnosis-MSDE",
+        "Guid":  "{a50b09f8-93eb-4396-84c9-dc921259f952}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Diagnosis-PCW",
+        "Guid":  "{aabf8b86-7936-4fa2-acb0-63127f879dbf}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Diagnosis-PLA",
+        "Guid":  "{e4d53f84-7de3-11d8-9435-505054503030}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Diagnosis-Scheduled",
+        "Guid":  "{40ab57c2-1c53-4df9-9324-ff7cf898a02c}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Diagnosis-Scripted",
+        "Guid":  "{e1dd7e52-621d-44e3-a1ad-0370c2b25946}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Diagnosis-ScriptedDiagnosticsProvider",
+        "Guid":  "{9363ccd9-d429-4452-9adb-2501e704b810}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Diagnosis-WDC",
+        "Guid":  "{05921578-2261-42c7-a0d3-26ddbce6c50d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Diagnosis-WDI",
+        "Guid":  "{e01b1a7c-c5c9-4e67-99a9-5e85acfb2e10}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Diagnostics-LoggingChannel",
+        "Guid":  "{4bd2826e-54a1-4ba9-bf63-92b73ea1ac4a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Diagnostics-Networking",
+        "Guid":  "{36c23e18-0e66-11d9-bbeb-505054503030}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Diagnostics-Performance",
+        "Guid":  "{cfc18ec0-96b1-4eba-961b-622caee05b0a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Diagnostics-PerfTrack",
+        "Guid":  "{030f2f57-abd0-4427-bcf1-3a3587d7dc7d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Direct3D10",
+        "Guid":  "{9b7e4c0f-342c-4106-a19f-4f2704f689f0}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Direct3D10_1",
+        "Guid":  "{9b7e4c8f-342c-4106-a19f-4f2704f689f0}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Direct3D11",
+        "Guid":  "{db6f6ddb-ac77-4e88-8253-819df9bbf140}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Direct3D12",
+        "Guid":  "{5d8087dd-3a9b-4f56-90df-49196cdc4f11}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Direct3DShaderCache",
+        "Guid":  "{2d4ebca6-ea64-453f-a292-ae2ea0ee513b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DirectComposition",
+        "Guid":  "{c44219d0-f344-11df-a5e2-b307dfd72085}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DirectManipulation",
+        "Guid":  "{5786e035-ef2d-4178-84f2-5a6bbedbb947}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Directory-Services-SAM",
+        "Guid":  "{0d4fdc09-8c27-494a-bda0-505e4fd8adae}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Directory-Services-SAM-Utility",
+        "Guid":  "{bd8fea17-5549-4b49-aa03-1981d16396a9}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DirectShow-Core",
+        "Guid":  "{968f313b-097f-4e09-9cdd-bc62692d138b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DirectShow-KernelSupport",
+        "Guid":  "{3cc2d4af-da5e-4ed4-bcbe-3cf995940483}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DirectSound",
+        "Guid":  "{8a93b54b-c75a-49b5-a5be-9060715b1a33}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Disk",
+        "Guid":  "{6b4db0bc-9a3d-467d-81b9-a84c6f2f3d40}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DiskDiagnostic",
+        "Guid":  "{e670a5a2-ce74-4ab4-9347-61b815319f4c}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DiskDiagnosticDataCollector",
+        "Guid":  "{e104fb41-6b04-4f3a-b47d-f0df2f02b954}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DiskDiagnosticResolver",
+        "Guid":  "{6b1ffe48-5b1e-4793-9f7f-ae926454499d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Dism-Api",
+        "Guid":  "{75b0da21-8b50-42eb-9448-ec48b1729b57}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Dism-Cli",
+        "Guid":  "{2f959466-24d4-4972-8729-0d5e3539ebc3}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Display",
+        "Guid":  "{6ece3302-fee1-4ea9-8b88-086d459ed976}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DisplayColorCalibration",
+        "Guid":  "{3239eb6f-c7fc-4953-aa15-646829a4ca4c}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DisplaySwitch",
+        "Guid":  "{192ede41-9175-4c86-ac02-9d003c9d43ab}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DistributedCOM",
+        "Guid":  "{1b562e86-b7aa-4131-badc-b6f3a001407e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DLNA-Namespace",
+        "Guid":  "{d38fb874-33e4-4dcf-911e-1b53bb106d53}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DNS-Client",
+        "Guid":  "{1c95126e-7eea-49a9-a3fe-a378b03ddb4d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Documents",
+        "Guid":  "{c89b991e-3b48-49b2-80d3-ac000dfc9749}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DomainJoinManagerTriggerProvider",
+        "Guid":  "{5b004607-1087-4f16-b10e-979685a8d131}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DotNETRuntime",
+        "Guid":  "{e13c0d23-ccbc-4e12-931b-d9cc2eee27e4}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DotNETRuntimeRundown",
+        "Guid":  "{a669021c-c450-4609-a035-5af59af4df18}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DriverFrameworks-KernelMode-Performance",
+        "Guid":  "{486a5c7c-11cc-46c5-9de7-43dfe0bb57c1}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DriverFrameworks-UserMode",
+        "Guid":  "{2e35aaeb-857f-4beb-a418-2e6c0e54d988}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DriverFrameworks-UserMode-Performance",
+        "Guid":  "{9fa5dd5d-999e-466a-8ca9-7b3a66f8882f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DriverProxy",
+        "Guid":  "{45c0e4cb-5120-5f84-0418-8a18ed702e9a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DSC",
+        "Guid":  "{50df9e12-a8c4-4939-b281-47e1325ba63e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DUI",
+        "Guid":  "{8360bd0f-a7dc-4391-91a7-a457c5c381e4}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DUSER",
+        "Guid":  "{8429e243-345b-47c1-8a91-2c94caf0daab}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DVD",
+        "Guid":  "{e18d0fca-9515-4232-98e4-89e456d8551b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Dwm-Api",
+        "Guid":  "{292a52c4-fa27-4461-b526-54a46430bd54}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Dwm-Compositor",
+        "Guid":  "{044a9015-d96c-5dd1-0199-72d258325298}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Dwm-Core",
+        "Guid":  "{9e9bba3c-2e38-40cb-99f4-9e8281425164}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Dwm-Dwm",
+        "Guid":  "{d29d56ea-4867-4221-b02e-cfd998834075}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Dwm-Redir",
+        "Guid":  "{7d99f6a4-1bec-4c09-9703-3aaa8148347f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Dwm-Udwm",
+        "Guid":  "{a2d1c713-093b-43a7-b445-d09370ec9f47}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DXGI",
+        "Guid":  "{ca11c036-0102-4a2d-a6ad-f03cfed5d3c9}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DXGIDebug",
+        "Guid":  "{f1ff64ef-faf3-5699-8e51-f6ec2fbd97d1}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DxgKrnl",
+        "Guid":  "{802ec45a-1e99-4b83-9920-87c98277ba9d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DxgKrnl-SysMm",
+        "Guid":  "{9de90b19-62c4-511d-a1c5-9e990812d18b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DXP",
+        "Guid":  "{728b8c72-0f0f-4071-9bcc-27cb3b6dacbe}"
+    },
+    {
+        "Name":  "Microsoft-Windows-DxpTaskSyncProvider",
+        "Guid":  "{271c5228-c3fe-4e47-831f-48c3652ce5ac}"
+    },
+    {
+        "Name":  "Microsoft-Windows-EapHost",
+        "Guid":  "{6eb8db94-fe96-443f-a366-5fe0cee7fb1c}"
+    },
+    {
+        "Name":  "Microsoft-Windows-EapMethods-RasChap",
+        "Guid":  "{58980f4b-bd39-4a3e-b344-492ed2254a4e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-EapMethods-RasTls",
+        "Guid":  "{9cc0413e-5717-4af5-82eb-6103d8707b45}"
+    },
+    {
+        "Name":  "Microsoft-Windows-EapMethods-Sim",
+        "Guid":  "{3d42a67d-9ce8-4284-b755-2550672b0ce0}"
+    },
+    {
+        "Name":  "Microsoft-Windows-EapMethods-Ttls",
+        "Guid":  "{d710d46c-235d-4798-ac20-9f83e1dcd557}"
+    },
+    {
+        "Name":  "Microsoft-Windows-EaseOfAccess",
+        "Guid":  "{74b4a4b1-2302-4768-ac5b-9773dd456b08}"
+    },
+    {
+        "Name":  "Microsoft-Windows-EDP-AppLearning",
+        "Guid":  "{9803daa0-81ba-483a-986c-f0e395b9f8d1}"
+    },
+    {
+        "Name":  "Microsoft-Windows-EDP-Audit-Regular",
+        "Guid":  "{50f99b2d-96d2-421f-be4c-222c4140da9f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-EDP-Audit-TCB",
+        "Guid":  "{287d59b6-79ba-4741-a08b-2fedeede6435}"
+    },
+    {
+        "Name":  "Microsoft-Windows-EFS",
+        "Guid":  "{3663a992-84be-40ea-bba9-90c7ed544222}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ELS-Hyphenation",
+        "Guid":  "{51aedb05-890b-4ade-8ba1-0ba14b8e8973}"
+    },
+    {
+        "Name":  "Microsoft-Windows-EndpointTriggerProvider",
+        "Guid":  "{92aab24d-d9a9-4a60-9f94-201fed3e3e88}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Energy-Estimation-Engine",
+        "Guid":  "{ddcc3826-a68a-4e0d-bcfd-9c06c27c6948}"
+    },
+    {
+        "Name":  "Microsoft-Windows-EnergyEfficiencyWizard",
+        "Guid":  "{1a772f65-be1e-4fc6-96bb-248e03fa60f5}"
+    },
+    {
+        "Name":  "Microsoft-Windows-EnhancedPhishingProtection-Events",
+        "Guid":  "{e8abc5fb-bf87-5462-278d-1b5e18775a8f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-EnhancedStorage-ClassDriver",
+        "Guid":  "{f6cf91be-e7d7-57d6-2a3d-278ca406d190}"
+    },
+    {
+        "Name":  "Microsoft-Windows-EnhancedStorage-EhStorTcgDrv",
+        "Guid":  "{aa3aa23b-bb6d-425a-b58c-1d7e37f5d02a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-EQoS",
+        "Guid":  "{54cb22ff-26b4-4393-a8c2-6b0715912c5f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ErrorReportingConsole",
+        "Guid":  "{017247f2-7e96-11dc-8314-0800200c9a66}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ESE",
+        "Guid":  "{478ea8a8-00be-4ba6-8e75-8b9dc7db9f78}"
+    },
+    {
+        "Name":  "Microsoft-Windows-EventCollector",
+        "Guid":  "{b977cf02-76f6-df84-cc1a-6a4b232322b6}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Eventlog",
+        "Guid":  "{fc65ddd8-d6ef-4962-83d5-6e5cfe9ce148}"
+    },
+    {
+        "Name":  "Microsoft-Windows-EventLog-WMIProvider",
+        "Guid":  "{35ac6ce8-6104-411d-976c-877f183d2d32}"
+    },
+    {
+        "Name":  "Microsoft-Windows-EventSystem",
+        "Guid":  "{899daace-4868-4295-afcd-9eb8fb497561}"
+    },
+    {
+        "Name":  "Microsoft-Windows-exFAT-SQM",
+        "Guid":  "{494e7a3d-8db9-4ec4-b43e-2844af6e38d6}"
+    },
+    {
+        "Name":  "Microsoft-Windows-FailoverClustering-Client",
+        "Guid":  "{a82fda5d-745f-409c-b0fe-18ae0678a0e0}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Fat-SQM",
+        "Guid":  "{3e59a529-b0b3-4a11-8129-9ffe6bb46eb9}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Fault-Tolerant-Heap",
+        "Guid":  "{6b93bf66-a922-4c11-a617-cf60d95c133d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-FeatureConfiguration",
+        "Guid":  "{c2f36562-a1e4-4bc3-a6f6-01a7adb643e8}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Feedback-Service-TriggerProvider",
+        "Guid":  "{e46eead8-0c54-4489-9898-8fa79d059e0e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-FileInfoMinifilter",
+        "Guid":  "{a319d300-015c-48be-acdb-47746e154751}"
+    },
+    {
+        "Name":  "Microsoft-Windows-FilterManager",
+        "Guid":  "{f3c5e28e-63f6-49c7-a204-e48a1bc4b09d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Firewall",
+        "Guid":  "{e595f735-b42a-494b-afcd-b68666945cd3}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Firewall-CPL",
+        "Guid":  "{546549be-9d63-46aa-9154-4f6eb9526378}"
+    },
+    {
+        "Name":  "Microsoft-Windows-FirstUX-PerfInstrumentation",
+        "Guid":  "{fbef8096-2ca3-4082-acde-dcfb47e96b72}"
+    },
+    {
+        "Name":  "Microsoft-Windows-FltMgrTrace_307b3ab035ae31a8462e37b4da258d1a",
+        "Guid":  "{307b3ab0-35ae-31a8-462e-37b4da258d1a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-FltMgrTrace_4d0b89d93def39952d07a17be000652e",
+        "Guid":  "{4d0b89d9-3def-3995-2d07-a17be000652e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-FltMgrTrace_d31e645ea71c307edb823c8f06985b81",
+        "Guid":  "{d31e645e-a71c-307e-db82-3c8f06985b81}"
+    },
+    {
+        "Name":  "Microsoft-Windows-FMS",
+        "Guid":  "{dea07764-0790-44de-b9c4-49677b17174f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Folder Redirection",
+        "Guid":  "{7d7b0c39-93f6-4100-bd96-4dda859652c5}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Forwarding",
+        "Guid":  "{699e309c-e782-4400-98c8-e21d162d7b7b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-FunctionDiscovery",
+        "Guid":  "{9db0fdb5-3b21-440e-a94b-63738a4be5de}"
+    },
+    {
+        "Name":  "Microsoft-Windows-FunctionDiscoveryHost",
+        "Guid":  "{538cbbad-4877-4eb2-b26e-7caee8f0f8cb}"
+    },
+    {
+        "Name":  "Microsoft-Windows-GenericRoaming",
+        "Guid":  "{4eacb4d0-263b-4b93-8cd6-778a278e5642}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Global Secure Access Client",
+        "Guid":  "{c4170aa9-da88-4800-806d-11efa20dba56}"
+    },
+    {
+        "Name":  "Microsoft-Windows-GPIO-ClassExtension",
+        "Guid":  "{55ab77f6-fa04-43ef-af45-688fbf500482}"
+    },
+    {
+        "Name":  "Microsoft-Windows-GPIOButtons",
+        "Guid":  "{e13ff11e-e989-4838-a9fa-38a4d13914cf}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Graphics-Capture-Server",
+        "Guid":  "{7d0cbd25-390e-524d-8c1e-2a8e846055c0}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Graphics-Printing",
+        "Guid":  "{e7aa32fb-77d0-477f-987d-7e83df1b7ed0}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Graphics-Printing3D",
+        "Guid":  "{be967569-e3c8-425b-ad0e-4f2c790b1848}"
+    },
+    {
+        "Name":  "Microsoft-Windows-GraphicsCapture-API",
+        "Guid":  "{347d2cdf-f126-56d7-12b1-69e27c655d7e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-GroupPolicy",
+        "Guid":  "{aea1b4fa-97d1-45f2-a64c-4d69fffd92c9}"
+    },
+    {
+        "Name":  "Microsoft-Windows-GroupPolicyTriggerProvider",
+        "Guid":  "{bd2f4252-5e1e-49fc-9a30-f3978ad89ee2}"
+    },
+    {
+        "Name":  "Microsoft-Windows-HAL",
+        "Guid":  "{63d1e632-95cc-4443-9312-af927761d52a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-HealthCenter",
+        "Guid":  "{588c5c5a-ffc5-44a2-9a7f-d5e8dbe6efd7}"
+    },
+    {
+        "Name":  "Microsoft-Windows-HealthCenterCPL",
+        "Guid":  "{959f1fac-7ca8-4ed1-89dc-cdfa7e093cb0}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Heap-Snapshot",
+        "Guid":  "{901d2afa-4ff6-46d7-8d0e-53645e1a47f5}"
+    },
+    {
+        "Name":  "Microsoft-Windows-HelloForBusiness",
+        "Guid":  "{906b8a99-63ce-58d7-86ab-10989bbd5567}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Help",
+        "Guid":  "{de513a55-c345-438b-9a74-e18cac5c5cc5}"
+    },
+    {
+        "Name":  "Microsoft-Windows-hidcfu",
+        "Guid":  "{7628e972-6d6f-4974-b58f-6428622ec09a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-HomeGroup-ControlPanel",
+        "Guid":  "{134ea407-755d-4a93-b8a6-f290cd155023}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Hotpatch-Monitor",
+        "Guid":  "{57eaf242-3772-533c-9fd2-29ed95606d14}"
+    },
+    {
+        "Name":  "Microsoft-Windows-HotspotAuth",
+        "Guid":  "{de095dbe-8667-4168-94c2-48ca61665aca}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Http-SQM-Provider",
+        "Guid":  "{f5344219-87a4-4399-b14a-e59cd118abb8}"
+    },
+    {
+        "Name":  "Microsoft-Windows-HttpEvent",
+        "Guid":  "{7b6bc78c-898b-4170-bbf8-1a469ea43fc5}"
+    },
+    {
+        "Name":  "Microsoft-Windows-HttpLog",
+        "Guid":  "{c42a2738-2333-40a5-a32f-6acc36449dcc}"
+    },
+    {
+        "Name":  "Microsoft-Windows-HttpService",
+        "Guid":  "{dd5ef90a-6398-47a4-ad34-4dcecdef795f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Hyper-V-ComputeLib",
+        "Guid":  "{af7fd3a7-b248-460c-a9f5-fec39ef8468c}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Hyper-V-Guest-Drivers-Dynamic-Memory",
+        "Guid":  "{ba2ffb5c-e20a-4fb9-91b4-45f61b4b66a0}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Hyper-V-Guest-Drivers-Vmbus",
+        "Guid":  "{f2e2ce31-0e8a-4e46-a03b-2e0fe97e93c2}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Hyper-V-Hypervisor",
+        "Guid":  "{52fc89f8-995e-434c-a91e-199986449890}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Hyper-V-KMCL-Child",
+        "Guid":  "{16d90d71-caca-5cd9-a618-8210d93015f3}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Hyper-V-Netvsc",
+        "Guid":  "{152fbe4b-c7ad-4f68-bada-a4fcc1464f6c}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Hyper-V-VID",
+        "Guid":  "{5931d877-4860-4ee7-a95c-610a5f0d1407}"
+    },
+    {
+        "Name":  "Microsoft-Windows-IdCtrls",
+        "Guid":  "{6d7662a9-034e-4b1f-a167-67819c401632}"
+    },
+    {
+        "Name":  "Microsoft-Windows-IdleTriggerProvider",
+        "Guid":  "{9e03f75a-bcbe-428a-8f3c-d46f2a444935}"
+    },
+    {
+        "Name":  "Microsoft-Windows-IE-F12-Provider",
+        "Guid":  "{d17fff2f-392d-478c-a41d-737a216eb2a4}"
+    },
+    {
+        "Name":  "Microsoft-Windows-IE-SmartScreen",
+        "Guid":  "{52f82079-1974-4c67-81da-807b892778bb}"
+    },
+    {
+        "Name":  "Microsoft-Windows-IME-Broker",
+        "Guid":  "{e2c15fd7-8924-4c8c-8cfe-da0be539ce27}"
+    },
+    {
+        "Name":  "Microsoft-Windows-IME-CandidateUI",
+        "Guid":  "{7c4117b1-ed82-4f47-b2ca-29e4e25719c7}"
+    },
+    {
+        "Name":  "Microsoft-Windows-IME-CustomerFeedbackManager",
+        "Guid":  "{e2242b38-9453-42fd-b446-00746e76eb82}"
+    },
+    {
+        "Name":  "Microsoft-Windows-IME-CustomerFeedbackManagerUI",
+        "Guid":  "{1b734b40-a458-4b81-954f-ad7c9461bed8}"
+    },
+    {
+        "Name":  "Microsoft-Windows-IME-JPAPI",
+        "Guid":  "{31bcac7f-4ab8-47a1-b73a-a161ee68d585}"
+    },
+    {
+        "Name":  "Microsoft-Windows-IME-JPLMP",
+        "Guid":  "{dbc388bc-89c2-4fe0-b71f-6e4881fb575c}"
+    },
+    {
+        "Name":  "Microsoft-Windows-IME-JPPRED",
+        "Guid":  "{3ad571f3-bdae-4942-8733-4d1b85870a1e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-IME-JPSetting",
+        "Guid":  "{14371053-1813-471a-9510-1cf1d0a055a8}"
+    },
+    {
+        "Name":  "Microsoft-Windows-IME-JPTIP",
+        "Guid":  "{8c8a69ad-cc89-481f-bbad-fd95b5006256}"
+    },
+    {
+        "Name":  "Microsoft-Windows-IME-KRAPI",
+        "Guid":  "{7562948e-2671-4dda-8f8f-bf945ef984a1}"
+    },
+    {
+        "Name":  "Microsoft-Windows-IME-KRTIP",
+        "Guid":  "{e013e74b-97f4-4e1c-a120-596e5629ecfe}"
+    },
+    {
+        "Name":  "Microsoft-Windows-IME-OEDCompiler",
+        "Guid":  "{fd44a6e7-580f-4a9c-83d9-d820b7d3a033}"
+    },
+    {
+        "Name":  "Microsoft-Windows-IME-TCCORE",
+        "Guid":  "{f67b2345-47fa-4721-a6fb-fe08110eecf7}"
+    },
+    {
+        "Name":  "Microsoft-Windows-IME-TCTIP",
+        "Guid":  "{d5268c02-6f51-436f-983b-74f2efbfaf3a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-IME-TIP",
+        "Guid":  "{bdd4b92e-19ef-4497-9c4a-e10e7fd2e227}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Immersive-Shell",
+        "Guid":  "{315a8872-923e-4ea2-9889-33cd4754bf64}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Immersive-Shell-API",
+        "Guid":  "{5f0e257f-c224-43e5-9555-2adcb8540a58}"
+    },
+    {
+        "Name":  "Microsoft-Windows-IndirectDisplays-ClassExtension-Events",
+        "Guid":  "{966cd1c0-3f69-42ad-9877-517dce8462b4}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Input-HIDCLASS",
+        "Guid":  "{6465da78-e7a0-4f39-b084-8f53c7c30dc6}"
+    },
+    {
+        "Name":  "Microsoft-Windows-InputSwitch",
+        "Guid":  "{bb8e7234-bbf4-48a7-8741-339206ed1dfb}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Install-Agent",
+        "Guid":  "{e0c6f6de-258a-50e0-ac1a-103482d118bc}"
+    },
+    {
+        "Name":  "Microsoft-Windows-International-RegionalOptionsControlPanel",
+        "Guid":  "{c6bf6832-f7bd-4151-ac21-753ce4707453}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Iphlpsvc",
+        "Guid":  "{66a5c15c-4f8e-4044-bf6e-71d896038977}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Iphlpsvc-Trace",
+        "Guid":  "{6600e712-c3b6-44a2-8a48-935c511f28c8}"
+    },
+    {
+        "Name":  "Microsoft-Windows-IPMIProvider",
+        "Guid":  "{2a45d52e-bbf3-4843-8e18-b356ed5f6a65}"
+    },
+    {
+        "Name":  "Microsoft-Windows-IPNAT",
+        "Guid":  "{a67075c2-3e39-4109-b6cd-6d750058a732}"
+    },
+    {
+        "Name":  "Microsoft-Windows-IPSEC-SRV",
+        "Guid":  "{c91ef675-842f-4fcf-a5c9-6ea93f2e4f8b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-IPxlatCfg",
+        "Guid":  "{3e5ac668-af52-4c15-b99b-a3e7a6616ebd}"
+    },
+    {
+        "Name":  "Microsoft-Windows-IsolatedUserMode",
+        "Guid":  "{73a33ab2-1966-4999-8add-868c41415269}"
+    },
+    {
+        "Name":  "Microsoft-Windows-KdsSvc",
+        "Guid":  "{89203471-d554-47d4-bde4-7552ec219999}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kerberos-Local-Key-Distribution-Center",
+        "Guid":  "{57c834d7-0368-5d1b-8f01-1e2f89f0000d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-Acpi",
+        "Guid":  "{c514638f-7723-485b-bcfc-96565d735d4a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-AppCompat",
+        "Guid":  "{16a1adc1-9b7f-4cd9-94b3-d8296ab1b130}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-Audit-API-Calls",
+        "Guid":  "{e02a841c-75a3-4fa7-afc8-ae09cf9b7f23}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-Boot",
+        "Guid":  "{15ca44ff-4d7a-4baa-bba5-0998955e531e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-BootDiagnostics",
+        "Guid":  "{96ac7637-5950-4a30-b8f7-e07e8e5734c1}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-Cache",
+        "Guid":  "{a2d34bf1-70ab-5b21-c819-5a0dd42748fd}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-CPU-Partition",
+        "Guid":  "{3a493674-937f-5a23-f598-d56b9bd10d28}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-CPU-Starvation",
+        "Guid":  "{7f54ca8a-6c72-5cbc-b96f-d0ef905b8bce}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-Disk",
+        "Guid":  "{c7bde69a-e1e0-4177-b6ef-283ad1525271}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-Dump",
+        "Guid":  "{17d2a329-4539-5f4d-3435-f510634ce3b9}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-EventTracing",
+        "Guid":  "{b675ec37-bdb6-4648-bc92-f3fdc74d3ca2}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-File",
+        "Guid":  "{edd08927-9cc4-4e65-b970-c2560fb5c289}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-General",
+        "Guid":  "{a68ca8b7-004f-d7b6-a698-07e2de0f1f5d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-Interrupt-Steering",
+        "Guid":  "{951b41ea-c830-44dc-a671-e2c9958809b8}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-IO",
+        "Guid":  "{abf1f586-2e50-4ba8-928d-49044e6f0db7}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-IoTrace",
+        "Guid":  "{a103cabd-8242-4a93-8df5-1cdf3b3f26a6}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-Licensing-StartServiceTrigger",
+        "Guid":  "{f5528ada-be5f-4f14-8aef-a95de7281161}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-LicensingSqm",
+        "Guid":  "{a0af438f-4431-41cb-a675-a265050ee947}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-LiveDump",
+        "Guid":  "{bef2aa8e-81cd-11e2-a7bb-5eac6188709b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-Memory",
+        "Guid":  "{d1d93ef7-e1f2-4f45-9943-03d245fe6c00}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-Network",
+        "Guid":  "{7dd42a49-5329-4832-8dfd-43d979153a88}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-Pep",
+        "Guid":  "{5412704e-b2e1-4624-8ffd-55777b8f7373}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-PnP",
+        "Guid":  "{9c205a39-1250-487d-abd7-e831c6290539}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-PnP-Rundown",
+        "Guid":  "{b3a0c2c8-83bb-4ddf-9f8d-4b22d3c38ad7}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-Power",
+        "Guid":  "{331c3b3a-2005-44c2-ac5e-77220c37d6b4}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-PowerTrigger",
+        "Guid":  "{aa1f73e8-15fd-45d2-abfd-e7f64f78eb11}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-Prefetch",
+        "Guid":  "{5322d61a-9efa-4bc3-a3f9-14be95c144f8}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-Prm",
+        "Guid":  "{b931ed29-66f4-576e-0579-0b8818a5dc6b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-Process",
+        "Guid":  "{22fb2cd6-0e7b-422b-a0c7-2fad1fd0e716}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-Processor-Power",
+        "Guid":  "{0f67e49f-fe51-4e9f-b490-6f2948cc6027}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-Registry",
+        "Guid":  "{70eb4f03-c1de-4f73-a051-33d13d5413bd}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-ShimEngine",
+        "Guid":  "{0bf2fb94-7b60-4b4d-9766-e82f658df540}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-StoreMgr",
+        "Guid":  "{a6ad76e3-867a-4635-91b3-4904ba6374d7}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-Tm",
+        "Guid":  "{4cec9c95-a65f-4591-b5c4-30100e51d870}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-Tm-Trigger",
+        "Guid":  "{ce20d1c3-a247-4c41-bcb8-3c7f52c8b805}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-WDI",
+        "Guid":  "{2ff3e6b7-cb90-4700-9621-443f389734ed}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-WHEA",
+        "Guid":  "{7b563579-53c8-44e7-8236-0f87b9fe6594}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-Work-Queue",
+        "Guid":  "{5071a971-a047-58c9-ffda-4df1788ef21a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-WSService-StartServiceTrigger",
+        "Guid":  "{3635d4b6-77e3-4375-8124-d545b7149337}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Kernel-XDV",
+        "Guid":  "{f029ac39-38f0-4a40-b7de-404d244004cb}"
+    },
+    {
+        "Name":  "Microsoft-Windows-KernelStreaming",
+        "Guid":  "{548c4417-ce45-41ff-99dd-528f01ce0fe1}"
+    },
+    {
+        "Name":  "Microsoft-Windows-KeyboardFilter",
+        "Guid":  "{84de80eb-86e8-4ff6-85a6-9319abd578a4}"
+    },
+    {
+        "Name":  "Microsoft-Windows-KnownFolders",
+        "Guid":  "{8939299f-2315-4c5c-9b91-abb86aa0627d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-L2NACP",
+        "Guid":  "{85fe7609-ff4a-48e9-9d50-12918e43e1da}"
+    },
+    {
+        "Name":  "Microsoft-Windows-LanGPA",
+        "Guid":  "{cb070027-1534-4cf3-98ea-b9751f508376}"
+    },
+    {
+        "Name":  "Microsoft-Windows-LanguagePackSetup",
+        "Guid":  "{7237fff9-a08a-4804-9c79-4a8704b70b87}"
+    },
+    {
+        "Name":  "Microsoft-Windows-LAPS",
+        "Guid":  "{4fcc72a9-d7ca-5dd2-8d34-6f41a0cdb7e0}"
+    },
+    {
+        "Name":  "Microsoft-Windows-LDAP-Client",
+        "Guid":  "{099614a5-5dd7-4788-8bc9-e29f43db28fc}"
+    },
+    {
+        "Name":  "Microsoft-Windows-LimitsManagement",
+        "Guid":  "{73aa0094-facb-4aeb-bd1d-a7b98dd5c799}"
+    },
+    {
+        "Name":  "Microsoft-Windows-LinkLayerDiscoveryProtocol",
+        "Guid":  "{dcbfb8f0-cd19-4f1c-a27d-23ac706ded72}"
+    },
+    {
+        "Name":  "Microsoft-Windows-LiveId",
+        "Guid":  "{05f02597-fe85-4e67-8542-69567ab8fd4f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-LLTD-Mapper",
+        "Guid":  "{ccc64809-6b5f-4c1b-ab39-336904da9b3b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-LLTD-MapperIO",
+        "Guid":  "{0741c7be-daac-4a5b-b00a-4bd9a2d89d0e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-LLTD-Responder",
+        "Guid":  "{e159fc63-02fe-42f3-a234-028b9b8561cb}"
+    },
+    {
+        "Name":  "Microsoft-Windows-LocationServiceProvider",
+        "Guid":  "{8e889f0c-7d54-52b3-e4ae-2c8b27a482c2}"
+    },
+    {
+        "Name":  "Microsoft-Windows-LUA",
+        "Guid":  "{93c05d69-51a3-485e-877f-1806a8731346}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Magnification",
+        "Guid":  "{c882ff1d-7585-4b33-b135-95c577179137}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Management-SecureAssessment",
+        "Guid":  "{a329cf81-57ec-46ed-ab7c-261a52b0754a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MapControls",
+        "Guid":  "{acd88d21-e1d4-4483-b974-0c1da66cc529}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MCCS-AccountAccessor",
+        "Guid":  "{4025d192-273d-42ec-bdf8-940ec34eedca}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MCCS-AccountsHost",
+        "Guid":  "{04eccf8e-8490-4ad1-8ed5-0ae7750e69e6}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MCCS-AccountsRT",
+        "Guid":  "{dd2743c6-1722-4674-9f6f-c80044c4232e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MCCS-ActiveSyncCsp",
+        "Guid":  "{602a0873-9bde-48b3-b6b7-277035293458}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MCCS-ActiveSyncProvider",
+        "Guid":  "{4a155f10-25ad-47e6-aba8-2c4f5eee7846}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MCCS-DavSyncProvider",
+        "Guid":  "{5d86c4e2-8fcd-48d7-a713-9a04609c0189}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MCCS-EngineShared",
+        "Guid":  "{bf460fc6-45c5-4119-add3-e361a6e7d5ac}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MCCS-InternetMail",
+        "Guid":  "{618473bc-8eef-4868-adff-a1b640b06411}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MCCS-InternetMailCsp",
+        "Guid":  "{bec5e7a4-0527-42e8-8174-fabde799ad7f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MCCS-NetworkHelper",
+        "Guid":  "{25b99a4c-2f80-4fcd-982d-69cd1f77badf}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MCCS-SyncController",
+        "Guid":  "{7fcb9791-f481-46d1-846e-2eb6f003c4d3}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MCCS-SyncUtil",
+        "Guid":  "{dca074ce-547c-4595-ae90-56229b8e3bd9}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Media-Protection-PlayReady-Performance",
+        "Guid":  "{d2402fde-7526-5a7b-501a-25dc7c9c282e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Media-Streaming",
+        "Guid":  "{982824e5-e446-46ae-bc74-836401ffb7b6}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MediaEngine",
+        "Guid":  "{8f2048e0-f260-4f57-a8d1-932376291682}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MediaFoundation-MFCaptureEngine",
+        "Guid":  "{b8197c10-845f-40ca-82ab-9341e98cfc2b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MediaFoundation-MFReadWrite",
+        "Guid":  "{4b7eac67-fc53-448c-a49d-7cc6db524da7}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MediaFoundation-MSVProc",
+        "Guid":  "{a4112d1a-6dfa-476e-bb75-e350d24934e1}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MediaFoundation-Performance",
+        "Guid":  "{f404b94e-27e0-4384-bfe8-1d8d390b0aa3}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MediaFoundation-Performance-Core",
+        "Guid":  "{b20e65ac-c905-4014-8f78-1b6a508142eb}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MediaFoundation-Platform",
+        "Guid":  "{bc97b970-d001-482f-8745-b8d7d5759f99}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MediaFoundation-PlayAPI",
+        "Guid":  "{b65471e1-019d-436f-bc38-e15fa8e87f53}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MemoryDiagnostics-Results",
+        "Guid":  "{5f92bc59-248f-4111-86a9-e393e12c6139}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MF",
+        "Guid":  "{a7364e1a-894f-4b3d-a930-2ed9c8c4c811}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MF-FrameServer",
+        "Guid":  "{9e22a3ed-7b32-4b99-b6c2-21dd6ace01e1}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MF-MFDshowReverseBridge",
+        "Guid":  "{aa1105fa-5af2-5fd6-89b5-002421c5e2ca}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MFH264Enc",
+        "Guid":  "{2a49de31-8a5b-4d3a-a904-7fc7409ae90d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Minstore",
+        "Guid":  "{55b24b1d-dd9c-44c0-ba77-4f749f1b6976}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MMCSS",
+        "Guid":  "{36008301-e154-466c-acec-5f4cbd6b4694}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Mobile-Broadband-Experience-Api",
+        "Guid":  "{2e2bbb16-0c36-4b9b-a567-40924a199fd5}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Mobile-Broadband-Experience-Api-Internal",
+        "Guid":  "{2aabd03b-f48b-419a-b4ce-7a14403f4a46}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Mobile-Broadband-Experience-SmsApi",
+        "Guid":  "{0ff1c24b-7f05-45c0-abdc-3c8521be4f62}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MobilityCenter",
+        "Guid":  "{91f42016-0b4e-4a4b-9bbb-825d06cbed35}"
+    },
+    {
+        "Name":  "Microsoft-Windows-mobsync",
+        "Guid":  "{b44aec44-38f4-4b59-8df3-10306abf19b2}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ModernDeployment-Diagnostics-Provider",
+        "Guid":  "{bab3ad92-fb96-5902-450b-b8421bdec7bd}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MosHost",
+        "Guid":  "{d116f0f2-a6d6-4f1f-bdda-0c88c8d1f2e9}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MountMgr",
+        "Guid":  "{e3bac9f8-27be-4823-8d7f-1cc320c05fa7}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MP4SDECD",
+        "Guid":  "{7f2bd991-ae93-454a-b219-0bc23f02262a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MPEG2_DLNA-Encoder",
+        "Guid":  "{86efff39-2bdd-4efd-bd0b-853d71b2a9dc}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Mprddm",
+        "Guid":  "{3a5bef13-d0f7-4e7f-9ec8-5e707df711d0}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MPRMSG",
+        "Guid":  "{f2c628ae-d26c-4352-9c45-74754e1e2f9f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MPS-CLNT",
+        "Guid":  "{37945dc2-899b-44d1-b79c-dd4a9e57ff98}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MPS-DRV",
+        "Guid":  "{50bd1bfd-936b-4db3-86be-e25b96c25898}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MPS-SRV",
+        "Guid":  "{5444519f-2484-45a2-991e-953e4b54c8e0}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MPTF",
+        "Guid":  "{ea6c5bea-f5cc-56a4-e146-671bf483d53b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MSDTC",
+        "Guid":  "{719be4ed-e9bc-4dd8-a7cf-c85ce8e4975d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MSDTC 2",
+        "Guid":  "{5d9e0020-3761-4f36-90c8-38ce6511bd12}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MSDTC Client",
+        "Guid":  "{7a67066e-193f-4d3a-82d3-322fee5259de}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MSDTC Client 2",
+        "Guid":  "{155cb334-3d7f-4ff1-b107-df8afc3c0363}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MSFTEDIT",
+        "Guid":  "{9640427c-7d03-4331-b8ee-fb77625bf381}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MsiServer",
+        "Guid":  "{17e92e2a-3d08-413e-baeb-a79a262bf486}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MSMPEG2ADEC",
+        "Guid":  "{51311de3-d55e-454a-9c58-43dc7b4c01d2}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MSMPEG2VDEC",
+        "Guid":  "{ae5cf422-786a-476a-ac96-753b05877c99}"
+    },
+    {
+        "Name":  "Microsoft-Windows-msmpeg2venc",
+        "Guid":  "{d17b213a-c505-49c9-98cc-734253ef65d4}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MUI",
+        "Guid":  "{a8a1f2f6-a13a-45e9-b1fe-3419569e5ef2}"
+    },
+    {
+        "Name":  "Microsoft-Windows-MultiTierMemory-CxlType3",
+        "Guid":  "{8305d25b-17bd-5e51-6788-718a4a4599a2}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Narrator",
+        "Guid":  "{835b79e2-e76a-44c4-9885-26ad122d3b4d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Ncasvc",
+        "Guid":  "{126ded58-a28d-4113-8e7a-59d7444b2af1}"
+    },
+    {
+        "Name":  "Microsoft-Windows-NcdAutoSetup",
+        "Guid":  "{ec23f986-ae2d-4269-b52f-4e20765c1a94}"
+    },
+    {
+        "Name":  "Microsoft-Windows-NCSI",
+        "Guid":  "{314de49f-ce63-4779-ba2b-d616f6963a88}"
+    },
+    {
+        "Name":  "Microsoft-Windows-NDF-HelperClassDiscovery",
+        "Guid":  "{fc3bc8a7-2f61-449c-a8b4-22ac22058f92}"
+    },
+    {
+        "Name":  "Microsoft-Windows-NDIS",
+        "Guid":  "{cdead503-17f5-4a3e-b7ae-df8cc2902eb9}"
+    },
+    {
+        "Name":  "Microsoft-Windows-NDIS-PacketCapture",
+        "Guid":  "{2ed6006e-4729-4609-b423-3ee7bcd678ef}"
+    },
+    {
+        "Name":  "Microsoft-Windows-NdisImPlatformEventProvider",
+        "Guid":  "{11c5d8ad-756a-42c2-8087-eb1b4a72a846}"
+    },
+    {
+        "Name":  "Microsoft-Windows-NdisImPlatformSysEvtProvider",
+        "Guid":  "{62de9e48-90c6-4755-8813-6a7d655b0802}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Ndu",
+        "Guid":  "{df271536-4298-45e1-b0f2-e88f78619c5d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-NetAdapterCim-Diag",
+        "Guid":  "{6cc2405d-817f-4886-886f-d5d1643210f0}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Netshell",
+        "Guid":  "{af2e340c-0743-4f5a-b2d3-2f7225d215de}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Network-and-Sharing-Center",
+        "Guid":  "{6a502821-ab44-40c8-b32f-37315d9d52e0}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Network-Connection-Broker",
+        "Guid":  "{3eb875eb-8f4a-4800-a00b-e484c97d7551}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Network-ExecutionContext",
+        "Guid":  "{0075e1ab-e1d1-5d1f-35f5-da36fb4f41b1}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Network-Setup",
+        "Guid":  "{a111f1c2-5923-47c0-9a68-d0bafb577901}"
+    },
+    {
+        "Name":  "Microsoft-Windows-NetworkBridge",
+        "Guid":  "{a67075c2-3e39-4109-b6cd-6d750058a731}"
+    },
+    {
+        "Name":  "Microsoft-Windows-NetworkConnectivityStatus",
+        "Guid":  "{014de49f-ce63-4779-ba2b-d616f6963a87}"
+    },
+    {
+        "Name":  "Microsoft-Windows-NetworkGCW",
+        "Guid":  "{be932b00-0f8e-4386-ab89-873f7d0274aa}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Networking-Correlation",
+        "Guid":  "{83ed54f0-4d48-4e45-b16e-726ffd1fa4af}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Networking-RealTimeCommunication",
+        "Guid":  "{1e39b4ce-d1e6-46ce-b65b-5ab05d6cc266}"
+    },
+    {
+        "Name":  "Microsoft-Windows-NetworkManagerTriggerProvider",
+        "Guid":  "{9b307223-4e4d-4bf5-9be8-995cd8e7420b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-NetworkProfile",
+        "Guid":  "{fbcfac3f-8459-419f-8e48-1f0b49cdb85e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-NetworkProfileTriggerProvider",
+        "Guid":  "{fbcfac3f-8460-419f-8e48-1f0b49cdb85e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-NetworkProvider",
+        "Guid":  "{1e9a4978-78c2-441e-8858-75b5d1326bc5}"
+    },
+    {
+        "Name":  "Microsoft-Windows-NetworkProvisioning",
+        "Guid":  "{93a19ab3-fb2c-46eb-91ef-56b0a318b983}"
+    },
+    {
+        "Name":  "Microsoft-Windows-NetworkSecurity",
+        "Guid":  "{7b702970-90bc-4584-8b20-c0799086ee5a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-NlaSvc",
+        "Guid":  "{63b530f8-29c9-4880-a5b4-b8179096e7b8}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Ntfs",
+        "Guid":  "{3ff37a1c-a68d-4d6e-8c9b-f79e8b16c482}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Ntfs-UBPM",
+        "Guid":  "{8e6a5303-a4ce-498f-afdb-e03a8a82b077}"
+    },
+    {
+        "Name":  "Microsoft-Windows-NtfsLog_38cd4a5ae98f33938fa5234e6817e23d",
+        "Guid":  "{38cd4a5a-e98f-3393-8fa5-234e6817e23d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-NtfsLog_45b301801894333ded2033e33e5c6afc",
+        "Guid":  "{45b30180-1894-333d-ed20-33e33e5c6afc}"
+    },
+    {
+        "Name":  "Microsoft-Windows-NtfsLog_96e877f6340c3ffb9a5394694a1aedf4",
+        "Guid":  "{96e877f6-340c-3ffb-9a53-94694a1aedf4}"
+    },
+    {
+        "Name":  "Microsoft-Windows-NtfsLog_c83e0889d8d138db51a3b5e3960eb478",
+        "Guid":  "{c83e0889-d8d1-38db-51a3-b5e3960eb478}"
+    },
+    {
+        "Name":  "Microsoft-Windows-NtfsLog_d29e5b696edd3b71be0abb027a654f9e",
+        "Guid":  "{d29e5b69-6edd-3b71-be0a-bb027a654f9e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-NTLM",
+        "Guid":  "{ac43300d-5fcc-4800-8e99-1bd3f85f0320}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ntshrui",
+        "Guid":  "{676f167f-f72c-446e-a498-eda43319a5e3}"
+    },
+    {
+        "Name":  "Microsoft-Windows-NvmeDisk",
+        "Guid":  "{9799276c-fb04-47e8-845e-36946045c218}"
+    },
+    {
+        "Name":  "Microsoft-Windows-NWiFi",
+        "Guid":  "{0bd3506a-9030-4f76-9b88-3e8fe1f7cfb6}"
+    },
+    {
+        "Name":  "Microsoft-Windows-OfflineFiles",
+        "Guid":  "{95353826-4fbe-41d4-9c42-f521c6e86360}"
+    },
+    {
+        "Name":  "Microsoft-Windows-OfflineFiles-CscApi",
+        "Guid":  "{19ee4cf9-5322-4843-b0d8-bab81be4e81e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-OfflineFiles-CscDclUser",
+        "Guid":  "{d5418619-c167-44d9-bc36-765beb5d55f3}"
+    },
+    {
+        "Name":  "Microsoft-Windows-OfflineFiles-CscFastSync",
+        "Guid":  "{791cd79c-65b5-48a3-804c-786048994f47}"
+    },
+    {
+        "Name":  "Microsoft-Windows-OfflineFiles-CscNetApi",
+        "Guid":  "{361f227c-aa14-4d19-9007-0c8d1a8a541b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-OfflineFiles-CscService",
+        "Guid":  "{89d89015-c0df-414c-bc48-f50e114832bc}"
+    },
+    {
+        "Name":  "Microsoft-Windows-OfflineFiles-CscUM",
+        "Guid":  "{5e23b838-5b71-47e6-b123-6fe02ef573ef}"
+    },
+    {
+        "Name":  "Microsoft-Windows-OLE-Perf",
+        "Guid":  "{84958368-7da7-49a0-b33d-07fabb879626}"
+    },
+    {
+        "Name":  "Microsoft-Windows-OLEACC",
+        "Guid":  "{19d2c934-ee9b-49e5-aaeb-9cce721d2c65}"
+    },
+    {
+        "Name":  "Microsoft-Windows-OneX",
+        "Guid":  "{ab0d8ef9-866d-4d39-b83f-453f3b8f6325}"
+    },
+    {
+        "Name":  "Microsoft-Windows-OOBE-FirstLogonAnim",
+        "Guid":  "{2d4c0c5e-6704-493a-a44b-f5add4fc9283}"
+    },
+    {
+        "Name":  "Microsoft-Windows-OOBE-Machine-Core",
+        "Guid":  "{ec276cde-2a17-473c-a010-2ff78d5426d2}"
+    },
+    {
+        "Name":  "Microsoft-Windows-OOBE-Machine-DUI",
+        "Guid":  "{f5dbaa02-15d6-4644-a784-7032d508bf64}"
+    },
+    {
+        "Name":  "Microsoft-Windows-OobeLdr",
+        "Guid":  "{75ebc33e-8670-4eb6-b535-3b9d6bb222fd}"
+    },
+    {
+        "Name":  "Microsoft-Windows-osk",
+        "Guid":  "{4f768be8-9c69-4bbc-87fc-95291d3f9d0c}"
+    },
+    {
+        "Name":  "Microsoft-Windows-OtpCredentialProviderEvt",
+        "Guid":  "{5cad485a-210f-4c16-80c5-f892de74e28d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-OverlayFilter",
+        "Guid":  "{46c78e5c-a213-46a8-8a6b-622f6916201d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ParentalControls",
+        "Guid":  "{01090065-b467-4503-9b28-533766761087}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Partition",
+        "Guid":  "{412bdff2-a8c4-470d-8f33-63fe0d8c20e2}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PCI",
+        "Guid":  "{1a9443d4-b099-44d6-8eb1-829b9c2fe290}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PCRPF",
+        "Guid":  "{5909c524-5e57-5275-803f-ddb7b74c52f2}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PDC",
+        "Guid":  "{a6bf0deb-3659-40ad-9f81-e25af62ce3c7}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PDFReader",
+        "Guid":  "{dfa86faa-2c55-4140-bff9-5cc586217a7b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PDH",
+        "Guid":  "{04d66358-c4a1-419b-8023-23b73902de2c}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PerceptionRuntime",
+        "Guid":  "{add0de40-32b0-4b58-9d5e-938b2f5c1d1f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PerceptionSensorDataService",
+        "Guid":  "{85be49ea-38f1-4547-a604-80060202fb27}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PerfDisk",
+        "Guid":  "{7f9d83de-8abb-457f-98e8-4ad161449ecc}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Perflib",
+        "Guid":  "{13b197bd-7cee-4b4e-8dd0-59314ce374ce}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PerfNet",
+        "Guid":  "{cab2b8a5-49b9-4eec-b1b0-fac21da05a3b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Performance-Recorder-Control",
+        "Guid":  "{36b6f488-aad7-48c2-afe3-d4ec2c8b46fa}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PerfOS",
+        "Guid":  "{f82fb576-e941-4956-a2c7-a0cf83f6450a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PerfProc",
+        "Guid":  "{72d211e1-4c54-4a93-9520-4901681b2271}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PersistentMemory-Nvdimm",
+        "Guid":  "{a7f2235f-be51-51ed-decf-f4498812a9a2}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PersistentMemory-PmemDisk",
+        "Guid":  "{0fa2ee03-1feb-5057-3bb3-eb25521b8482}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PersistentMemory-Scmbus",
+        "Guid":  "{c03715ce-ea6f-5b67-4449-da1d1e1afeb8}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Photo-Image-Codec",
+        "Guid":  "{be3a31ea-aa6c-4196-9dcc-9ca13a49e09f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PhotoAcq",
+        "Guid":  "{76cfa528-b26e-b773-62d0-9588270442a6}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PktMon",
+        "Guid":  "{4d4f80d9-c8bd-4d73-bb5b-19c90402c5ac}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PlayToManager",
+        "Guid":  "{bb311100-2d9f-4cd3-b2d6-f4ea3839c548}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PortableDeviceStatusProvider",
+        "Guid":  "{8c63b5a5-b484-4381-892d-edd424582df7}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PortableDeviceSyncProvider",
+        "Guid":  "{a3e1697b-a12c-46b9-84d1-7ffe73c4b678}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Power-CAD",
+        "Guid":  "{daba4d32-cc40-4266-bb95-c30344dbc680}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Power-Meter-Polling",
+        "Guid":  "{306c4e0b-e148-543d-315b-c618eb93157c}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Power-Troubleshooter",
+        "Guid":  "{cdc05e28-c449-49c6-b9d2-88cf761644df}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PowerCfg",
+        "Guid":  "{9f0c4ea8-ec01-4200-a00d-b9701cbea5d8}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PowerCpl",
+        "Guid":  "{b1f90b27-4551-49d6-b2bd-dfc6453762a6}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PowerShell",
+        "Guid":  "{a0c1853b-5c40-4b15-8766-3cf1c58f985a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PowerShell-DesiredStateConfiguration-FileDownloadManager",
+        "Guid":  "{aaf67066-0bf8-469f-ab76-275590c434ee}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PrintBRM",
+        "Guid":  "{cf3f502e-b40d-4071-996f-00981edf938e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PrintService",
+        "Guid":  "{747ef6fd-e535-4d16-b510-42c90f6873a1}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PrintService-USBMon",
+        "Guid":  "{7f812073-b28d-4afc-9ced-b8010f914ef6}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Privacy-Auditing",
+        "Guid":  "{d67fbb76-d18a-5ae3-24a3-8c1db52d6c62}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Privacy-Auditing-Activity-History-Privacy-Settings",
+        "Guid":  "{63dd5dfb-2488-5e1f-7895-d49ff5bc7125}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Privacy-Auditing-CPSS",
+        "Guid":  "{15f4cd44-ca53-5422-db17-4e76821b5a69}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Privacy-Auditing-DiagnosticData",
+        "Guid":  "{d3610dca-4501-5a5d-21a7-30ca91130711}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Privacy-Auditing-OneSettingsClient",
+        "Guid":  "{23f0f2c7-c77c-51ee-0ac1-5ac7796a85df}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Privacy-Auditing-PermissiveLearningMode",
+        "Guid":  "{811a1ddb-2e69-5f25-adc0-4b186170e760}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Privacy-Auditing-TailoredExperiences",
+        "Guid":  "{1bd672b8-445e-53fc-35ef-09f53672c385}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ProcessExitMonitor",
+        "Guid":  "{fd771d53-8492-4057-8e35-8c02813af49b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Processor-Aggregator",
+        "Guid":  "{cba16cf2-2fab-49f8-89ae-894e718649e7}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ProcessStateManager",
+        "Guid":  "{d49918cf-9489-4bf1-9d7b-014d864cf71f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Program-Compatibility-Assistant",
+        "Guid":  "{4cb314df-c11f-47d7-9c04-65fb0051561b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ProjFS-Filter",
+        "Guid":  "{b6d7dc51-78cf-4e85-8bac-488a9f47a0bb}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Provisioning-Diagnostics-Provider",
+        "Guid":  "{ed8b9bd3-f66e-4ff2-b86b-75c7925f72a9}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Proximity-Common",
+        "Guid":  "{28058203-d394-4afc-b2a6-2f9155a3bb95}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Push-To-Install-Service",
+        "Guid":  "{3a718a68-6974-4075-abd3-e8243caef398}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PushNotifications-Developer",
+        "Guid":  "{5cad3597-5fec-4c62-9ce1-9d7abc723d3a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PushNotifications-InProc",
+        "Guid":  "{815a1f4a-3f8d-4b37-9b31-5142f9d724a5}"
+    },
+    {
+        "Name":  "Microsoft-Windows-PushNotifications-Platform",
+        "Guid":  "{88cd9180-4491-4640-b571-e3bee2527943}"
+    },
+    {
+        "Name":  "Microsoft-Windows-QoS-Pacer",
+        "Guid":  "{914ed502-b70d-4add-b758-95692854f8a3}"
+    },
+    {
+        "Name":  "Microsoft-Windows-QoS-qWAVE",
+        "Guid":  "{6ba132c4-da49-415b-a7f4-31870dc9fe25}"
+    },
+    {
+        "Name":  "Microsoft-Windows-QoS-WMI-Diag",
+        "Guid":  "{725ba9b3-c1f3-4518-af1b-c8d669191e15}"
+    },
+    {
+        "Name":  "Microsoft-Windows-RadioManager",
+        "Guid":  "{92061e3d-21cd-45bc-a3df-0e8ae5e8580a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Ras-AgileVpn",
+        "Guid":  "{b5325cd6-438e-4ec1-aa46-14f46f2570e4}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Ras-NdisWanPacketCapture",
+        "Guid":  "{d84521f7-2235-4237-a7c0-14e3a9676286}"
+    },
+    {
+        "Name":  "Microsoft-Windows-RasServer",
+        "Guid":  "{29d13147-1c2e-48ec-9994-e29dfe496eb3}"
+    },
+    {
+        "Name":  "Microsoft-Windows-RasSstp",
+        "Guid":  "{6c260f2c-049a-43d8-bf4d-d350a4e6611a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Rdp-Graphics-RdpAvenc",
+        "Guid":  "{ec7b8a8b-1432-58b3-6025-be73d4ea28ed}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Rdp-Graphics-RdpLite",
+        "Guid":  "{54de4fb6-64d0-5710-3c14-13e4456119ce}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ReadyBoost",
+        "Guid":  "{e6307a09-292c-497e-aad6-498f68e2b619}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ReadyBoostDriver",
+        "Guid":  "{2a274310-42d5-4019-b816-e4b8c7abe95c}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ReFS",
+        "Guid":  "{cd9c6198-bf73-4106-803b-c17d26559018}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ReFS-v1",
+        "Guid":  "{059f0f37-910e-4ff0-a7ee-ae8d49dd319b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ReFsDedupSvc",
+        "Guid":  "{596cb176-fb71-587a-8ffb-f5cf15ee1e36}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Remote-FileSystem-Log",
+        "Guid":  "{20c46239-d059-4214-a11e-7d6769cbe020}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Remote-FileSystem-Monitor",
+        "Guid":  "{51734b23-5b7e-4892-ba8e-45bc110b735c}"
+    },
+    {
+        "Name":  "Microsoft-Windows-RemoteApp and Desktop Connections",
+        "Guid":  "{1b8b402d-78dc-46fb-bf71-46e64aedf165}"
+    },
+    {
+        "Name":  "Microsoft-Windows-RemoteAssistance",
+        "Guid":  "{5b0a651a-8807-45cc-9656-7579815b6af0}"
+    },
+    {
+        "Name":  "Microsoft-Windows-RemoteDesktopServices-RdpCoreTS",
+        "Guid":  "{1139c61b-b549-4251-8ed3-27250a1edec8}"
+    },
+    {
+        "Name":  "Microsoft-Windows-RemoteDesktopServices-SessionServices",
+        "Guid":  "{f1394de0-32c7-4a76-a6de-b245e48f4615}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Remotefs-Rdbss",
+        "Guid":  "{1a870028-f191-4699-8473-6fcd299eab77}"
+    },
+    {
+        "Name":  "Microsoft-Windows-RemoteHelp",
+        "Guid":  "{8b7587bf-3253-5620-fb1f-625bca71d28d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ResetEng",
+        "Guid":  "{a4445c76-ed85-c8a3-02c1-532a38614a9e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ResetEng-Trace",
+        "Guid":  "{7fa514b5-a023-4b62-a6ab-2946a483e065}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Resource-Exhaustion-Detector",
+        "Guid":  "{9988748e-c2e8-4054-85f6-0c3e1cad2470}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Resource-Exhaustion-Resolver",
+        "Guid":  "{91f5fb12-fdea-4095-85d5-614b495cd9de}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ResourcePublication",
+        "Guid":  "{74c2135f-cc76-45c3-879a-ef3bb1eeaf86}"
+    },
+    {
+        "Name":  "Microsoft-Windows-RestartManager",
+        "Guid":  "{0888e5ef-9b98-4695-979d-e92ce4247224}"
+    },
+    {
+        "Name":  "Microsoft-Windows-RetailDemo",
+        "Guid":  "{d3f29eda-805d-428a-9902-b259b937f84b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-RPC",
+        "Guid":  "{6ad52b32-d609-4be9-ae07-ce8dae937e39}"
+    },
+    {
+        "Name":  "Microsoft-Windows-RPC-Audit",
+        "Guid":  "{3c578d57-f85a-5fc9-dea0-8c663ccff942}"
+    },
+    {
+        "Name":  "Microsoft-Windows-RPC-Events",
+        "Guid":  "{f4aed7c7-a898-4627-b053-44a7caa12fcd}"
+    },
+    {
+        "Name":  "Microsoft-Windows-RPC-FirewallManager",
+        "Guid":  "{f997cd11-0fc9-4ab4-acba-bc742a4c0dd3}"
+    },
+    {
+        "Name":  "Microsoft-Windows-RPC-Proxy-LBS",
+        "Guid":  "{272a979b-34b5-48ec-94f5-7225a59c85a0}"
+    },
+    {
+        "Name":  "Microsoft-Windows-RPCSS",
+        "Guid":  "{d8975f88-7ddb-4ed0-91bf-3adf48c48e0c}"
+    },
+    {
+        "Name":  "Microsoft-Windows-RRAS",
+        "Guid":  "{24989972-0967-4e21-a926-93854033638e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-RTWorkQueue-Extended",
+        "Guid":  "{83faaa86-63c8-4dd8-a2da-fbadddfc0655}"
+    },
+    {
+        "Name":  "Microsoft-Windows-RTWorkQueue-Threading",
+        "Guid":  "{e18d0fc9-9515-4232-98e4-89e456d8551b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Runtime-Graphics",
+        "Guid":  "{fa5cf675-72eb-49e2-b447-de5552faff1c}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Runtime-Media",
+        "Guid":  "{8f0db3a8-299b-4d64-a4ed-907b409d4584}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Runtime-Networking",
+        "Guid":  "{6eb875eb-8f4a-4800-a00b-e484c97d7561}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Runtime-Networking-BackgroundTransfer",
+        "Guid":  "{b9d5b35d-bbb8-4625-9450-f71a5d414f4f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Runtime-Web-Http",
+        "Guid":  "{41877cb4-11fc-4188-b590-712c143c881d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Runtime-WebAPI",
+        "Guid":  "{6bd96334-dc49-441a-b9c4-41425ba628d8}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SAMLIB",
+        "Guid":  "{80dd5d4d-edc5-50f4-bf8e-df008b752dd6}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Schannel-Events",
+        "Guid":  "{91cc1150-71aa-47e2-ae18-c96e61736b6f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SCPNP",
+        "Guid":  "{9f650c63-9409-453c-a652-83d7185a2e83}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Sdbus",
+        "Guid":  "{fe28004e-b08f-4407-92b3-bad3a2c51708}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Sdstor",
+        "Guid":  "{afe654eb-0a83-4eb4-948f-d4510ec39c30}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Search",
+        "Guid":  "{ca4e628d-8567-4896-ab6b-835b221f373f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Search-Core",
+        "Guid":  "{49c2c27c-fe2d-40bf-8c4e-c3fb518037e7}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Search-ProfileNotify",
+        "Guid":  "{fc6f77dd-769a-470e-bcf9-1b6555a118be}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Search-ProtocolHandlers",
+        "Guid":  "{dab065a9-620f-45ba-b5d6-d6bb8efedee9}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SEC",
+        "Guid":  "{16c6501a-ff2d-46ea-868d-8f96cb0cb52d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SEC-WFP",
+        "Guid":  "{62834e12-795f-5ab2-b404-8d6d870dbbeb}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Security-Audit-Configuration-Client",
+        "Guid":  "{08466062-aed4-4834-8b04-cddb414504e5}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Security-Auditing",
+        "Guid":  "{54849625-5478-4994-a5ba-3e3b0328c30d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Security-EnterpriseData-FileRevocationManager",
+        "Guid":  "{2cd58181-0bb6-463e-828a-056ff837f966}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Security-ExchangeActiveSyncProvisioning",
+        "Guid":  "{9249d0d0-f034-402f-a29b-92fa8853d9f3}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Security-IdentityStore",
+        "Guid":  "{00b7e1df-b469-4c69-9c41-53a6576e3dad}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Security-Isolation-BrokeringFileSystem",
+        "Guid":  "{cd8b60a0-2a19-5eb9-564f-6154e2d987f4}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Security-Kerberos",
+        "Guid":  "{98e6cfcb-ee0a-41e0-a57b-622d4e1b30b1}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Security-LessPrivilegedAppContainer",
+        "Guid":  "{45eec9e5-4a1b-5446-7ad8-a4ab1313c437}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Security-Mitigations",
+        "Guid":  "{fae10392-f0af-4ac0-b8ff-9f4d920c3cdf}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Security-Netlogon",
+        "Guid":  "{e5ba83f6-07d0-46b1-8bc7-7e669a1d31dc}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Security-SPP",
+        "Guid":  "{e23b33b0-c8c9-472c-a5f9-f2bdfea0f156}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Security-SPP-UX",
+        "Guid":  "{6bdadc96-673e-468c-9f5b-f382f95b2832}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Security-SPP-UX-GC",
+        "Guid":  "{bbbdd6a3-f35e-449b-a471-4d830c8eda1f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Security-SPP-UX-GenuineCenter-Logging",
+        "Guid":  "{fb829150-cd7d-44c3-af5b-711a3c31cedc}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Security-SPP-UX-Notifications",
+        "Guid":  "{c4efc9bb-2570-4821-8923-1bad317d2d4b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Security-UserConsentVerifier",
+        "Guid":  "{40783728-8921-45d0-b231-919037b4b4fd}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Security-Vault",
+        "Guid":  "{e6c92fb8-89d7-4d1f-be46-d56e59804783}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SecurityMitigationsBroker",
+        "Guid":  "{ea8cd8a5-78ff-4418-b292-aadc6a7181df}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SendTo",
+        "Guid":  "{35642cf5-da5e-410b-9d9c-a45f3638042b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Sens",
+        "Guid":  "{be69781c-b63b-41a1-8e24-a4fc7b3fc498}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SENSE",
+        "Guid":  "{fae96d09-ade1-5223-0098-af7b67348531}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SenseIR",
+        "Guid":  "{b6d775ef-1436-4fe6-bad3-9e436319e218}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Sensors",
+        "Guid":  "{d8900e18-36cb-4548-966f-13f068d1f78e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Sensors-Core",
+        "Guid":  "{751c292b-23e6-58cf-1fd4-38f8512c66c2}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Sensors-Core-Performance",
+        "Guid":  "{9e051eaa-7fee-4f9f-8897-d86f3692e8af}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Serial-ClassExtension",
+        "Guid":  "{47bc9477-a8ba-452e-b951-4f2ed3593cf9}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Serial-ClassExtension-V2",
+        "Guid":  "{eee173ef-7ed2-45de-9877-01c70a852fbd}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ServiceReportingApi",
+        "Guid":  "{606a6a38-70ec-4309-b3a3-82ff86f73329}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Services",
+        "Guid":  "{0063715b-eeda-4007-9429-ad526f62696e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Services-Svchost",
+        "Guid":  "{06184c97-5201-480e-92af-3a3626c5b140}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ServiceTriggerPerfEventProvider",
+        "Guid":  "{6545939f-3398-411a-88b7-6a8914b8cec7}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Servicing",
+        "Guid":  "{bd12f3b8-fc40-4a61-a307-b7a013a069c1}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Setup",
+        "Guid":  "{75ebc33e-997f-49cf-b49f-ecc50184b75d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SetupCl",
+        "Guid":  "{75ebc33e-d017-4d0f-93ab-0b4f86579164}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SetupPlatform",
+        "Guid":  "{530fb9b9-c515-4472-9313-fb346f9255e3}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SetupQueue",
+        "Guid":  "{a615acb9-d5a4-4738-b561-1df301d207f8}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SetupUGC",
+        "Guid":  "{75ebc33e-0870-49e5-bdce-9d7028279489}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SharedAccess_NAT",
+        "Guid":  "{a6f32731-9a38-4159-a220-3d9b7fc5fe5d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ShareMedia-ControlPanel",
+        "Guid":  "{02012a8a-adf5-4fab-92cb-ccb7bb3e689a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Shell-AppWizCpl",
+        "Guid":  "{08d945eb-c8bd-44aa-994f-86079d8dce35}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Shell-AuthUI",
+        "Guid":  "{63d2bb1d-e39a-41b8-9a3d-52dd06677588}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Shell-ConnectedAccountState",
+        "Guid":  "{6df57621-e7e4-410f-a7e9-e43eeb61b11f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Shell-Core",
+        "Guid":  "{30336ed4-e327-447c-9de0-51b652c86108}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Shell-DefaultPrograms",
+        "Guid":  "{65d99466-7a8e-489c-b8e1-962bc945031e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Shell-LockScreenContent",
+        "Guid":  "{a3c0d58a-9fe5-4f24-a2ce-e16de8baa0d2}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Shell-OpenWith",
+        "Guid":  "{11bd2a68-77ff-4991-9658-f451f2eb6ce1}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Shell-Shwebsvc",
+        "Guid":  "{f61cefc0-aa2e-11da-a746-0800200c9a66}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Shell-ZipFolder",
+        "Guid":  "{1f84007d-19ce-4b15-9e81-8a3dd8eb9ecb}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ShellCommon-StartLayoutPopulation",
+        "Guid":  "{97ca8142-10b1-4baa-9fbb-70a7d11231c3}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ShellExecute",
+        "Guid":  "{382b5e24-181e-417f-a8d6-2155f749e724}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Shsvcs",
+        "Guid":  "{059c3e04-5535-4929-85e1-93030e78f47b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SleepStudy",
+        "Guid":  "{d37687e7-8bf0-4d11-b589-a7abe080756a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SmartCard-Audit",
+        "Guid":  "{09ac07b9-6ac9-43bc-a50f-58419a797c69}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SmartCard-DeviceEnum",
+        "Guid":  "{aaeac398-3028-487c-9586-44eacad03637}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Smartcard-Server",
+        "Guid":  "{4fcbf664-a33a-4652-b436-9d558983d955}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SmartCard-TPM-VCard-Module",
+        "Guid":  "{125f2cf1-2768-4d33-976e-527137d080f8}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Smartcard-Trigger",
+        "Guid":  "{aedd909f-41c6-401a-9e41-dfc33006af5d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SmartScreen",
+        "Guid":  "{3cb2a168-fe34-4a4e-bdad-dcf422f34473}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SMBClient",
+        "Guid":  "{988c59c5-0a1c-45b6-a555-0c62276e327d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SMBDirect",
+        "Guid":  "{db66ea65-b7bb-4ca9-8748-334cb5c32400}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SMBServer",
+        "Guid":  "{d48ce617-33a2-4bc3-a5c7-11aa4f29619e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SMBWitnessClient",
+        "Guid":  "{32254f6c-aa33-46f0-a5e3-1cbcc74bf683}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SmbWmiProvider",
+        "Guid":  "{50b9e206-9d55-4092-92e8-f157a8235799}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SoftwareRestrictionPolicies",
+        "Guid":  "{7d29d58a-931a-40ac-8743-48c733045548}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SPB-ClassExtension",
+        "Guid":  "{72cd9ff7-4af8-4b89-aede-5f26fda13567}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SPB-HIDI2C",
+        "Guid":  "{991f8fe6-249d-44d6-b93d-5a3060c1dedb}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Speech-TTS",
+        "Guid":  "{74dcc47a-846e-4c98-9e2c-80043ed82b15}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Speech-UserExperience",
+        "Guid":  "{13480a22-d79f-4334-9d32-aa239398ad3c}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Spell-Checking",
+        "Guid":  "{d0e22efc-ac66-4b25-a72d-382736b5e940}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SpellChecker",
+        "Guid":  "{b2fcd41f-9a40-4150-8c92-b224b7d8c8aa}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Spellchecking-Host",
+        "Guid":  "{1bda2ab1-bbc1-4acb-a849-c0ef2b249672}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SruMon",
+        "Guid":  "{c8dbf506-e3d3-4822-930d-84c557eb6247}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SrumTelemetry",
+        "Guid":  "{48d445a8-2f64-4d49-b093-a5774d8dc531}"
+    },
+    {
+        "Name":  "Microsoft-Windows-StartNameRes",
+        "Guid":  "{277c9237-51d8-5c1c-b089-f02c683e5ba7}"
+    },
+    {
+        "Name":  "Microsoft-Windows-StartupRepair",
+        "Guid":  "{c914f0df-835a-4a22-8c70-732c9a80c634}"
+    },
+    {
+        "Name":  "Microsoft-Windows-StateRepository",
+        "Guid":  "{89592015-d996-4636-8f61-066b5d4dd739}"
+    },
+    {
+        "Name":  "Microsoft-Windows-stobject",
+        "Guid":  "{86133982-63d7-4741-928e-ef1349b80219}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Storage-Tiering",
+        "Guid":  "{4a104570-ec6d-4560-a40f-858fa955e84f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Storage-Tiering-IoHeat",
+        "Guid":  "{990c55fc-2662-47f6-b7d7-eb3c027cb13f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-StorageManagement",
+        "Guid":  "{7e58e69a-e361-4f06-b880-ad2f4b64c944}"
+    },
+    {
+        "Name":  "Microsoft-Windows-StorageManagement-PartUtil",
+        "Guid":  "{93db76c2-63ab-5de1-88b3-c068686675b8}"
+    },
+    {
+        "Name":  "Microsoft-Windows-StorageManagement-WSP-Health",
+        "Guid":  "{b1f01d1a-ae3a-4940-81ee-ddccbad380ef}"
+    },
+    {
+        "Name":  "Microsoft-Windows-StorageManagement-WSP-Host",
+        "Guid":  "{595f33ea-d4af-4f4d-b4dd-9dacdd17fc6e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-StorageManagement-WSP-Spaces",
+        "Guid":  "{88c09888-118d-48fc-8863-e1c6d39ca4df}"
+    },
+    {
+        "Name":  "Microsoft-Windows-StorageSettings",
+        "Guid":  "{e934e6dd-62be-55d8-1cc8-416d0039498b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-StorageSpaces-Api",
+        "Guid":  "{bcf0c6a7-6130-5208-f27d-fa77a91f12df}"
+    },
+    {
+        "Name":  "Microsoft-Windows-StorageSpaces-Driver",
+        "Guid":  "{595f7f52-c90a-4026-a125-8eb5e083f15e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-StorageSpaces-ManagementAgent",
+        "Guid":  "{aa4c798d-d91b-4b07-a013-787f5803d6fc}"
+    },
+    {
+        "Name":  "Microsoft-Windows-StorageSpaces-Parser",
+        "Guid":  "{5bcf2a5c-2e90-5a03-aa4e-2e459bae21b4}"
+    },
+    {
+        "Name":  "Microsoft-Windows-StorageSpaces-SpaceManager",
+        "Guid":  "{69c8ca7e-1adf-472b-ba4c-a0485986b9f6}"
+    },
+    {
+        "Name":  "Microsoft-Windows-StorageVolume",
+        "Guid":  "{c8127b86-e611-5638-63f4-ae37539084d2}"
+    },
+    {
+        "Name":  "Microsoft-Windows-StorDiag",
+        "Guid":  "{f5d05b38-80a6-4653-825d-c414e4ab3c68}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Store",
+        "Guid":  "{9c2a37f3-e5fd-5cae-bcd1-43dafeee1ff0}"
+    },
+    {
+        "Name":  "Microsoft-Windows-StorPort",
+        "Guid":  "{c4636a1e-7986-4646-bf10-7bc3b4a76e8e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Storsvc",
+        "Guid":  "{a963a23c-0058-521d-71ec-a1cce6173f21}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Subsys-Csr",
+        "Guid":  "{e8316a2d-0d94-4f52-85dd-1e15b66c5891}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Subsys-SMSS",
+        "Guid":  "{43e63da5-41d1-4fbf-aded-1bbed98fdd1d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Sudo",
+        "Guid":  "{9d74dc62-b75f-54cd-be9e-c28940b5feed}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Superfetch",
+        "Guid":  "{99806515-9f51-4c2f-b918-1eae407aa8cb}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Sysprep",
+        "Guid":  "{75ebc33e-77b8-4ba8-9474-4f4a9db2f5c6}"
+    },
+    {
+        "Name":  "Microsoft-Windows-System-Profile-HardwareId",
+        "Guid":  "{3419de6d-5d7f-4668-acc8-f80566814d96}"
+    },
+    {
+        "Name":  "Microsoft-Windows-System-Restore",
+        "Guid":  "{126cdb97-d346-4894-8a34-658da5eea1b6}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SystemEventsBroker",
+        "Guid":  "{b6bfcc79-a3af-4089-8d4d-0eecb1b80779}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SystemSettingsHandlers",
+        "Guid":  "{fbbd52e1-df97-529d-4b67-53f67da99a98}"
+    },
+    {
+        "Name":  "Microsoft-Windows-SystemSettingsThreshold",
+        "Guid":  "{8bcdf442-3070-4118-8c94-e8843be363b3}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TabletPC-InputPanel",
+        "Guid":  "{e978f84e-582d-4167-977e-32af52706888}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TabletPC-MathInput",
+        "Guid":  "{8443ccb7-feb0-4b8d-8e28-8d4c7cb814e8}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TabletPC-MathRecognizer",
+        "Guid":  "{bdb462fc-a297-49a2-bf2e-4f1809e12abc}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TabletPC-Platform-Input-Core",
+        "Guid":  "{b5fd844a-01d4-4b10-a57f-58b13b561582}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TabletPC-Platform-Input-Ninput",
+        "Guid":  "{2c3e6d9f-8298-450f-8e5d-49b724f1216f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TabletPC-Platform-Input-Wisp",
+        "Guid":  "{e5aa2a53-30be-40f5-8d84-ad3f40a404cd}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TabletPC-Platform-Manipulations",
+        "Guid":  "{2fd7a9a5-b1a1-4fc7-b95c-c32fed818f30}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TaskbarCPL",
+        "Guid":  "{05d7b0f0-2121-4eff-bf6b-ed3f69b894d7}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TaskScheduler",
+        "Guid":  "{de7b24ea-73c8-4a09-985d-5bdadcfa9017}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TCPIP",
+        "Guid":  "{2f07e2ee-15db-40f1-90ef-9d7ba282188a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TenantRestrictions",
+        "Guid":  "{4053fada-178b-5aa8-746b-7cf8538b5118}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TerminalServices-ClientActiveXCore",
+        "Guid":  "{28aa95bb-d444-4719-a36f-40462168127e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TerminalServices-ClientUSBDevices",
+        "Guid":  "{6e400999-5b82-475f-b800-cef6fe361539}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TerminalServices-LocalSessionManager",
+        "Guid":  "{5d896912-022d-40aa-a3a8-4fa5515c76d7}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TerminalServices-MediaRedirection",
+        "Guid":  "{3f7b2f99-b863-4045-ad05-f6afb62e7af1}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TerminalServices-PnPDevices",
+        "Guid":  "{27a8c1e2-eb19-463e-8424-b399df27a216}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TerminalServices-Printers",
+        "Guid":  "{952773bf-c2b7-49bc-88f4-920744b82c43}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TerminalServices-RdpSoundDriver",
+        "Guid":  "{127e0dc5-e13b-4935-985e-78fd508b1d80}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TerminalServices-RemoteConnectionManager",
+        "Guid":  "{c76baa63-ae81-421c-b425-340b4b24157f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TerminalServices-ServerUSBDevices",
+        "Guid":  "{dcbe5aaa-16e2-457c-9337-366950045f0a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Tethering-Manager",
+        "Guid":  "{cc311f1f-623c-4ca4-ba44-a458016555e8}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Tethering-Station",
+        "Guid":  "{585cab4f-9351-436e-9d99-dc4b41a20de0}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TextPredictionEngine",
+        "Guid":  "{39a63500-7d76-49cd-994f-ffd796ef5a53}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ThemeCPL",
+        "Guid":  "{61f044af-9104-4ca5-81ee-cb6c51bb01ab}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ThemeUI",
+        "Guid":  "{869fb599-80aa-485d-bca7-db18d72b7219}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Thermal-Polling",
+        "Guid":  "{e8a7c168-81ee-465c-8e8e-d39a2ac1ca41}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Threat-Intelligence",
+        "Guid":  "{f4e1897c-bb5d-5668-f1d8-040f4d8dd344}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Time-Service",
+        "Guid":  "{06edcfeb-0fd0-4e53-acca-a6f8bbf81bcb}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Time-Service-PTP-Provider",
+        "Guid":  "{cffb980e-327c-5b87-19c6-62c4c3be2290}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TimeBroker",
+        "Guid":  "{0657adc1-9ae8-4e18-932d-e6079cda5ab3}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TPM-WMI",
+        "Guid":  "{7d5387b0-cbe0-11da-a94d-0800200c9a66}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TriggerEmulatorProvider",
+        "Guid":  "{f230d19a-5d93-47d9-a83f-53829edfb8df}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Troubleshooting-Recommended",
+        "Guid":  "{4969de67-439c-516f-f805-a82a4f905730}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TSF-msctf",
+        "Guid":  "{4fba1227-f606-4e5f-b9e8-fab9ab5740f3}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TSF-msutb",
+        "Guid":  "{74b655a2-8958-410e-80e2-3457051b8dff}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TSF-UIManager",
+        "Guid":  "{4dd778b8-379c-4d8c-b659-517a43d6df7d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TunnelDriver",
+        "Guid":  "{4edbe902-9ed3-4cf0-93e8-b8b5fa920299}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TunnelDriver-SQM-Provider",
+        "Guid":  "{4214dcd2-7c33-4f74-9898-719ccceec20f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TZSync",
+        "Guid":  "{3527cb55-1298-49d4-ab94-1243db0fcaff}"
+    },
+    {
+        "Name":  "Microsoft-Windows-TZUtil",
+        "Guid":  "{2d318b91-e6e7-4c46-bd04-bfe6db412cf9}"
+    },
+    {
+        "Name":  "Microsoft-Windows-UAC",
+        "Guid":  "{e7558269-3fa5-46ed-9f4d-3c6e282dde55}"
+    },
+    {
+        "Name":  "Microsoft-Windows-UAC-FileVirtualization",
+        "Guid":  "{c02afc2b-e24e-4449-ad76-bcc2c2575ead}"
+    },
+    {
+        "Name":  "Microsoft-Windows-UI-Input-Inking",
+        "Guid":  "{bf1db390-3e67-4d4d-a287-8958044a3db4}"
+    },
+    {
+        "Name":  "Microsoft-Windows-UI-Search",
+        "Guid":  "{d8965fcf-7397-4e0e-b750-21a4580bd880}"
+    },
+    {
+        "Name":  "Microsoft-Windows-UIAnimation",
+        "Guid":  "{e0a40b26-30c4-4656-bc9a-74a5c3a0b2ec}"
+    },
+    {
+        "Name":  "Microsoft-Windows-UIAutomationCore",
+        "Guid":  "{820a42d8-38c4-465d-b64e-d7d56ea1d612}"
+    },
+    {
+        "Name":  "Microsoft-Windows-UIRibbon",
+        "Guid":  "{87d476fe-1a0f-4370-b785-60b028019693}"
+    },
+    {
+        "Name":  "Microsoft-Windows-UniversalTelemetryClient",
+        "Guid":  "{6489b27f-7c43-5886-1d00-0a61bb2a375b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-URLMon",
+        "Guid":  "{245f975d-909d-49ed-b8f9-9a75691d6b6b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-USB-CCID",
+        "Guid":  "{f708c483-4880-11e6-9121-5cf37068b67b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-USB-MAUSBHOST",
+        "Guid":  "{7725b5f9-1f2e-4e21-baeb-b2af4690bc87}"
+    },
+    {
+        "Name":  "Microsoft-Windows-USB-UCMUCSICX",
+        "Guid":  "{569d11aa-5068-5ee5-da22-ce541c0b1481}"
+    },
+    {
+        "Name":  "Microsoft-Windows-USB-UCX",
+        "Guid":  "{36da592d-e43a-4e28-af6f-4bc57c5a11e8}"
+    },
+    {
+        "Name":  "Microsoft-Windows-USB-USB4DeviceRouter-EventLogs",
+        "Guid":  "{d07e8c3f-78fb-4c22-b77c-2203d00bfdf3}"
+    },
+    {
+        "Name":  "Microsoft-Windows-USB-USBHUB",
+        "Guid":  "{7426a56b-e2d5-4b30-bdef-b31815c1a74a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-USB-USBHUB3",
+        "Guid":  "{ac52ad17-cc01-4f85-8df5-4dce4333c99b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-USB-USBPORT",
+        "Guid":  "{c88a4ef5-d048-4013-9408-e04b7db2814a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-USB-USBXHCI",
+        "Guid":  "{30e1d284-5d88-459c-83fd-6345b39b19ec}"
+    },
+    {
+        "Name":  "Microsoft-Windows-USBVideo",
+        "Guid":  "{da1d1dbd-3186-4fa2-bc2d-075efd9e43e2}"
+    },
+    {
+        "Name":  "Microsoft-Windows-User Device Registration",
+        "Guid":  "{23b8d46b-67dd-40a3-b636-d43e50552c6d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-User Profiles General",
+        "Guid":  "{db00dfb6-29f9-4a9c-9b3b-1f4f9e7d9770}"
+    },
+    {
+        "Name":  "Microsoft-Windows-User Profiles Service",
+        "Guid":  "{89b1e9f0-5aff-44a6-9b44-0a07a7ce5845}"
+    },
+    {
+        "Name":  "Microsoft-Windows-User-ControlPanel",
+        "Guid":  "{319122a9-1485-4e48-af35-7db2d93b8ad2}"
+    },
+    {
+        "Name":  "Microsoft-Windows-User-Diagnostic",
+        "Guid":  "{305fc87b-002a-5e26-d297-60223012ca9c}"
+    },
+    {
+        "Name":  "Microsoft-Windows-User-Loader",
+        "Guid":  "{b059b83f-d946-4b13-87ca-4292839dc2f2}"
+    },
+    {
+        "Name":  "Microsoft-Windows-UserAccountControl",
+        "Guid":  "{2683b597-3cca-410a-97fe-6f7ee3d09b94}"
+    },
+    {
+        "Name":  "Microsoft-Windows-UserDataAccess-CallHistoryClient",
+        "Guid":  "{f5988abb-323a-4098-8a34-85a3613d4638}"
+    },
+    {
+        "Name":  "Microsoft-Windows-UserDataAccess-CEMAPI",
+        "Guid":  "{83a9277a-d2fc-4b34-bf81-8ceb4407824f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-UserDataAccess-PimIndexMaintenance",
+        "Guid":  "{99c66ba7-5a97-40d5-aa01-8a07fb3db292}"
+    },
+    {
+        "Name":  "Microsoft-Windows-UserDataAccess-Poom",
+        "Guid":  "{0bd19909-eb6f-4b16-8074-6dce803f091d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-UserDataAccess-UnifiedStore",
+        "Guid":  "{56f519ab-9df6-4345-8491-a4ba21ac825b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-UserDataAccess-UserDataApis",
+        "Guid":  "{b9b2de3c-3fbd-4f42-8ff7-33c3bad35fd4}"
+    },
+    {
+        "Name":  "Microsoft-Windows-UserDataAccess-UserDataService",
+        "Guid":  "{fb19ee2c-0d22-4a2e-969e-dd41ae0ce1a9}"
+    },
+    {
+        "Name":  "Microsoft-Windows-UserDataAccess-UserDataUtils",
+        "Guid":  "{d1f688bf-012f-4aec-a38c-e7d4649f8cd2}"
+    },
+    {
+        "Name":  "Microsoft-Windows-UserModePowerService",
+        "Guid":  "{ce8dee0b-d539-4000-b0f8-77bed049c590}"
+    },
+    {
+        "Name":  "Microsoft-Windows-UserPnp",
+        "Guid":  "{96f4a050-7e31-453c-88be-9634f4e02139}"
+    },
+    {
+        "Name":  "Microsoft-Windows-UserSettingsBackup-EarlyDownloader",
+        "Guid":  "{c675305e-51bd-5da6-08b4-d4cb88d198f0}"
+    },
+    {
+        "Name":  "Microsoft-Windows-UserSettingsBackup-Orchestrator",
+        "Guid":  "{47ae8351-b61a-51d1-0ad0-9d870c38f53a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-UxInit",
+        "Guid":  "{4154a29c-40d9-445f-8d65-24da473e8f65}"
+    },
+    {
+        "Name":  "Microsoft-Windows-UxTheme",
+        "Guid":  "{422088e6-cd0c-4f99-bd0b-6985fa290bdf}"
+    },
+    {
+        "Name":  "Microsoft-Windows-VDRVROOT",
+        "Guid":  "{e4480490-85b6-11dd-ad8b-0800200c9a66}"
+    },
+    {
+        "Name":  "Microsoft-Windows-VerifyHardwareSecurity",
+        "Guid":  "{f3f53c76-b06d-4f15-b412-61164a0d2b73}"
+    },
+    {
+        "Name":  "Microsoft-Windows-VHDMP",
+        "Guid":  "{e2816346-87f4-4f85-95c3-0c79409aa89d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Video-For-Windows",
+        "Guid":  "{712abb2d-d806-4b42-9682-26da01d8b307}"
+    },
+    {
+        "Name":  "Microsoft-Windows-VIRTDISK",
+        "Guid":  "{4d20df22-e177-4514-a369-f1759feedeb3}"
+    },
+    {
+        "Name":  "Microsoft-Windows-VolumeControl",
+        "Guid":  "{07de7879-1c96-41ce-afbd-c659a0e8e643}"
+    },
+    {
+        "Name":  "Microsoft-Windows-VolumeSnapshot-Driver",
+        "Guid":  "{67fe2216-727a-40cb-94b2-c02211edb34a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-VPCJIT",
+        "Guid":  "{ca92de02-0d94-43a3-9694-d60eb94f2f7d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-VPN-Client",
+        "Guid":  "{3c088e51-65be-40d1-9b90-62bfec076737}"
+    },
+    {
+        "Name":  "Microsoft-Windows-VWiFi",
+        "Guid":  "{314b2b0d-81ee-4474-b6e0-c2aaec0ddbde}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WABSyncProvider",
+        "Guid":  "{17f14a23-551d-40cc-a086-e4194d64ed4c}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Wallet",
+        "Guid":  "{6ed11b00-c1b5-48cb-aecc-ff72ebefbae8}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Watchdog-Events",
+        "Guid":  "{70e74dd8-39db-5f6f-6fd1-f5581b29e834}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Wcmsvc",
+        "Guid":  "{67d07935-283a-4791-8f8d-fa9117f3e6f2}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WCN-Config-Registrar",
+        "Guid":  "{c100becf-d33a-4a4b-bf23-bbef4663d017}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WCN-Config-Registrar-Secure",
+        "Guid":  "{c100becc-d33a-4a4b-bf23-bbef4663d017}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WCNWiz",
+        "Guid":  "{e8aa5402-26a1-455e-a21b-f240ed62d155}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WDAG-PolicyEvaluator-CSP",
+        "Guid":  "{64a98c25-9e00-404e-84ad-6700dfe02529}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WDAG-PolicyEvaluator-GP",
+        "Guid":  "{e53df8ba-367a-4406-98d5-709ffb169681}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WebAuth",
+        "Guid":  "{db6972b6-dddf-4820-84b1-2ed6ac0b96e5}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WebAuthN",
+        "Guid":  "{3ae1ea61-c002-47fb-b06c-4022a8c98929}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WebcamExperience",
+        "Guid":  "{9e12ceb1-e3ff-46ad-a0aa-11738b122d20}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WebdavClient-LookupServiceTrigger",
+        "Guid":  "{22b6d684-fa63-4578-87c9-effcbe6643c7}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WebIO",
+        "Guid":  "{50b3e73c-9370-461d-bb9f-26f32d68887d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WebServices",
+        "Guid":  "{e04fe2e0-c6cf-4273-b59d-5c97c9c374a4}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Websocket-Protocol-Component",
+        "Guid":  "{cba5f63c-e2cf-4b36-8305-bde1311924fc}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WEPHOSTSVC",
+        "Guid":  "{d5f7235b-48e2-4e9c-92fe-0e4950aba9e8}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WER-Diag",
+        "Guid":  "{ad8aa069-a01b-40a0-ba40-948d1d8dedc5}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WER-PayloadHealth",
+        "Guid":  "{4afddfde-002d-51ac-c109-c3b7897858d0}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WER-SystemErrorReporting",
+        "Guid":  "{abce23e7-de45-4366-8631-84fa6c525952}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WerKernel",
+        "Guid":  "{87a623f0-8db5-5c11-7c80-a2ebbcbe5189}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WFP",
+        "Guid":  "{0c478c5b-0351-41b1-8c58-4a6737da32e3}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WHEA-Logger",
+        "Guid":  "{c26c4f3c-3f66-4e99-8f8a-39405cfed220}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WiFiDisplay",
+        "Guid":  "{712880e9-7813-41a3-8e4c-e4e0c4f6580a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WiFiHotspotService",
+        "Guid":  "{814182fe-58f7-11e1-853c-78e7d1ca7337}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WiFiNetworkManager",
+        "Guid":  "{e5c16d49-2464-4382-bb20-97a4b5465db9}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Win32k",
+        "Guid":  "{8c416c79-d49b-4f01-a467-e56d3aa8234c}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Windeploy",
+        "Guid":  "{75ebc33e-c8ae-4f93-9ca1-683a53e20cb6}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Windows Defender",
+        "Guid":  "{11cd958a-c507-4ef3-b3f2-5fd9dfbd2c78}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Windows Firewall With Advanced Security",
+        "Guid":  "{d1bc9aff-2abf-4d71-9146-ecb2a986eb85}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WindowsBackup",
+        "Guid":  "{01979c6a-42fa-414c-b8aa-eee2c8202018}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WindowsColorSystem",
+        "Guid":  "{d53270e3-c8cf-4707-958a-dad20c90073c}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WindowsSystemAssessmentTool",
+        "Guid":  "{11a75546-3234-465e-bec8-2d301cb501ac}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WindowsToGo-StartupOptions",
+        "Guid":  "{2e6cb42e-161d-413b-a6c1-84ca4c1e5890}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WindowsUIImmersive",
+        "Guid":  "{74827cbb-1e0f-45a2-8523-c605866d2f22}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WindowsUpdateClient",
+        "Guid":  "{945a8954-c147-4acd-923f-40c45405a658}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WinHttp",
+        "Guid":  "{7d44233d-3055-4b9c-ba64-0d47ca40a232}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WinHttp-Diagnostics",
+        "Guid":  "{64de121b-5f08-5853-ab48-7758f2ea2dd3}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WinHttp-Pca",
+        "Guid":  "{d071ce03-0d7b-5b27-e817-b9c12961934e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WinINet",
+        "Guid":  "{43d1a55c-76d6-4f7e-995c-64c711e5cafe}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WinINet-Capture",
+        "Guid":  "{a70ff94f-570b-4979-ba5c-e59c9feab61b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WinINet-Config",
+        "Guid":  "{5402e5ea-1bdd-4390-82be-e108f1e634f5}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WinINet-Pca",
+        "Guid":  "{4860ea43-3f05-5fb8-20ce-7ba346a44747}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Wininit",
+        "Guid":  "{206f6dea-d3c5-4d10-bc72-989f03c8b84b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Winlogon",
+        "Guid":  "{dbe9b383-7cf3-4331-91cc-a3cb16a3b538}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WinMDE",
+        "Guid":  "{77549803-7bb1-418b-a98e-f2e22f35a873}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WinML",
+        "Guid":  "{c8517e09-bea2-5bb6-bef3-50b4c91c431e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WinNat",
+        "Guid":  "{66c07ecd-6667-43fc-93f8-05cf07f446ec}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WinREAgent",
+        "Guid":  "{1f7a6c55-5532-573b-35b7-2107e43a6ef5}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WinRM",
+        "Guid":  "{a7975c8f-ac13-49f1-87da-5a984a4ab417}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WinRT-Error",
+        "Guid":  "{a86f8471-c31d-4fbc-a035-665d06047b03}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Winsock-AFD",
+        "Guid":  "{e53c6823-7bb8-44bb-90dc-3f86090d48a6}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Winsock-NameResolution",
+        "Guid":  "{55404e71-4db9-4deb-a5f5-8f86e46dde56}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Winsock-Sockets",
+        "Guid":  "{bde46aea-2357-51fe-7367-d5296f530bd1}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Winsock-SQM",
+        "Guid":  "{093da50c-0bb9-4d7d-b95c-3bb9fcda5ee8}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Winsock-WS2HELP",
+        "Guid":  "{d5c25f9a-4d47-493e-9184-40dd397a004d}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Winsrv",
+        "Guid":  "{9d55b53d-449b-4824-a637-24f9d69aa02f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Wired-AutoConfig",
+        "Guid":  "{b92cf7fd-dc10-4c6b-a72d-1613bf25e597}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WLAN-AutoConfig",
+        "Guid":  "{9580d7dd-0379-4658-9870-d5be7d52d6de}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WLAN-Driver",
+        "Guid":  "{daa6a96b-f3e7-4d4d-a0d6-31a350e6a445}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WlanDlg",
+        "Guid":  "{d4afa0dc-4dd1-40af-afce-cb0d0e6736a7}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WlanPref",
+        "Guid":  "{ca5ba219-c0d4-4efa-9ceb-72aff92672b0}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WLGPA",
+        "Guid":  "{46098845-8a94-442d-9095-366a6bcfefa9}"
+    },
+    {
+        "Name":  "Microsoft-Windows-wmbclass",
+        "Guid":  "{12d25187-6c0d-4783-ad3a-84caa135acfd}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Wmbclass-Opn",
+        "Guid":  "{a42fe227-a7bf-4483-a502-6bcda428cd96}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WMI",
+        "Guid":  "{1edeee53-0afe-4609-b846-d8c0b2075b1f}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WMI-Activity",
+        "Guid":  "{1418ef04-b0b4-4623-bf7e-d74ab47bbdaa}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WMP",
+        "Guid":  "{f3f14ff3-7b80-4868-91d0-d77e497b025e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WMP-Setup_WM",
+        "Guid":  "{0d759f0f-cff9-4902-8867-eb9e29d7a98b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WMPDMCUI",
+        "Guid":  "{3f9e07bd-0e26-4241-a5a5-28cafa150a75}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WMPNSS-PublicAPI",
+        "Guid":  "{614696c9-85af-4e64-b389-d2c0db4ff87b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WMPNSS-Service",
+        "Guid":  "{6a2dc7c1-930a-4fb5-bb44-80b30aebed6c}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WMPNSSUI",
+        "Guid":  "{7c314e58-8246-47d1-8f7a-4049dc543e0b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-wmvdecod",
+        "Guid":  "{55bacc9f-9ac0-46f5-968a-a5a5dd024f8a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WMVENCOD",
+        "Guid":  "{313b0545-bf9c-492e-9173-8de4863b8573}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WorkFolders",
+        "Guid":  "{34a3697e-0f10-4e48-af3c-f869b5babebb}"
+    },
+    {
+        "Name":  "Microsoft-Windows-Workplace Join",
+        "Guid":  "{76ab12d5-c986-4e60-9d7c-2a092b284cdd}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WPD-API",
+        "Guid":  "{31569dcf-9c6f-4b8e-843a-b7c1cc7ffcba}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WPD-CompositeClassDriver",
+        "Guid":  "{355c44fe-0c8e-4bf8-be28-8bc7b5a42720}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WPD-MTPBT",
+        "Guid":  "{92ab58d3-f351-4af5-9c72-d52f36ee2c92}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WPD-MTPClassDriver",
+        "Guid":  "{21b7c16e-c5af-4a69-a74a-7245481c1b97}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WPD-MTPIP",
+        "Guid":  "{c374d21e-69b2-4cd7-9a25-62187c5a5619}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WPD-MTPUS",
+        "Guid":  "{dcfc4489-9ce0-403c-99df-a05422c60898}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WPDClassInstaller",
+        "Guid":  "{ad5162d8-daf0-4a25-88a7-01cbeb33902e}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WSC-SRV",
+        "Guid":  "{5857d6ca-9732-4454-809b-2a87b70881f8}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WUSA",
+        "Guid":  "{09608c12-c1da-4104-a6fe-b959cf57560a}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WWAN-MM-EVENTS",
+        "Guid":  "{7839bb2a-2ea3-4eca-a00f-b558ba678bec}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WWAN-NDISUIO-EVENTS",
+        "Guid":  "{b3eee223-d0a9-40cd-adfc-50f1888138ab}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WWAN-SVC-EVENTS",
+        "Guid":  "{3cb40aaa-1145-4fb8-b27b-7e30f0454316}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WwanClient_0ca4cac9670d3ec454b4175eb8aa80b3",
+        "Guid":  "{0ca4cac9-670d-3ec4-54b4-175eb8aa80b3}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WwanClient_1e2fdcad8ed5326fb89a40addcb90fe9",
+        "Guid":  "{1e2fdcad-8ed5-326f-b89a-40addcb90fe9}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WwanProtDim_8ae583a328f2324fa39dea640c5846ee",
+        "Guid":  "{8ae583a3-28f2-324f-a39d-ea640c5846ee}"
+    },
+    {
+        "Name":  "Microsoft-Windows-WwanProtDim_e72a6a5d74743941a6fa83201a9f8ef4",
+        "Guid":  "{e72a6a5d-7474-3941-a6fa-83201a9f8ef4}"
+    },
+    {
+        "Name":  "Microsoft-Windows-XAML",
+        "Guid":  "{531a35ab-63ce-4bcf-aa98-f88c7a89e455}"
+    },
+    {
+        "Name":  "Microsoft-Windows-XAML-Diagnostics",
+        "Guid":  "{59e7a714-73a4-4147-b47e-0957048c75c4}"
+    },
+    {
+        "Name":  "Microsoft-Windows-XAudio2",
+        "Guid":  "{1ee3abdb-c1fc-4b43-9e56-11064abba866}"
+    },
+    {
+        "Name":  "Microsoft-Windows-XWizards",
+        "Guid":  "{777ba8fe-2498-4875-933a-3067de883070}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ZTDNS",
+        "Guid":  "{8507cd07-f18b-54f0-b871-23c43a5bf118}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ZTHELPER",
+        "Guid":  "{40e3fc75-59e8-5443-47cb-a1e1b197fde0}"
+    },
+    {
+        "Name":  "Microsoft-Windows-ZTraceMaps",
+        "Guid":  "{b865b57b-bdda-4e1d-a2c8-adfa69fe6ab9}"
+    },
+    {
+        "Name":  "Microsoft-WindowsPhone-ConfigManager2",
+        "Guid":  "{2f94e1cc-a8c5-4fe7-a1c3-53d7bda8e73e}"
+    },
+    {
+        "Name":  "Microsoft-WindowsPhone-CoreMessaging",
+        "Guid":  "{922cdcf3-6123-42da-a877-1a24f23e39c5}"
+    },
+    {
+        "Name":  "Microsoft-WindowsPhone-CoreUIComponents",
+        "Guid":  "{a0b7550f-4e9a-4f03-ad41-b8042d06a2f7}"
+    },
+    {
+        "Name":  "Microsoft-WindowsPhone-Ufx",
+        "Guid":  "{e98ebdbf-3058-4784-8521-47860b1d2b8e}"
+    },
+    {
+        "Name":  "Microsoft-WindowsPhone-UfxSynopsys",
+        "Guid":  "{49b12c7c-4bd5-4f93-bb75-30fce739600b}"
+    },
+    {
+        "Name":  "Microsoft.Windows.ResourceManager",
+        "Guid":  "{4180c4f7-e238-5519-338f-ec214f0b49aa}"
+    },
+    {
+        "Name":  "MMC",
+        "Guid":  "{9c88041d-349d-4647-8bfd-2c0a167bfe58}"
+    },
+    {
+        "Name":  "Mobility Center Performance Trace",
+        "Guid":  "{8a8b5246-6eb6-4339-8b59-b0085b9f4890}"
+    },
+    {
+        "Name":  "Mobility Center Trace",
+        "Guid":  "{082dff20-f430-11d9-8cd6-0800200c9a66}"
+    },
+    {
+        "Name":  "Mount Manager Trace",
+        "Guid":  "{467c1914-37f0-4c7d-b6db-5cd7dfe7bd5e}"
+    },
+    {
+        "Name":  "MSADCE.1",
+        "Guid":  "{76dba919-5a36-fc80-2cad-3185532b7cb1}"
+    },
+    {
+        "Name":  "MSADCF.1",
+        "Guid":  "{101c0e21-ebba-a60a-ec3d-58797788928a}"
+    },
+    {
+        "Name":  "MSADCO.1",
+        "Guid":  "{5c6ce734-1b3e-705e-c2ab-b272d99aaf8f}"
+    },
+    {
+        "Name":  "MSADDS.1",
+        "Guid":  "{13cd7f92-5baa-8c7c-3d72-b69fac139a46}"
+    },
+    {
+        "Name":  "MSADOX.1",
+        "Guid":  "{6c770d53-0441-afd4-dcab-1d89155fecfc}"
+    },
+    {
+        "Name":  "MSDADIAG.ETW",
+        "Guid":  "{8b98d3f2-3cc6-0b9c-6651-9649cce5c752}"
+    },
+    {
+        "Name":  "MSDAPRST.1",
+        "Guid":  "{64a552e0-6c60-b907-e59c-10f1dff76b0d}"
+    },
+    {
+        "Name":  "MSDAREM.1",
+        "Guid":  "{564f1e24-fc86-28e1-74f8-5ca0d950bee0}"
+    },
+    {
+        "Name":  "MSDART.1",
+        "Guid":  "{ceb7253c-bb96-9dfe-51d1-53d966d0cf8b}"
+    },
+    {
+        "Name":  "MSDASQL_1",
+        "Guid":  "{b6501ba0-c61a-c4e6-6fa2-a4e7f8c8e7a0}"
+    },
+    {
+        "Name":  "MSDATL3.1",
+        "Guid":  "{87b93a44-1f73-ec83-7261-2dfc972d9b1e}"
+    },
+    {
+        "Name":  "MUI Resource Trace",
+        "Guid":  "{d3de60b2-a663-45d5-9826-a0a5949d2cb0}"
+    },
+    {
+        "Name":  "Native WIFI Filter Driver Trace",
+        "Guid":  "{d905ac1c-65e7-4242-99ea-fe66a8355df8}"
+    },
+    {
+        "Name":  "Native WIFI MSM Trace",
+        "Guid":  "{d905ac1d-65e7-4242-99ea-fe66a8355df8}"
+    },
+    {
+        "Name":  "NetJoin",
+        "Guid":  "{9741fd4e-3757-479f-a3c6-fc49f6d5edd0}"
+    },
+    {
+        "Name":  "Network Location Awareness Trace",
+        "Guid":  "{1ac55562-d4ff-4bc5-8ef3-a18e07c4668e}"
+    },
+    {
+        "Name":  "Network Profile Manager",
+        "Guid":  "{d9131565-e1dd-4c9e-a728-951999c2adb5}"
+    },
+    {
+        "Name":  "NisDrvWFP Provider",
+        "Guid":  "{49d6ad7b-52c4-4f79-a164-4dcd908391e4}"
+    },
+    {
+        "Name":  "Ntfs",
+        "Guid":  "{dd70bc80-ef44-421b-8ac3-cd31da613a4e}"
+    },
+    {
+        "Name":  "Ntfs_NtfsLog",
+        "Guid":  "{b2fc00c4-2941-4d11-983b-b16e8aa4e25d}"
+    },
+    {
+        "Name":  "NTLM Security Protocol",
+        "Guid":  "{c92cf544-91b3-4dc0-8e11-c580339a0bf8}"
+    },
+    {
+        "Name":  "ODBC.1",
+        "Guid":  "{f34765f6-a1be-4b9d-1400-b8a12921f704}"
+    },
+    {
+        "Name":  "ODBCBCP.1",
+        "Guid":  "{932b59f1-90c2-d8ba-0956-3975c344ae2b}"
+    },
+    {
+        "Name":  "OfficeAirSpace",
+        "Guid":  "{f562bb8e-422d-4b5c-b20e-90d710f7d11c}"
+    },
+    {
+        "Name":  "OfficeLoggingLiblet",
+        "Guid":  "{f50d9315-e17e-43c1-8370-3edf6cc057be}"
+    },
+    {
+        "Name":  "OLEDB.1",
+        "Guid":  "{0dd082c4-66f2-271f-74ba-2bf1f9f65c66}"
+    },
+    {
+        "Name":  "OpenSSH",
+        "Guid":  "{c4b57d35-0636-4bc3-a262-370f249f9802}"
+    },
+    {
+        "Name":  "PNPX AssocDB Trace",
+        "Guid":  "{7311ad03-18d6-45ac-9b08-b020bdd6a590}"
+    },
+    {
+        "Name":  "Portable Device Connectivity API Trace",
+        "Guid":  "{02fe721a-0725-469e-a26d-37b3c09faac1}"
+    },
+    {
+        "Name":  "PrintFilterPipelineSvc_ObjectsGuid",
+        "Guid":  "{aefe45f4-8548-42b4-b1c8-25673b07ad8b}"
+    },
+    {
+        "Name":  "Qualcomm-Combined-Subsystem-Driver",
+        "Guid":  "{6312e0ed-e7a9-4667-b03d-308f80d13a3b}"
+    },
+    {
+        "Name":  "Refsv1WppTrace",
+        "Guid":  "{6d2fd9c5-8bd8-4a5d-8aa8-01e5c3b2ae23}"
+    },
+    {
+        "Name":  "RefsWppTrace",
+        "Guid":  "{740f3c34-57df-4bad-8eea-72ac69ad5df5}"
+    },
+    {
+        "Name":  "RmClient_RestartManager",
+        "Guid":  "{0888e5ef-9b98-4695-979d-e92ce4247224}"
+    },
+    {
+        "Name":  "RowsetHelper.1",
+        "Guid":  "{74a75b02-36d8-ede6-d10e-95b691503408}"
+    },
+    {
+        "Name":  "RSS Platform Backgroundsync Perf Trace",
+        "Guid":  "{ca1cf55c-9e49-4ad3-8038-39cb6f66af11}"
+    },
+    {
+        "Name":  "RSS Platform Backgroundsync Trace",
+        "Guid":  "{f59d1d86-cc03-4736-bc9c-4c7936871b3d}"
+    },
+    {
+        "Name":  "RSS Platform Perf Trace",
+        "Guid":  "{2b240425-3141-43ee-931f-ec9f997c7d7e}"
+    },
+    {
+        "Name":  "RSS Platform Trace",
+        "Guid":  "{8c50fa6e-394e-4b47-b6d1-a880a5f225a2}"
+    },
+    {
+        "Name":  "SBP2 Port Driver Tracing Provider",
+        "Guid":  "{6710597f-7319-4aae-9b85-c8d87136a56b}"
+    },
+    {
+        "Name":  "Schannel",
+        "Guid":  "{1f678132-5938-4686-9fdc-c8ff68f15c85}"
+    },
+    {
+        "Name":  "SD Bus Trace",
+        "Guid":  "{3b9e3da4-70b8-46d3-9ef2-3ddf128bded8}"
+    },
+    {
+        "Name":  "Security: Kerberos Authentication",
+        "Guid":  "{6b510852-3583-4e2d-affe-a67f9f223438}"
+    },
+    {
+        "Name":  "Security: NTLM Authentication",
+        "Guid":  "{5bbb6c18-aa45-49b1-a15f-085f7ed0aa90}"
+    },
+    {
+        "Name":  "Security: SChannel",
+        "Guid":  "{37d2c3cd-c5d4-4587-8531-4696c44244c8}"
+    },
+    {
+        "Name":  "Security: TSPkg",
+        "Guid":  "{6165f3e2-ae38-45d4-9b23-6b4818758bd9}"
+    },
+    {
+        "Name":  "Security: WDigest",
+        "Guid":  "{fb6a424f-b5d6-4329-b9d5-a975b3a93ead}"
+    },
+    {
+        "Name":  "Sensor ClassExtension Trace",
+        "Guid":  "{a1e89bb0-ef73-4980-8c99-dd15f7271d7e}"
+    },
+    {
+        "Name":  "Service Control Manager",
+        "Guid":  "{555908d1-a6d7-4695-8e1e-26931d2012f4}"
+    },
+    {
+        "Name":  "Service Control Manager Trace",
+        "Guid":  "{ebcca1c2-ab46-4a1d-8c2a-906c2ff25f39}"
+    },
+    {
+        "Name":  "SQLOLEDB_1",
+        "Guid":  "{c5bffe2e-9d87-d568-a09e-08fc83d0c7c2}"
+    },
+    {
+        "Name":  "SQLSRV32.1",
+        "Guid":  "{4b647745-f438-0a42-f870-5dbd29949c99}"
+    },
+    {
+        "Name":  "SysCache_Profiler",
+        "Guid":  "{03637494-af1e-4d80-a390-af4275a26951}"
+    },
+    {
+        "Name":  "TCPIP Service Trace",
+        "Guid":  "{eb004a05-9b1a-11d4-9123-0050047759bc}"
+    },
+    {
+        "Name":  "TerminalServer-MediaFoundationPlugin",
+        "Guid":  "{4199ee71-d55d-47d7-9f57-34a1d5b2c904}"
+    },
+    {
+        "Name":  "Thread Pool",
+        "Guid":  "{c861d0e2-a2c1-4d36-9f9c-970bab943a12}"
+    },
+    {
+        "Name":  "TPM",
+        "Guid":  "{1b6b0772-251b-4d42-917d-faca166bc059}"
+    },
+    {
+        "Name":  "TS Client ActiveX Control Trace",
+        "Guid":  "{daa6caf5-6678-43f8-a6fe-b40ee096e06e}"
+    },
+    {
+        "Name":  "TS Client Trace",
+        "Guid":  "{0c51b20c-f755-48a8-8123-bf6da2adc727}"
+    },
+    {
+        "Name":  "TS Rdp Init Trace",
+        "Guid":  "{c127c1a8-6ceb-11da-8bde-f66bad1e3f3a}"
+    },
+    {
+        "Name":  "TS RDP Shell Trace",
+        "Guid":  "{bfa655dc-6c51-11da-8bde-f66bad1e3f3a}"
+    },
+    {
+        "Name":  "TS Rdp Sound End Point Trace",
+        "Guid":  "{5a966d1c-6b48-11da-8bde-f66bad1e3f3a}"
+    },
+    {
+        "Name":  "UMB Trace",
+        "Guid":  "{96ab095a-9519-4f5c-81ee-c510b0a45463}"
+    },
+    {
+        "Name":  "UmBus Driver Trace",
+        "Guid":  "{f9be9c98-10db-4318-bb61-cb0ddea08bf7}"
+    },
+    {
+        "Name":  "User-mode PnP Manager Trace",
+        "Guid":  "{a676b545-4cfb-4306-a067-502d9a0f2220}"
+    },
+    {
+        "Name":  "User32",
+        "Guid":  "{b0aa8734-56f7-41cc-b2f4-de228e98b946}"
+    },
+    {
+        "Name":  "Volsnap",
+        "Guid":  "{cb017cd2-1f37-4e65-82bc-3e91f6a37559}"
+    },
+    {
+        "Name":  "VSS tracing provider",
+        "Guid":  "{9138500e-3648-4edb-aa4c-859e9f7b7c38}"
+    },
+    {
+        "Name":  "Windows Connect Now",
+        "Guid":  "{c100bece-d33a-4a4b-bf23-bbef4663d017}"
+    },
+    {
+        "Name":  "Windows Defender Firewall API",
+        "Guid":  "{28c9f48f-d244-45a8-842f-dc9fbc9b6e92}"
+    },
+    {
+        "Name":  "Windows Defender Firewall API - GP",
+        "Guid":  "{0eff663f-8b6e-4e6d-8182-087a8eaa29cb}"
+    },
+    {
+        "Name":  "Windows Defender Firewall Driver",
+        "Guid":  "{d5e09122-d0b2-4235-adc1-c89faaaf1069}"
+    },
+    {
+        "Name":  "Windows Defender Firewall NetShell Plugin",
+        "Guid":  "{28c9f48f-d244-45a8-842f-dc9fbc9b6e94}"
+    },
+    {
+        "Name":  "Windows Defender Firewall Service",
+        "Guid":  "{5eefebdb-e90c-423a-8abf-0241e7c5b87d}"
+    },
+    {
+        "Name":  "Windows Error Reporting",
+        "Guid":  "{0ead09bd-2157-539a-8d6d-c87f95b64d70}"
+    },
+    {
+        "Name":  "Windows Kernel Trace",
+        "Guid":  "{9e814aad-3204-11d2-9a82-006008a86939}"
+    },
+    {
+        "Name":  "Windows NetworkItemFactory Trace",
+        "Guid":  "{d2a60d61-0f87-4673-a86c-9c461457fe27}"
+    },
+    {
+        "Name":  "Windows Notification Facility Provider",
+        "Guid":  "{42695762-ea50-497a-9068-5cbbb35e0b95}"
+    },
+    {
+        "Name":  "Windows Remote Management Trace",
+        "Guid":  "{04c6e16d-b99f-4a3a-9b3e-b8325bbc781e}"
+    },
+    {
+        "Name":  "Windows Wininit Trace",
+        "Guid":  "{c2ba06e2-f7ce-44aa-9e7e-62652cdefe97}"
+    },
+    {
+        "Name":  "Windows Winlogon Trace",
+        "Guid":  "{d451642c-63a6-11d7-9720-00b0d03e0347}"
+    },
+    {
+        "Name":  "Windows-ApplicationModel-Store-SDK",
+        "Guid":  "{ff79a477-c45f-4a52-8ae0-2b324346d4e4}"
+    },
+    {
+        "Name":  "WINSATAPI_ETW_PROVIDER",
+        "Guid":  "{617853d6-728b-4b59-8a78-c3a9a5eade92}"
+    },
+    {
+        "Name":  "winsrvext",
+        "Guid":  "{2b9537f0-4a90-557b-1313-d0ce2827a94a}"
+    },
+    {
+        "Name":  "Wireless Client Trace",
+        "Guid":  "{8a3cf0b5-e0bc-450b-ae4b-61728ffa1d58}"
+    },
+    {
+        "Name":  "WLAN AutoConfig Trace",
+        "Guid":  "{0c5a3172-2248-44fd-b9a6-8389cb1dc56a}"
+    },
+    {
+        "Name":  "WLAN Diagnostics Trace",
+        "Guid":  "{637a0f36-dff5-4b2f-83dd-b106c1c725e2}"
+    },
+    {
+        "Name":  "WLAN Dialog Trace",
+        "Guid":  "{520319a9-b932-4ec7-943c-61e560939101}"
+    },
+    {
+        "Name":  "WLAN Extensibility Trace",
+        "Guid":  "{e2eb5b52-08b1-4391-b670-f58317376247}"
+    },
+    {
+        "Name":  "WlanLogger",
+        "Guid":  "{bb6f5b93-635c-47be-816f-e895e77064a8}"
+    },
+    {
+        "Name":  "WMI_Tracing",
+        "Guid":  "{1ff6b227-2ca7-40f9-9a66-980eadaa602e}"
+    },
+    {
+        "Name":  "WMI_Tracing_Client_Operations",
+        "Guid":  "{8e6b6962-ab54-4335-8229-3255b919dd0e}"
+    },
+    {
+        "Name":  "WMP Network Sharing API",
+        "Guid":  "{8ed60a3a-8c12-49c5-a518-fdf451bc10fc}"
+    },
+    {
+        "Name":  "WMP Network Sharing Service",
+        "Guid":  "{a7eb57f6-145e-4f18-bd75-dbbf6f7e23a7}"
+    },
+    {
+        "Name":  "WMP Network Sharing Taskbar",
+        "Guid":  "{d804a67f-4c25-43c1-896f-89ff78b3a911}"
+    },
+    {
+        "Name":  "WPD API Trace",
+        "Guid":  "{c3c5d8af-2fd5-4500-a8e7-379c2d0bbe2e}"
+    },
+    {
+        "Name":  "WPD Bluetooth MTP Emumerator Driver Trace",
+        "Guid":  "{4b6efb94-30ea-49a7-bb29-e9ed9dce67da}"
+    },
+    {
+        "Name":  "WPD BusEnumService Trace",
+        "Guid":  "{0381564e-d5cb-4e48-ab35-be24389b0f59}"
+    },
+    {
+        "Name":  "WPD ClassExtension Trace",
+        "Guid":  "{a0a352c5-b8ec-41e9-9936-8452c1c0a6cf}"
+    },
+    {
+        "Name":  "WPD ClassInstaller Trace",
+        "Guid":  "{45350d79-4497-42f1-bd1b-83587575b91a}"
+    },
+    {
+        "Name":  "WPD FSDriver Trace",
+        "Guid":  "{1311095b-b9ff-497a-8560-2f43ca5438e4}"
+    },
+    {
+        "Name":  "WPD MTPDriver Trace",
+        "Guid":  "{97496dda-c211-4ffe-b1b1-68e6e98ebc38}"
+    },
+    {
+        "Name":  "WPD ShellExtension Trace",
+        "Guid":  "{a42c7bd1-5af3-4b32-9bc6-b85eb31d3f4a}"
+    },
+    {
+        "Name":  "WPD ShellServiceObject Trace",
+        "Guid":  "{1ab5ac29-037f-43a1-9484-78c9db61f869}"
+    },
+    {
+        "Name":  "WPD Types Trace",
+        "Guid":  "{58e8f67d-29e9-456c-b23d-c6489e341bb0}"
+    },
+    {
+        "Name":  "WPD WiaCompat Trace",
+        "Guid":  "{b809f4ff-3023-473c-971b-ab594429ea57}"
+    },
+    {
+        "Name":  "WPD WMDMCompat Trace",
+        "Guid":  "{17abf473-982c-4d0e-b502-3a59d89e71de}"
+    },
+    {
+        "Name":  "WSAT_TraceProvider",
+        "Guid":  "{7f3fe630-462b-47c5-ab07-67ca84934abd}"
+    },
+    {
+        "Name":  "WudfUsbccidDriver",
+        "Guid":  "{22c370a7-a3db-4390-ade5-3a1accf4b5d5}"
+    },
+    {
+        "Name":  "Wudfx02000_KmdfTraceGuid",
+        "Guid":  "{485e7de9-0a80-11d8-ad15-505054503030}"
+    },
+    {
+        "Name":  "XWizard Framework",
+        "Guid":  "{777ba8ff-2498-4875-933a-3067de883070}"
+    },
+    {
+        "Name":  "Microsoft.MSEdgeBeta",
+        "Guid":  "{bd089baa-4e52-4794-a887-9e96868570d2}"
+    },
+    {
+        "Name":  "Microsoft.MSEdgeCanary",
+        "Guid":  "{c56b8664-45c5-4e65-b3c7-a8d6bd3f2e67}"
+    },
+    {
+        "Name":  "Microsoft.MSEdgeDev.LifecycleUnit",
+        "Guid":  "{d30b5c9f-b58f-4dc9-afaf-134405d72107}"
+    },
+    {
+        "Name":  "Microsoft.MSEdgeStable",
+        "Guid":  "{3a5f2396-5c8f-4f1f-9b67-6cca6c990e61}"
+    },
+    {
+        "Name":  "Microsoft.MSEdgeStable.Omnibox",
+        "Guid":  "{3A5F2396-5C8F-4F1F-9B67-6CCA6C990E61}"
+    },
+    {
+        "Name":  "Microsoft.MSEdgeWebView",
+        "Guid":  "{e16ec3d2-bb0f-4e8f-bdb8-de0bea82dc3d}"
+    },
+    {
+        "Name":  "Microsoft.MSEdgeWebView.Loader",
+        "Guid":  "{951ddd7e-f2ff-5b3f-7137-e2f1a0dd9804}"
+    }
+]

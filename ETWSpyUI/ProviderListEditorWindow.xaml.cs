@@ -64,10 +64,10 @@ namespace ETWSpyUI
             Guid = guid;
         }
 
-        public ProviderListEntry(CsvProviderEntry csvEntry)
+        public ProviderListEntry(ProviderEntry jsonEntry)
         {
-            Name = csvEntry.Name;
-            Guid = csvEntry.Guid;
+            Name = jsonEntry.Name;
+            Guid = jsonEntry.Guid;
         }
     }
 
@@ -103,14 +103,13 @@ namespace ETWSpyUI
         }
 
         /// <summary>
-        /// Loads providers from the CSV file.
+        /// Loads providers from the JSON file.
         /// </summary>
         private void LoadProviders()
         {
             try
             {
-                var csvPath = ProviderCsvReader.GetDefaultCsvPath();
-                var entries = ProviderCsvReader.ReadFromFile(csvPath);
+                var entries = ProviderJsonReader.ReadProviders();
 
                 _providerEntries.Clear();
                 foreach (var entry in entries.OrderBy(e => e.Name, StringComparer.OrdinalIgnoreCase))
@@ -389,12 +388,12 @@ namespace ETWSpyUI
         {
             try
             {
-                var csvPath = ProviderCsvReader.GetDefaultCsvPath();
-                var csvEntries = _providerEntries
-                    .Select(e => new CsvProviderEntry(e.Name, e.Guid))
+                var jsonPath = ProviderJsonReader.GetLocalJsonPath();
+                var jsonEntries = _providerEntries
+                    .Select(e => new ProviderEntry(e.Name, e.Guid))
                     .ToList();
 
-                ProviderCsvReader.WriteToFile(csvPath, csvEntries);
+                ProviderJsonReader.WriteToFile(jsonPath, jsonEntries);
 
                 // Invalidate the provider manager cache so it reloads
                 ProviderManager.InvalidateCache();
@@ -438,6 +437,49 @@ namespace ETWSpyUI
                 if (result == MessageBoxResult.No)
                 {
                     e.Cancel = true;
+                }
+            }
+        }
+
+        private void ResetButton_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show(
+                "This will reset the provider list to the built-in defaults.\n\n" +
+                "All your custom changes will be lost. This action cannot be undone.\n\n" +
+                "Are you sure you want to continue?",
+                "Reset to Default",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    var defaultEntries = ProviderJsonReader.ReadFromEmbeddedResource();
+
+                    _providerEntries.Clear();
+                    foreach (var entry in defaultEntries.OrderBy(e => e.Name, StringComparer.OrdinalIgnoreCase))
+                    {
+                        _providerEntries.Add(new ProviderListEntry(entry));
+                    }
+
+                    _hasUnsavedChanges = true;
+                    CancelEdit();
+                    UpdateButtonStates();
+
+                    MessageBox.Show(
+                        "Provider list has been reset to defaults.\n\nClick Save to apply the changes.",
+                        "Reset Complete",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        $"Failed to reset providers: {ex.Message}",
+                        "Error",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
             }
         }

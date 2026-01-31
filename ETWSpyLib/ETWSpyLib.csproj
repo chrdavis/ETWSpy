@@ -12,7 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="ProviderNameGuid.csv">
+    <!-- Embedded resource for default provider list (used for reset functionality) -->
+    <EmbeddedResource Include="ProviderNameGuid.json" />
+    <!-- Also copy to output for user-editable local file -->
+    <Content Include="ProviderNameGuid.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

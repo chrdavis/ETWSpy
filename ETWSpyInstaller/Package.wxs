@@ -46,8 +46,8 @@
       <Component Id="MicrosoftETWDll">
         <File Id="MicrosoftETWDll" Source="$(var.ETWSpyUI.TargetDir)Microsoft.O365.Security.Native.ETW.dll" KeyPath="yes" />
       </Component>
-      <Component Id="ProviderNameGuidCsv">
-        <File Id="ProviderNameGuidCsv" Source="$(var.ETWSpyUI.TargetDir)ProviderNameGuid.csv" KeyPath="yes" />
+      <Component Id="ProviderNameGuidJson">
+        <File Id="ProviderNameGuidJson" Source="$(var.ETWSpyUI.TargetDir)ProviderNameGuid.json" KeyPath="yes" />
       </Component>
     </ComponentGroup>
   </Fragment>
