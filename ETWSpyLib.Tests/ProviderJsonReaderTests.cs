@@ -163,4 +163,164 @@ public class ProviderJsonReaderTests
         Assert.All(entries, e => Assert.False(string.IsNullOrEmpty(e.Name)));
         Assert.All(entries, e => Assert.NotEqual(Guid.Empty, e.Guid));
     }
+
+    [Fact]
+    public void ReadFromStream_IsCaseInsensitive()
+    {
+        var jsonContent = """
+            [
+                {"name": "TestProvider", "guid": "{12345678-1234-1234-1234-123456789abc}"},
+                {"NAME": "AnotherProvider", "GUID": "{87654321-4321-4321-4321-cba987654321}"}
+            ]
+            """;
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(jsonContent));
+
+        var entries = ProviderJsonReader.ReadFromStream(stream);
+
+        Assert.Equal(2, entries.Count);
+        Assert.Equal("TestProvider", entries[0].Name);
+        Assert.Equal("AnotherProvider", entries[1].Name);
+    }
+
+    [Fact]
+    public void ReadFromStream_HandlesSpecialCharactersInName()
+    {
+        var jsonContent = """
+            [
+                {"Name": "Microsoft-Windows-Kernel-Process", "Guid": "{12345678-1234-1234-1234-123456789abc}"},
+                {"Name": "Provider: With Special; Chars!", "Guid": "{87654321-4321-4321-4321-cba987654321}"}
+            ]
+            """;
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(jsonContent));
+
+        var entries = ProviderJsonReader.ReadFromStream(stream);
+
+        Assert.Equal(2, entries.Count);
+        Assert.Equal("Microsoft-Windows-Kernel-Process", entries[0].Name);
+        Assert.Equal("Provider: With Special; Chars!", entries[1].Name);
+    }
+
+    [Fact]
+    public void ReadFromStream_ThrowsOnInvalidJson()
+    {
+        var jsonContent = "{ invalid json }";
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(jsonContent));
+
+        Assert.Throws<JsonException>(() => ProviderJsonReader.ReadFromStream(stream));
+    }
+
+    [Fact]
+    public void ProviderEntry_InvalidGuidString_ReturnsEmptyGuid()
+    {
+        var entry = new ProviderEntry
+        {
+            Name = "Test",
+            GuidString = "not-a-valid-guid"
+        };
+
+        Assert.Equal(Guid.Empty, entry.Guid);
+    }
+
+    [Fact]
+    public void ProviderEntry_EmptyGuidString_ReturnsEmptyGuid()
+    {
+        var entry = new ProviderEntry
+        {
+            Name = "Test",
+            GuidString = ""
+        };
+
+        Assert.Equal(Guid.Empty, entry.Guid);
+    }
+
+    [Fact]
+    public void ProviderEntry_ToString_ReturnsExpectedFormat()
+    {
+        var entry = new ProviderEntry("TestProvider", Guid.Parse("12345678-1234-1234-1234-123456789abc"));
+
+        var result = entry.ToString();
+
+        Assert.Equal("TestProvider,{12345678-1234-1234-1234-123456789abc}", result);
+    }
+
+    [Fact]
+    public void ProviderEntry_DefaultConstructor_HasEmptyDefaults()
+    {
+        var entry = new ProviderEntry();
+
+        Assert.Equal(string.Empty, entry.Name);
+        Assert.Equal(string.Empty, entry.GuidString);
+        Assert.Equal(Guid.Empty, entry.Guid);
+    }
+
+    [Fact]
+    public void GetLocalJsonPath_ReturnsValidPath()
+    {
+        var path = ProviderJsonReader.GetLocalJsonPath();
+
+        Assert.False(string.IsNullOrEmpty(path));
+        Assert.EndsWith("ProviderNameGuid.json", path);
+    }
+
+    [Fact]
+    public void WriteToFile_ThenReadFromFile_PreservesOrder()
+    {
+        var entries = new List<ProviderEntry>
+        {
+            new("Zebra", Guid.Parse("33333333-3333-3333-3333-333333333333")),
+            new("Apple", Guid.Parse("11111111-1111-1111-1111-111111111111")),
+            new("Mango", Guid.Parse("22222222-2222-2222-2222-222222222222"))
+        };
+
+        var tempFile = Path.GetTempFileName();
+        try
+        {
+            ProviderJsonReader.WriteToFile(tempFile, entries);
+            var loadedEntries = ProviderJsonReader.ReadFromFile(tempFile);
+
+            Assert.Equal("Zebra", loadedEntries[0].Name);
+            Assert.Equal("Apple", loadedEntries[1].Name);
+            Assert.Equal("Mango", loadedEntries[2].Name);
+        }
+        finally
+        {
+            if (File.Exists(tempFile))
+            {
+                File.Delete(tempFile);
+            }
+        }
+    }
+
+    [Fact]
+    public void ReadFromStream_HandlesWhitespaceInGuidString()
+    {
+        var jsonContent = """
+            [
+                {"Name": "TestProvider", "Guid": "  {12345678-1234-1234-1234-123456789abc}  "}
+            ]
+            """;
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(jsonContent));
+
+        var entries = ProviderJsonReader.ReadFromStream(stream);
+
+        Assert.Single(entries);
+        Assert.Equal(Guid.Parse("12345678-1234-1234-1234-123456789abc"), entries[0].Guid);
+    }
+
+    [Fact]
+    public void ReadFromStream_HandlesLargeNumberOfEntries()
+    {
+        var entriesList = new List<string>();
+        for (int i = 0; i < 1000; i++)
+        {
+            var guid = new Guid(i, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+            entriesList.Add($"{{\"Name\": \"Provider{i}\", \"Guid\": \"{{{guid}}}\"}}");
+        }
+        var jsonContent = "[" + string.Join(",", entriesList) + "]";
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(jsonContent));
+
+        var entries = ProviderJsonReader.ReadFromStream(stream);
+
+        Assert.Equal(1000, entries.Count);
+    }
 }
