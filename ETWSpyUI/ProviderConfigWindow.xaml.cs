@@ -163,6 +163,9 @@ namespace ETWSpyUI
                 if (!ProviderComboBox.IsDropDownOpen && !string.IsNullOrEmpty(ProviderComboBox.Text))
                 {
                     _isUserTyping = true;
+                    // Clear selection so WPF doesn't try to sync Text with SelectedItem during typing
+                    // This prevents the ComboBox from overwriting user input when Refresh() is called
+                    ProviderComboBox.SelectedItem = null;
                     ProviderComboBox.IsDropDownOpen = true;
                 }
                 else
@@ -187,8 +190,22 @@ namespace ETWSpyUI
 
                 Dispatcher.Invoke(() =>
                 {
+                    // Preserve text - Refresh() can cause WPF to sync Text with SelectedItem
+                    var textToRestore = filterText;
+                    
                     _filterText = filterText;
                     _providerView?.Refresh();
+                    
+                    // Restore the user's typed text if it was changed by Refresh()
+                    if (ProviderComboBox.Text != textToRestore)
+                    {
+                        ProviderComboBox.Text = textToRestore;
+                        // Move caret to end after restoring text
+                        if (ProviderComboBox.Template.FindName("PART_EditableTextBox", ProviderComboBox) is TextBox textBox)
+                        {
+                            textBox.CaretIndex = textBox.Text?.Length ?? 0;
+                        }
+                    }
                 });
             }, token, TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.Default);
         }

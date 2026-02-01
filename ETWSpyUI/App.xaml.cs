@@ -30,7 +30,7 @@ namespace ETWSpyUI
             bool isDarkMode = RegistrySettings.LoadBool(RegistrySettings.DarkMode);
             if (isDarkMode)
             {
-                SwitchTheme("Themes/DarkTheme.xaml");
+                SwitchTheme("Themes/DarkColors.xaml");
             }
 
             // Create and show the main window
@@ -38,12 +38,17 @@ namespace ETWSpyUI
             mainWindow.Show();
         }
 
-        private void SwitchTheme(string themePath)
+        private void SwitchTheme(string colorsPath)
         {
-            var uri = new Uri(themePath, UriKind.Relative);
-            var resourceDict = new ResourceDictionary { Source = uri };
+            var colorsUri = new Uri(colorsPath, UriKind.Relative);
+            var colorsDict = new ResourceDictionary { Source = colorsUri };
+            
+            var stylesUri = new Uri("Themes/BaseStyles.xaml", UriKind.Relative);
+            var stylesDict = new ResourceDictionary { Source = stylesUri };
+            
             Resources.MergedDictionaries.Clear();
-            Resources.MergedDictionaries.Add(resourceDict);
+            Resources.MergedDictionaries.Add(colorsDict);
+            Resources.MergedDictionaries.Add(stylesDict);
         }
     }
 }

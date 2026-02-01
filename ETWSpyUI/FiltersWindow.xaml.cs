@@ -138,9 +138,9 @@ namespace ETWSpyUI
         {
             if (FilterCategoryComboBox.SelectedItem is string category)
             {
-                ValueInstructionLabel.Content = category == EventIdCategory
-                    ? "(Separate IDs with ','; Specify range with '-'; Empty matches all)"
-                    : "(Case-insensitive sub-string match in event/task name; Empty matches all)";
+                ValueTextBox.ToolTip = category == EventIdCategory
+                    ? "Separate IDs with ','; Specify range with '-'; Empty matches all"
+                    : "Case-insensitive sub-string match in event/task name; Empty matches all";
             }
         }
 

@@ -8,9 +8,9 @@
         Style="{StaticResource ThemedWindow}"
         Title="ETWSpy - Provider Configuration" 
         Height="500" 
-        Width="750"
+        Width="650"
         MinHeight="400"
-        MinWidth="700"
+        MinWidth="400"
         WindowStartupLocation="CenterOwner">
     <Grid Background="{DynamicResource SecondaryBackgroundBrush}" Margin="10">
         <Grid.RowDefinitions>
@@ -31,7 +31,6 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0" Content="Provider:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2"/>
@@ -41,25 +40,24 @@
                       Margin="2"
                       HorizontalAlignment="Left"
                       VerticalAlignment="Center"
-                      Width="300"
+                      Width="350"
                       IsEditable="True"
                       IsReadOnly="False"
                       IsTextSearchEnabled="False"
                       StaysOpenOnEdit="True"
                       VirtualizingPanel.IsVirtualizing="True"
-                      VirtualizingPanel.VirtualizationMode="Recycling">
+                      VirtualizingPanel.VirtualizationMode="Recycling"
+                      ToolTip="Name or GUID, select or enter new provider">
                 <ComboBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <VirtualizingStackPanel />
                     </ItemsPanelTemplate>
                 </ComboBox.ItemsPanel>
             </ComboBox>
-            <Label Grid.Row="0" Grid.Column="2" Content="(Name or GUID, select or enter new provider)" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2"/>
 
             <Label Grid.Row="1" Grid.Column="0" Content="Keywords:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2"/>
             <TextBox Grid.Row="1" Grid.Column="1" x:Name="KeywordsTextBox" Text="" Height="26" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150"
                      ToolTip="Hex value (e.g., 0xFFFFFFFF) or decimal. Empty = All keywords"/>
-            <Label Grid.Row="1" Grid.Column="2" Content="(Hex value e.g., 0xFFFFFFFF or decimal; Empty = All)" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2"/>
 
             <Label Grid.Row="2" Grid.Column="0" Content="Trace Level:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2"/>
             <ComboBox Grid.Row="2"
@@ -71,8 +69,8 @@
                       Width="150"/>
             
             <Label Grid.Row="3" Grid.Column="0" Content="Trace Flags:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="2"/>
-            <TextBox Grid.Row="3" Grid.Column="1" x:Name="TraceFlagsTextBox" Height="26" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150"/>
-            <Label Grid.Row="3" Grid.Column="2" Content="(Raw trace flags value 0-255)" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2"/>
+            <TextBox Grid.Row="3" Grid.Column="1" x:Name="TraceFlagsTextBox" Height="26" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150"
+                     ToolTip="Raw trace flags value 0-255"/>
         </Grid>
 
         <!-- Buttons -->

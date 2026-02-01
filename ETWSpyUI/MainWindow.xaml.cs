@@ -694,7 +694,7 @@ namespace ETWSpyUI
         private void ApplyTheme()
         {
             bool useDarkMode = _useSystemTheme ? IsSystemInDarkMode() : _isDarkMode;
-            SwitchTheme(useDarkMode ? "Themes/DarkTheme.xaml" : "Themes/LightTheme.xaml");
+            SwitchTheme(useDarkMode ? "Themes/DarkColors.xaml" : "Themes/LightColors.xaml");
             WindowHelper.ApplyTitleBarTheme(this, useDarkMode);
             
             // Update title bar theme for any open child windows
@@ -739,12 +739,17 @@ namespace ETWSpyUI
             SystemThemeMenuItem.IsChecked = _useSystemTheme;
         }
 
-        private void SwitchTheme(string themePath)
+        private void SwitchTheme(string colorsPath)
         {
-            var uri = new Uri(themePath, UriKind.Relative);
-            var resourceDict = new ResourceDictionary { Source = uri };
+            var colorsUri = new Uri(colorsPath, UriKind.Relative);
+            var colorsDict = new ResourceDictionary { Source = colorsUri };
+            
+            var stylesUri = new Uri("Themes/BaseStyles.xaml", UriKind.Relative);
+            var stylesDict = new ResourceDictionary { Source = stylesUri };
+            
             Application.Current.Resources.MergedDictionaries.Clear();
-            Application.Current.Resources.MergedDictionaries.Add(resourceDict);
+            Application.Current.Resources.MergedDictionaries.Add(colorsDict);
+            Application.Current.Resources.MergedDictionaries.Add(stylesDict);
         }
 
         private void PauseResumeTracing(object sender, RoutedEventArgs e)
