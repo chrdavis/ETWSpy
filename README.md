@@ -6,6 +6,9 @@ ETWSpy is a Windows desktop application for monitoring and capturing Event Traci
 ![Windows](https://img.shields.io/badge/Platform-Windows-lightgrey)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
+<img width="1173" height="703" alt="image" src="https://github.com/user-attachments/assets/1e46f62a-fe7a-49aa-b42a-35ac2e46c7c2" />
+
+
 ## Features
 
 - **Real-time ETW Event Capture**: Monitor ETW events from any registered provider on your system
@@ -103,7 +106,10 @@ You can associate `.etwconfig` files with ETWSpy via **View ? Associate .etwconf
 ## Troubleshooting
 
 ### "No ETW trace sessions are available"
-Windows has a limited number of concurrent ETW trace sessions. Close other tracing tools (Performance Monitor, other ETW utilities) and try again.
+Windows has a limited number of concurrent ETW trace sessions. Close other tracing tools or stop some existing trace sessions in Windows Performance Monitor and try again.
+
+<img width="983" height="703" alt="image" src="https://github.com/user-attachments/assets/19964887-5770-48c3-bec7-39815cf37a12" />
+
 
 ### Events not appearing
 - Ensure you're running as Administrator
