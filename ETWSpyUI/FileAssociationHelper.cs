@@ -6,16 +6,16 @@ using System.Security;
 namespace ETWSpyUI
 {
     /// <summary>
-    /// Helper class to register and unregister file associations for .etwconfig files.
+    /// Helper class to register and unregister file associations for .etwspy files.
     /// </summary>
     public static class FileAssociationHelper
     {
-        private const string FileExtension = ".etwconfig";
+        private const string FileExtension = ".etwspy";
         private const string ProgId = "ETWSpy.Configuration";
         private const string FileTypeDescription = "ETWSpy Configuration File";
 
         /// <summary>
-        /// Checks if the .etwconfig file association is registered for this application.
+        /// Checks if the .etwspy file association is registered for this application.
         /// </summary>
         public static bool IsFileAssociationRegistered()
         {
@@ -52,7 +52,7 @@ namespace ETWSpyUI
         }
 
         /// <summary>
-        /// Registers the .etwconfig file association with the current application.
+        /// Registers the .etwspy file association with the current application.
         /// Uses HKEY_CURRENT_USER so no admin rights are required.
         /// </summary>
         public static bool RegisterFileAssociation()
@@ -109,7 +109,7 @@ namespace ETWSpyUI
         }
 
         /// <summary>
-        /// Unregisters the .etwconfig file association.
+        /// Unregisters the .etwspy file association.
         /// </summary>
         public static bool UnregisterFileAssociation()
         {

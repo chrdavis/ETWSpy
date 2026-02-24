@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
 
-  <Package Name="ETWSpy" Manufacturer="ETWSpy" Version="1.0.0" UpgradeCode="8B7E1A2C-3F4D-5E6A-9B0C-1D2E3F4A5B6C">
+  <Package Name="ETWSpy" Manufacturer="ETWSpy" Version="1.0.1" UpgradeCode="8B7E1A2C-3F4D-5E6A-9B0C-1D2E3F4A5B6C" InstallerVersion="500">
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <MediaTemplate EmbedCab="yes" />
+
+    <!-- Application icon for Add/Remove Programs -->
+    <Icon Id="ETWSpy.ico" SourceFile="$(var.ETWSpyUI.ProjectDir)ETWSpy.ico" />
+    <Property Id="ARPPRODUCTICON" Value="ETWSpy.ico" />
 
     <Feature Id="Main">
       <ComponentGroupRef Id="ProductComponents" />
       <ComponentRef Id="ProgramMenuShortcut" />
     </Feature>
+
+    <!-- UI with welcome screen, install directory selection, and completion dialog -->
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    <WixVariable Id="WixUIBannerBmp" Value="banner.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="dialog.bmp" />
+    <ui:WixUI Id="WixUI_InstallDir" />
+
+    <!-- Skip the license agreement dialog -->
+    <UI>
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="InstallDirDlg" Order="2" Condition="1" />
+      <Publish Dialog="InstallDirDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="2" Condition="1" />
+    </UI>
   </Package>
 
   <Fragment>

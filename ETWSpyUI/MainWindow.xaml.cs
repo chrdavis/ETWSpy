@@ -1106,8 +1106,8 @@ namespace ETWSpyUI
         {
             var dialog = new SaveFileDialog
             {
-                Filter = "ETW Configuration (*.etwconfig)|*.etwconfig|JSON Files (*.json)|*.json|All Files (*.*)|*.*",
-                DefaultExt = ".etwconfig",
+                Filter = "ETW Configuration (*.etwspy)|*.etwspy|JSON Files (*.json)|*.json|All Files (*.*)|*.*",
+                DefaultExt = ".etwspy",
                 Title = "Save Configuration"
             };
 
@@ -1137,8 +1137,8 @@ namespace ETWSpyUI
         {
             var dialog = new OpenFileDialog
             {
-                Filter = "ETW Configuration (*.etwconfig)|*.etwconfig|JSON Files (*.json)|*.json|All Files (*.*)|*.*",
-                DefaultExt = ".etwconfig",
+                Filter = "ETW Configuration (*.etwspy)|*.etwspy|JSON Files (*.json)|*.json|All Files (*.*)|*.*",
+                DefaultExt = ".etwspy",
                 Title = "Load Configuration"
             };
 

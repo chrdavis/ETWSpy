@@ -10,4 +10,8 @@
     <ProjectReference Include="..\ETWSpyUI\ETWSpyUI.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="WixToolset.UI.wixext" Version="5.0.2" />
+  </ItemGroup>
+
 </Project>
