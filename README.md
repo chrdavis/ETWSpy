@@ -87,11 +87,11 @@ ETWSpy is a Windows desktop application for monitoring and capturing Event Traci
 
 ## Configuration Files
 
-ETWSpy saves configurations as `.etwconfig` files (JSON format) containing:
+ETWSpy saves configurations as `.etwspy` files (JSON format) containing:
 - Provider configurations (provider name/GUID, keywords, trace level, flags)
 - Filter rules (provider, filter type, value, include/exclude logic)
 
-You can associate `.etwconfig` files with ETWSpy via **View ? Associate .etwconfig Files**.
+You can associate `.etwspy` files with ETWSpy via **View ? Associate .etwspy Files**.
 
 ## Settings
 
