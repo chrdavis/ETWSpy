@@ -16,7 +16,7 @@ ETWSpy is a Windows desktop application for monitoring and capturing Event Traci
 - **Event Filtering**: Filter events by Event ID or text matching with include/exclude logic
 - **Dark/Light Theme**: Supports both dark and light themes, with an option to follow system preferences
 - **Export Capabilities**: Export captured events to CSV format for further analysis
-- **Save/Load Configuration**: Save your provider and filter configurations to `.etwconfig` files and reload them later
+- **Save/Load Configuration**: Save your provider and filter configurations to `.etwspy` files and reload them later
 - **Session Restore**: Optionally restore your previous session configuration on launch
 - **High-Performance**: Optimized for high-volume event capture with batching and virtualized UI
 
