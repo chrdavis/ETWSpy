@@ -1770,7 +1770,7 @@ namespace ETWSpyUI
         private static string GetLastSessionFilePath()
         {
             var exeDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            return Path.Combine(exeDirectory, "lastsession.etwconfig");
+            return Path.Combine(exeDirectory, "lastsession.etwspy");
         }
 
         /// <summary>

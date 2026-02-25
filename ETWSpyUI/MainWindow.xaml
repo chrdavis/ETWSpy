@@ -116,7 +116,7 @@
                         <TextBlock Text="&#xE777;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem x:Name="FileAssociationMenuItem" Header="Associate ._etwconfig Files" Click="FileAssociation_Click" IsCheckable="True">
+                <MenuItem x:Name="FileAssociationMenuItem" Header="Associate ._etwspy Files" Click="FileAssociation_Click" IsCheckable="True">
                     <MenuItem.Icon>
                         <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" FontSize="16"/>
                     </MenuItem.Icon>

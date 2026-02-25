@@ -4024,8 +4024,12 @@
         "Guid":  "{49b12c7c-4bd5-4f93-bb75-30fce739600b}"
     },
     {
-        "Name":  "Microsoft.Windows.ResourceManager",
-        "Guid":  "{4180c4f7-e238-5519-338f-ec214f0b49aa}"
+        "Name":  "Microsoft-WindowsPhone-UfxSynopsys",
+        "Guid":  "{49b12c7c-4bd5-4f93-bb75-30fce739600b}"
+    },
+    {
+        "Name":  "Microsoft-Windows-AppLifeCycle-UI",
+        "Guid":  "{ee97cdc4-b095-5c70-6e37-a541eb74c2b5}"
     },
     {
         "Name":  "MMC",
