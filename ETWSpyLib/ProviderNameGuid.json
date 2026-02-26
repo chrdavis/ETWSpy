@@ -4024,8 +4024,8 @@
         "Guid":  "{49b12c7c-4bd5-4f93-bb75-30fce739600b}"
     },
     {
-        "Name":  "Microsoft-WindowsPhone-UfxSynopsys",
-        "Guid":  "{49b12c7c-4bd5-4f93-bb75-30fce739600b}"
+        "Name":  "Microsoft.Windows.ResourceManager",
+        "Guid":  "{4180c4f7-e238-5519-338f-ec214f0b49aa}"
     },
     {
         "Name":  "Microsoft-Windows-AppLifeCycle-UI",
@@ -4492,24 +4492,20 @@
         "Guid":  "{777ba8ff-2498-4875-933a-3067de883070}"
     },
     {
-        "Name":  "Microsoft.MSEdgeBeta",
-        "Guid":  "{bd089baa-4e52-4794-a887-9e96868570d2}"
-    },
-    {
         "Name":  "Microsoft.MSEdgeCanary",
         "Guid":  "{c56b8664-45c5-4e65-b3c7-a8d6bd3f2e67}"
     },
     {
-        "Name":  "Microsoft.MSEdgeDev.LifecycleUnit",
+        "Name":  "Microsoft.MSEdgeDev",
         "Guid":  "{d30b5c9f-b58f-4dc9-afaf-134405d72107}"
+    },
+    {
+        "Name":  "Microsoft.MSEdgeBeta",
+        "Guid":  "{bd089baa-4e52-4794-a887-9e96868570d2}"
     },
     {
         "Name":  "Microsoft.MSEdgeStable",
         "Guid":  "{3a5f2396-5c8f-4f1f-9b67-6cca6c990e61}"
-    },
-    {
-        "Name":  "Microsoft.MSEdgeStable.Omnibox",
-        "Guid":  "{3A5F2396-5C8F-4F1F-9B67-6CCA6C990E61}"
     },
     {
         "Name":  "Microsoft.MSEdgeWebView",
@@ -4518,5 +4514,9 @@
     {
         "Name":  "Microsoft.MSEdgeWebView.Loader",
         "Guid":  "{951ddd7e-f2ff-5b3f-7137-e2f1a0dd9804}"
+    },
+    {
+        "Name":  "Microsoft.MSCopilot",
+        "Guid":  "{61AD60FE-6752-499D-97-3E24E55A0A334C}"
     }
 ]
