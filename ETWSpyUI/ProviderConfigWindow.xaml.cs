@@ -117,6 +117,7 @@ namespace ETWSpyUI
         private string _filterText = string.Empty;
         private bool _isUserTyping;
         private bool _isInitialized;
+        private bool _suppressTextChanged;
         private CancellationTokenSource? _filterCts;
         private const int FilterDebounceMs = 150;
 
@@ -145,17 +146,26 @@ namespace ETWSpyUI
             _isUserTyping = false;
             // Clear filter when dropdown closes so all items are available next time
             _filterText = string.Empty;
-            _providerView?.Refresh();
+            _suppressTextChanged = true;
+            try
+            {
+                _providerView?.Refresh();
+            }
+            finally
+            {
+                _suppressTextChanged = false;
+            }
         }
 
         private void ProviderComboBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             // Don't process text changes until initialization is complete
-            if (!_isInitialized)
+            // or when changes are triggered programmatically (re-entrancy guard)
+            if (!_isInitialized || _suppressTextChanged)
             {
                 return;
             }
-            
+
             // Only filter when the user is actively typing in the dropdown
             if (!_isUserTyping)
             {
@@ -163,10 +173,18 @@ namespace ETWSpyUI
                 if (!ProviderComboBox.IsDropDownOpen && !string.IsNullOrEmpty(ProviderComboBox.Text))
                 {
                     _isUserTyping = true;
-                    // Clear selection so WPF doesn't try to sync Text with SelectedItem during typing
-                    // This prevents the ComboBox from overwriting user input when Refresh() is called
-                    ProviderComboBox.SelectedItem = null;
-                    ProviderComboBox.IsDropDownOpen = true;
+                    _suppressTextChanged = true;
+                    try
+                    {
+                        // Clear selection so WPF doesn't try to sync Text with SelectedItem during typing
+                        // This prevents the ComboBox from overwriting user input when Refresh() is called
+                        ProviderComboBox.SelectedItem = null;
+                        ProviderComboBox.IsDropDownOpen = true;
+                    }
+                    finally
+                    {
+                        _suppressTextChanged = false;
+                    }
                 }
                 else
                 {
@@ -190,21 +208,29 @@ namespace ETWSpyUI
 
                 Dispatcher.Invoke(() =>
                 {
-                    // Preserve text - Refresh() can cause WPF to sync Text with SelectedItem
-                    var textToRestore = filterText;
-                    
-                    _filterText = filterText;
-                    _providerView?.Refresh();
-                    
-                    // Restore the user's typed text if it was changed by Refresh()
-                    if (ProviderComboBox.Text != textToRestore)
+                    _suppressTextChanged = true;
+                    try
                     {
-                        ProviderComboBox.Text = textToRestore;
-                        // Move caret to end after restoring text
-                        if (ProviderComboBox.Template.FindName("PART_EditableTextBox", ProviderComboBox) is TextBox textBox)
+                        // Preserve text - Refresh() can cause WPF to sync Text with SelectedItem
+                        var textToRestore = filterText;
+
+                        _filterText = filterText;
+                        _providerView?.Refresh();
+
+                        // Restore the user's typed text if it was changed by Refresh()
+                        if (ProviderComboBox.Text != textToRestore)
                         {
-                            textBox.CaretIndex = textBox.Text?.Length ?? 0;
+                            ProviderComboBox.Text = textToRestore;
+                            // Move caret to end after restoring text
+                            if (ProviderComboBox.Template.FindName("PART_EditableTextBox", ProviderComboBox) is TextBox textBox)
+                            {
+                                textBox.CaretIndex = textBox.Text?.Length ?? 0;
+                            }
                         }
+                    }
+                    finally
+                    {
+                        _suppressTextChanged = false;
                     }
                 });
             }, token, TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.Default);
