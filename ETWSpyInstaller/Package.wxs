@@ -2,7 +2,7 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
      xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
 
-  <Package Name="ETWSpy" Manufacturer="ETWSpy" Version="1.0.1" UpgradeCode="8B7E1A2C-3F4D-5E6A-9B0C-1D2E3F4A5B6C" InstallerVersion="500">
+  <Package Name="ETWSpy" Manufacturer="ETWSpy" Version="1.0.2" UpgradeCode="8B7E1A2C-3F4D-5E6A-9B0C-1D2E3F4A5B6C" InstallerVersion="500">
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <MediaTemplate EmbedCab="yes" />
 
