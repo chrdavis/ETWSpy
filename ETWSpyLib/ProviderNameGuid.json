@@ -4492,19 +4492,7 @@
         "Guid":  "{777ba8ff-2498-4875-933a-3067de883070}"
     },
     {
-        "Name":  "Microsoft.MSEdgeCanary",
-        "Guid":  "{c56b8664-45c5-4e65-b3c7-a8d6bd3f2e67}"
-    },
-    {
-        "Name":  "Microsoft.MSEdgeDev",
-        "Guid":  "{d30b5c9f-b58f-4dc9-afaf-134405d72107}"
-    },
-    {
-        "Name":  "Microsoft.MSEdgeBeta",
-        "Guid":  "{bd089baa-4e52-4794-a887-9e96868570d2}"
-    },
-    {
-        "Name":  "Microsoft.MSEdgeStable",
+        "Name":  "Microsoft.MSEdge",
         "Guid":  "{3a5f2396-5c8f-4f1f-9b67-6cca6c990e61}"
     },
     {
