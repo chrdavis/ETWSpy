@@ -25,26 +25,41 @@ namespace ETWSpyUI
     /// <summary>
     /// Represents a filter entry combining provider configuration and event filtering.
     /// </summary>
-    public class FilterEntry
+    public class FilterEntry : ObservableObject
     {
-        public string Provider { get; set; } = string.Empty;
-        public string? ProviderGuid { get; set; }
+        private string _provider = string.Empty;
+        public string Provider { get => _provider; set => SetProperty(ref _provider, value); }
+
+        private string? _providerGuid;
+        public string? ProviderGuid { get => _providerGuid; set => SetProperty(ref _providerGuid, value); }
+
         /// <summary>
         /// The type of filter: "Event Id" or "Match Text". Defaults to "Event Id".
         /// </summary>
-        public string FilterCategory { get; set; } = "Event Id";
+        private string _filterCategory = "Event Id";
+        public string FilterCategory { get => _filterCategory; set => SetProperty(ref _filterCategory, value); }
+
         /// <summary>
         /// The filter value - either event IDs or match text depending on FilterCategory.
         /// Empty value means "all" for the given category.
         /// </summary>
-        public string Value { get; set; } = string.Empty;
+        private string _value = string.Empty;
+        public string Value { get => _value; set => SetProperty(ref _value, value); }
+
         /// <summary>
         /// The filter logic: "Include" or "Exclude". Defaults to "Include".
         /// </summary>
-        public string FilterLogic { get; set; } = "Include";
-        public string Keywords { get; set; } = string.Empty;
-        public string TraceLevel { get; set; } = string.Empty;
-        public string TraceFlags { get; set; } = string.Empty;
+        private string _filterLogic = "Include";
+        public string FilterLogic { get => _filterLogic; set => SetProperty(ref _filterLogic, value); }
+
+        private string _keywords = string.Empty;
+        public string Keywords { get => _keywords; set => SetProperty(ref _keywords, value); }
+
+        private string _traceLevel = string.Empty;
+        public string TraceLevel { get => _traceLevel; set => SetProperty(ref _traceLevel, value); }
+
+        private string _traceFlags = string.Empty;
+        public string TraceFlags { get => _traceFlags; set => SetProperty(ref _traceFlags, value); }
     }
 
     /// <summary>

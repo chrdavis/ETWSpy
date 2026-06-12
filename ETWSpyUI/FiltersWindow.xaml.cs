@@ -17,6 +17,7 @@ namespace ETWSpyUI
         private readonly ObservableCollection<ProviderConfigEntry> _providerEntries;
         private readonly Action _onFiltersChanged;
         private readonly bool _isDarkMode;
+        private FilterEntry? _editingFilter;
 
         private const string EventIdCategory = "Event Id";
         private const string MatchTextCategory = "Match Text";
@@ -86,7 +87,41 @@ namespace ETWSpyUI
 
         private void FiltersListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (FiltersListView.SelectedItem is FilterEntry filter)
+            {
+                EnterFilterEditMode(filter);
+            }
+            else
+            {
+                ExitFilterEditMode();
+            }
+
             UpdateButtonStates();
+        }
+
+        /// <summary>
+        /// Loads the selected filter into the input fields and switches the Add button to Update.
+        /// </summary>
+        private void EnterFilterEditMode(FilterEntry filter)
+        {
+            _editingFilter = filter;
+
+            ProviderComboBox.SelectedItem = filter.Provider;
+            // Set the category before the value: changing the category clears the value box.
+            FilterCategoryComboBox.SelectedItem = filter.FilterCategory;
+            ValueTextBox.Text = filter.Value;
+            ActionComboBox.SelectedItem = filter.FilterLogic;
+
+            AddFilterButton.Content = "Update";
+        }
+
+        /// <summary>
+        /// Leaves edit mode and restores the Add button.
+        /// </summary>
+        private void ExitFilterEditMode()
+        {
+            _editingFilter = null;
+            AddFilterButton.Content = "Add";
         }
 
         private void UpdateButtonStates()
@@ -166,12 +201,27 @@ namespace ETWSpyUI
                 }
             }
 
+            string provider = ProviderComboBox.SelectedItem.ToString() ?? string.Empty;
+            string filterLogic = ActionComboBox.SelectedItem?.ToString() ?? "Include";
+
+            if (_editingFilter != null)
+            {
+                UpdateFilterEntry(provider, filterCategory, value, filterLogic);
+            }
+            else
+            {
+                AddFilterEntry(provider, filterCategory, value, filterLogic);
+            }
+        }
+
+        private void AddFilterEntry(string provider, string filterCategory, string value, string filterLogic)
+        {
             var filter = new FilterEntry
             {
-                Provider = ProviderComboBox.SelectedItem.ToString() ?? string.Empty,
+                Provider = provider,
                 FilterCategory = filterCategory,
                 Value = value,
-                FilterLogic = ActionComboBox.SelectedItem?.ToString() ?? "Include"
+                FilterLogic = filterLogic
             };
 
             // Check if an exact duplicate filter already exists
@@ -188,6 +238,54 @@ namespace ETWSpyUI
             }
 
             _filterEntries.Add(filter);
+            _onFiltersChanged?.Invoke();
+
+            // Clear the value field for the next entry
+            ValueTextBox.Clear();
+        }
+
+        private void UpdateFilterEntry(string provider, string filterCategory, string value, string filterLogic)
+        {
+            var filter = _editingFilter;
+            if (filter == null)
+            {
+                return;
+            }
+
+            int index = _filterEntries.IndexOf(filter);
+            if (index < 0)
+            {
+                ExitFilterEditMode();
+                return;
+            }
+
+            // Check for an exact duplicate, excluding the filter currently being edited
+            bool isDuplicate = _filterEntries.Any(existing =>
+                !ReferenceEquals(existing, filter) &&
+                string.Equals(existing.Provider, provider, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(existing.FilterCategory, filterCategory, StringComparison.Ordinal) &&
+                string.Equals(existing.Value, value, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(existing.FilterLogic, filterLogic, StringComparison.Ordinal));
+
+            if (isDuplicate)
+            {
+                MessageBox.Show("This filter has already been added.", "Duplicate Filter", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Leave edit mode first so clearing the selection doesn't re-populate the fields.
+            FiltersListView.SelectedItem = null;
+
+            // Update the filter in place; INotifyPropertyChanged refreshes the row.
+            filter.Provider = provider;
+            filter.FilterCategory = filterCategory;
+            filter.Value = value;
+            filter.FilterLogic = filterLogic;
+
+            // Poke the collection once so the trace session restarts a single time with the
+            // updated filter (in-place edits alone don't raise CollectionChanged).
+            _filterEntries[index] = filter;
+
             _onFiltersChanged?.Invoke();
 
             // Clear the value field for the next entry

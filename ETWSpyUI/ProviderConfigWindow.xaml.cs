@@ -18,13 +18,22 @@ namespace ETWSpyUI
     /// <summary>
     /// Represents a provider configuration entry.
     /// </summary>
-    public class ProviderConfigEntry
+    public class ProviderConfigEntry : ObservableObject
     {
-        public string Provider { get; set; } = string.Empty;
-        public string? ProviderGuid { get; set; }
-        public string Keywords { get; set; } = string.Empty;
-        public string TraceLevel { get; set; } = string.Empty;
-        public string TraceFlags { get; set; } = string.Empty;
+        private string _provider = string.Empty;
+        public string Provider { get => _provider; set => SetProperty(ref _provider, value); }
+
+        private string? _providerGuid;
+        public string? ProviderGuid { get => _providerGuid; set => SetProperty(ref _providerGuid, value); }
+
+        private string _keywords = string.Empty;
+        public string Keywords { get => _keywords; set => SetProperty(ref _keywords, value); }
+
+        private string _traceLevel = string.Empty;
+        public string TraceLevel { get => _traceLevel; set => SetProperty(ref _traceLevel, value); }
+
+        private string _traceFlags = string.Empty;
+        public string TraceFlags { get => _traceFlags; set => SetProperty(ref _traceFlags, value); }
     }
 
     /// <summary>
@@ -38,6 +47,7 @@ namespace ETWSpyUI
         private readonly bool _isDarkMode;
         private List<ProviderInfo> _allProviders = [];
         private ICollectionView? _providerView;
+        private ProviderConfigEntry? _editingProvider;
 
         public ProviderConfigWindow(ObservableCollection<ProviderConfigEntry> providerEntries, ObservableCollection<FilterEntry> filterEntries, Action onProvidersChanged, bool isDarkMode)
         {
@@ -71,7 +81,51 @@ namespace ETWSpyUI
 
         private void ProvidersListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (ProvidersListView.SelectedItem is ProviderConfigEntry entry)
+            {
+                EnterProviderEditMode(entry);
+            }
+            else
+            {
+                ExitProviderEditMode();
+            }
+
             UpdateButtonStates();
+        }
+
+        /// <summary>
+        /// Loads the selected provider entry into the input fields and switches the Add button to Update.
+        /// </summary>
+        private void EnterProviderEditMode(ProviderConfigEntry entry)
+        {
+            _editingProvider = entry;
+
+            // Suppress the ComboBox text-change handler so populating the field doesn't
+            // open the dropdown or start filtering.
+            _suppressTextChanged = true;
+            try
+            {
+                ProviderComboBox.Text = entry.Provider;
+            }
+            finally
+            {
+                _suppressTextChanged = false;
+            }
+
+            KeywordsTextBox.Text = entry.Keywords;
+            TraceLevelComboBox.SelectedItem = entry.TraceLevel;
+            TraceFlagsTextBox.Text = entry.TraceFlags;
+
+            AddButton.Content = "Update";
+        }
+
+        /// <summary>
+        /// Leaves edit mode and restores the Add button.
+        /// </summary>
+        private void ExitProviderEditMode()
+        {
+            _editingProvider = null;
+            AddButton.Content = "Add";
         }
 
         private void UpdateButtonStates()
@@ -292,29 +346,13 @@ namespace ETWSpyUI
                 }
             }
 
-            var entry = new ProviderConfigEntry
-            {
-                Provider = ProviderComboBox.Text,
-                Keywords = KeywordsTextBox.Text.Trim(),
-                TraceLevel = TraceLevelComboBox.SelectedItem?.ToString() ?? "Verbose",
-                TraceFlags = TraceFlagsTextBox.Text.Trim()
-            };
+            string providerName = ProviderComboBox.Text;
+            string keywords = KeywordsTextBox.Text.Trim();
+            string traceLevel = TraceLevelComboBox.SelectedItem?.ToString() ?? "Verbose";
+            string traceFlags = TraceFlagsTextBox.Text.Trim();
 
-            // Check if an exact duplicate entry already exists
-            bool isDuplicate = _providerEntries.Any(existing =>
-                string.Equals(existing.Provider, entry.Provider, StringComparison.OrdinalIgnoreCase) &&
-                string.Equals(existing.Keywords, entry.Keywords, StringComparison.OrdinalIgnoreCase) &&
-                string.Equals(existing.TraceLevel, entry.TraceLevel, StringComparison.OrdinalIgnoreCase) &&
-                string.Equals(existing.TraceFlags, entry.TraceFlags, StringComparison.Ordinal));
-
-            if (isDuplicate)
-            {
-                MessageBox.Show("This provider configuration has already been added.", "Duplicate Entry", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            // Not a known provider - validate it
-            string providerInput = ProviderComboBox.Text.Trim();
+            // Validate the provider (known name or parseable GUID)
+            string providerInput = providerName.Trim();
             var knownProvider = ProviderManager.FindByName(providerInput);
 
             if (!EtwProviderValidator.IsValidProvider(providerInput, knownProvider?.Guid, out var errorMessage))
@@ -334,8 +372,39 @@ namespace ETWSpyUI
                 providerGuid = parsedGuid.ToString();
             }
 
-            // Set the GUID on the entry
-            entry.ProviderGuid = providerGuid;
+            if (_editingProvider != null)
+            {
+                UpdateProviderEntry(providerName, providerGuid, keywords, traceLevel, traceFlags);
+            }
+            else
+            {
+                AddProviderEntry(providerName, providerGuid, keywords, traceLevel, traceFlags);
+            }
+        }
+
+        private void AddProviderEntry(string providerName, string? providerGuid, string keywords, string traceLevel, string traceFlags)
+        {
+            var entry = new ProviderConfigEntry
+            {
+                Provider = providerName,
+                ProviderGuid = providerGuid,
+                Keywords = keywords,
+                TraceLevel = traceLevel,
+                TraceFlags = traceFlags
+            };
+
+            // Check if an exact duplicate entry already exists
+            bool isDuplicate = _providerEntries.Any(existing =>
+                string.Equals(existing.Provider, entry.Provider, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(existing.Keywords, entry.Keywords, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(existing.TraceLevel, entry.TraceLevel, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(existing.TraceFlags, entry.TraceFlags, StringComparison.Ordinal));
+
+            if (isDuplicate)
+            {
+                MessageBox.Show("This provider configuration has already been added.", "Duplicate Entry", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
             _providerEntries.Add(entry);
 
@@ -352,6 +421,83 @@ namespace ETWSpyUI
                 TraceFlags = entry.TraceFlags
             };
             _filterEntries.Add(defaultFilter);
+
+            _onProvidersChanged?.Invoke();
+        }
+
+        private void UpdateProviderEntry(string providerName, string? providerGuid, string keywords, string traceLevel, string traceFlags)
+        {
+            var entry = _editingProvider;
+            if (entry == null)
+            {
+                return;
+            }
+
+            int index = _providerEntries.IndexOf(entry);
+            if (index < 0)
+            {
+                ExitProviderEditMode();
+                return;
+            }
+
+            // Check for an exact duplicate, excluding the entry currently being edited
+            bool isDuplicate = _providerEntries.Any(existing =>
+                !ReferenceEquals(existing, entry) &&
+                string.Equals(existing.Provider, providerName, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(existing.Keywords, keywords, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(existing.TraceLevel, traceLevel, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(existing.TraceFlags, traceFlags, StringComparison.Ordinal));
+
+            if (isDuplicate)
+            {
+                MessageBox.Show("This provider configuration has already been added.", "Duplicate Entry", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            string oldProvider = entry.Provider;
+            bool providerNameChanged = !string.Equals(oldProvider, providerName, StringComparison.OrdinalIgnoreCase);
+
+            // Leave edit mode first so clearing the selection doesn't re-populate the fields.
+            ProvidersListView.SelectedItem = null;
+
+            // Update the provider entry in place; INotifyPropertyChanged refreshes the row.
+            entry.Provider = providerName;
+            entry.ProviderGuid = providerGuid;
+            entry.Keywords = keywords;
+            entry.TraceLevel = traceLevel;
+            entry.TraceFlags = traceFlags;
+
+            // Cascade the change to filters associated with this provider so the trace session
+            // (which groups filters by provider name) and the Filters window stay consistent.
+            var associatedFilters = _filterEntries
+                .Where(f => string.Equals(f.Provider, oldProvider, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+            foreach (var filter in associatedFilters)
+            {
+                filter.Provider = providerName;
+                filter.ProviderGuid = providerGuid;
+                filter.Keywords = keywords;
+                filter.TraceLevel = traceLevel;
+                filter.TraceFlags = traceFlags;
+            }
+
+            // If the provider name changed, raise a collection-changed notification so dependents
+            // that snapshot provider names (e.g., the Filters window dropdown) refresh.
+            if (providerNameChanged)
+            {
+                _providerEntries[index] = entry;
+            }
+
+            // Poke the filter collection once so the trace session restarts a single time with
+            // the updated configuration (in-place edits alone don't raise CollectionChanged).
+            if (associatedFilters.Count > 0)
+            {
+                int filterIndex = _filterEntries.IndexOf(associatedFilters[0]);
+                if (filterIndex >= 0)
+                {
+                    _filterEntries[filterIndex] = associatedFilters[0];
+                }
+            }
 
             _onProvidersChanged?.Invoke();
         }
