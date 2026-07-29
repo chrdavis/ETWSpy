@@ -65,7 +65,7 @@ namespace ETWSpyUI
     /// <summary>
     /// Represents an ETW event for display in the DataGrid.
     /// </summary>
-    public class EventRecord
+    public class EventRecord : ObservableObject
     {
         public DateTime Timestamp { get; set; }
         public string ProviderName { get; set; } = string.Empty;
@@ -89,6 +89,18 @@ namespace ETWSpyUI
         /// </summary>
         [System.ComponentModel.Browsable(false)]
         public List<FormattedProperty> PayloadWithTypes { get; set; } = [];
+
+        /// <summary>
+        /// Elapsed time between a Begin/End event pair, in the provider's raw timestamp units.
+        /// Empty when the event is not the end of a correlated pair.
+        /// </summary>
+        /// <remarks>
+        /// This value is derived by correlating Begin/End events by their payload Id - it is
+        /// not a decoded payload field. It may be assigned after the row is already visible,
+        /// because the two halves of a pair can be delivered out of order.
+        /// </remarks>
+        private string _duration = string.Empty;
+        public string Duration { get => _duration; set => SetProperty(ref _duration, value); }
 
         /// <summary>
         /// Pre-computed formatted payload string for display in the DataGrid.
@@ -162,6 +174,9 @@ namespace ETWSpyUI
         // String interner for deduplicating repeated strings in EventRecord objects
         // Provider names, event names, task names, and property names are highly repetitive
         private readonly StringInterner _stringInterner = new();
+
+        // Derives elapsed time for providers that emit paired Begin/End events
+        private readonly EventDurationCorrelator<EventRecord> _durationCorrelator = new();
 
         // Track open windows to avoid duplicates
         private FiltersWindow? _filtersWindow;
@@ -997,6 +1012,8 @@ namespace ETWSpyUI
                 prop.Value = TrimQuotes(prop.Value);
             }
             
+            // Derive the elapsed time for providers that emit paired Begin/End events
+            // (e.g. Chrome/Edge), which report only their own timestamp on each event.
             var eventRecord = new EventRecord
             {
                 Timestamp = record.Timestamp,
@@ -1011,6 +1028,21 @@ namespace ETWSpyUI
                 PayloadWithTypes = payloadWithTypes,
                 PayloadDisplay = FormatPayloadForCopy(payload)
             };
+
+            // The counterpart may arrive before or after this event, so the record that gets
+            // the duration is whichever one is the End half of the pair.
+            if (_durationCorrelator.TryCorrelate(
+                    record.ProviderName ?? string.Empty,
+                    record.Name ?? string.Empty,
+                    record.ProcessId,
+                    payload,
+                    eventRecord,
+                    out var endEvent,
+                    out var duration)
+                && endEvent != null)
+            {
+                endEvent.Duration = duration.ToString();
+            }
 
             // Queue for batch processing instead of immediate UI update
             _pendingEvents.Enqueue(eventRecord);
@@ -1078,6 +1110,9 @@ namespace ETWSpyUI
             }
             _activeProviders.Clear();
 
+            // Discard any unmatched Begin events from this session
+            _durationCorrelator.Reset();
+
             // Flush any remaining events
             FlushPendingEvents();
         }
@@ -1089,6 +1124,9 @@ namespace ETWSpyUI
 
             // Clear interned strings to release memory from old events
             _stringInterner.Clear();
+
+            // Discard any unmatched Begin events tracked for duration correlation
+            _durationCorrelator.Reset();
 
             // To properly release DataGrid internal caching (ItemContainerGenerator, 
             // row containers, dictionaries, etc.), we must:
@@ -1269,6 +1307,7 @@ namespace ETWSpyUI
                 nameof(EventRecord.EventId) => "Event Id",
                 nameof(EventRecord.ProcessId) => "Process Id",
                 nameof(EventRecord.ThreadId) => "Thread Id",
+                nameof(EventRecord.Duration) => "Duration",
                 nameof(EventRecord.PayloadDisplay) => "Payload",
                 _ => e.Column.Header
             };
@@ -1321,14 +1360,14 @@ namespace ETWSpyUI
             var sb = new StringBuilder();
 
             // Add header row
-            sb.AppendLine("Timestamp\tProviderName\tEventName\tTaskName\tEventId\tProcessId\tThreadId\tPayload");
+            sb.AppendLine("Timestamp\tProviderName\tEventName\tTaskName\tEventId\tProcessId\tThreadId\tDuration\tPayload");
 
             // Add data rows
             foreach (var record in selectedItems)
             {
                 string payloadStr = FormatPayloadForCopy(record.Payload);
                 string timestampStr = FormatTimestamp(record.Timestamp);
-                sb.AppendLine($"{timestampStr}\t{record.ProviderName}\t{record.EventName}\t{record.TaskName}\t{record.EventId}\t{record.ProcessId}\t{record.ThreadId}\t{payloadStr}");
+                sb.AppendLine($"{timestampStr}\t{record.ProviderName}\t{record.EventName}\t{record.TaskName}\t{record.EventId}\t{record.ProcessId}\t{record.ThreadId}\t{record.Duration}\t{payloadStr}");
             }
 
             try
@@ -1382,7 +1421,8 @@ namespace ETWSpyUI
                     "TaskName",
                     "EventId",
                     "ProcessId",
-                    "ThreadId"
+                    "ThreadId",
+                    "Duration"
                 };
                 headerParts.AddRange(allPayloadKeys);
                 writer.WriteLine(string.Join(",", headerParts.Select(EscapeCsvField)));
@@ -1398,7 +1438,8 @@ namespace ETWSpyUI
                         record.TaskName,
                         record.EventId.ToString(),
                         record.ProcessId.ToString(),
-                        record.ThreadId.ToString()
+                        record.ThreadId.ToString(),
+                        record.Duration
                     };
 
                     // Add payload values in the same order as headers
