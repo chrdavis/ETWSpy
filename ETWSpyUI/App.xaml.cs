@@ -15,6 +15,21 @@ namespace ETWSpyUI
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
+            // Verify the native ETW dependencies load before anything tries to use them.
+            // Without the Visual C++ runtime this would otherwise surface as an unhandled
+            // FileNotFoundException the first time a provider is added.
+            if (!NativeRuntimeChecker.IsEtwRuntimeAvailable())
+            {
+                MessageBox.Show(
+                    NativeRuntimeChecker.MissingRuntimeMessage,
+                    "ETWSpy - Missing Prerequisite",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+
+                Shutdown(1);
+                return;
+            }
+
             // Check for command-line arguments (file path to open)
             if (e.Args.Length > 0 && !string.IsNullOrWhiteSpace(e.Args[0]))
             {

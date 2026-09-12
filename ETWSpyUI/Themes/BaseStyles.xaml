@@ -798,6 +798,86 @@
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <!-- Custom template so the sort glyph uses theme colours. The default
+                     WPF arrow is a hardcoded dark grey and is invisible on dark headers. -->
+                <ControlTemplate TargetType="DataGridColumnHeader">
+                    <Grid>
+                        <Border x:Name="HeaderBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <ContentPresenter Grid.Column="0"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  RecognizesAccessKey="True"
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                <!-- Sort direction indicator. A solid triangle in the primary
+                                     foreground colour, rather than a thin accent-coloured
+                                     glyph, so it stays legible in both themes. -->
+                                <Path x:Name="SortArrow"
+                                      Grid.Column="1"
+                                      Margin="8,0,0,0"
+                                      VerticalAlignment="Center"
+                                      Fill="{DynamicResource PrimaryForegroundBrush}"
+                                      Data="M 0,5 L 5,0 L 10,5 Z"
+                                      Visibility="Collapsed"/>
+                            </Grid>
+                        </Border>
+                        <!-- Gripper for resizing columns -->
+                        <Thumb x:Name="PART_LeftHeaderGripper"
+                               HorizontalAlignment="Left"
+                               Width="4"
+                               Margin="-2,0,0,0"
+                               Background="Transparent"
+                               Cursor="SizeWE">
+                            <Thumb.Template>
+                                <ControlTemplate TargetType="Thumb">
+                                    <Border Background="Transparent" Width="{TemplateBinding Width}"/>
+                                </ControlTemplate>
+                            </Thumb.Template>
+                        </Thumb>
+                        <Thumb x:Name="PART_RightHeaderGripper"
+                               HorizontalAlignment="Right"
+                               Width="4"
+                               Margin="0,0,-2,0"
+                               Background="Transparent"
+                               Cursor="SizeWE">
+                            <Thumb.Template>
+                                <ControlTemplate TargetType="Thumb">
+                                    <Border Background="Transparent" Width="{TemplateBinding Width}"/>
+                                </ControlTemplate>
+                            </Thumb.Template>
+                        </Thumb>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <!-- Ascending: solid up triangle, with the sorted column tinted -->
+                        <Trigger Property="SortDirection" Value="Ascending">
+                            <Setter TargetName="SortArrow" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="SortArrow" Property="Data" Value="M 0,5 L 5,0 L 10,5 Z"/>
+                            <Setter TargetName="HeaderBorder" Property="Background" Value="{DynamicResource SortedColumnBrush}"/>
+                        </Trigger>
+                        <!-- Descending: solid down triangle, with the sorted column tinted -->
+                        <Trigger Property="SortDirection" Value="Descending">
+                            <Setter TargetName="SortArrow" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="SortArrow" Property="Data" Value="M 0,0 L 5,5 L 10,0 Z"/>
+                            <Setter TargetName="HeaderBorder" Property="Background" Value="{DynamicResource SortedColumnBrush}"/>
+                        </Trigger>
+                        <!-- Hover state. Declared last so it wins over the sorted tint. -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="HeaderBorder" Property="Background" Value="{DynamicResource HoverBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <!-- DataGrid: Themed container -->

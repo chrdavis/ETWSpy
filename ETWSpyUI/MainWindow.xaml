@@ -194,6 +194,7 @@
                       VirtualizingPanel.ScrollUnit="Pixel"
                       ScrollViewer.IsDeferredScrollingEnabled="True"
                       PreviewKeyDown="EventsDataGrid_PreviewKeyDown"
+                      Sorting="EventsDataGrid_Sorting"
                       MouseDoubleClick="EventsDataGrid_MouseDoubleClick">
                 <DataGrid.ContextMenu>
                     <ContextMenu>

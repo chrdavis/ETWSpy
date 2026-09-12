@@ -10,6 +10,24 @@
     <Icon Id="ETWSpy.ico" SourceFile="$(var.ETWSpyUI.ProjectDir)ETWSpy.ico" />
     <Property Id="ARPPRODUCTICON" Value="ETWSpy.ico" />
 
+    <!--
+      ETWSpy depends on krabsetw (Microsoft.O365.Security.Native.ETW.dll), a mixed-mode
+      C++/CLI assembly that requires the Visual C++ runtime. Without it the application
+      fails at runtime with a misleading "could not load assembly" error, so block the
+      install up front with an actionable message.
+    -->
+    <Property Id="VCRUNTIME2015X64">
+      <RegistrySearch Id="VCRuntime2015X64Search"
+                      Root="HKLM"
+                      Key="SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64"
+                      Name="Installed"
+                      Type="raw"
+                      Bitness="always64" />
+    </Property>
+
+    <Launch Condition="Installed OR VCRUNTIME2015X64"
+            Message="ETWSpy requires the Microsoft Visual C++ Redistributable (2015-2022, x64). Install it by running 'winget install Microsoft.VCRedist.2015+.x64' or download it from https://aka.ms/vs/17/release/vc_redist.x64.exe, then run this installer again." />
+
     <Feature Id="Main">
       <ComponentGroupRef Id="ProductComponents" />
       <ComponentRef Id="ProgramMenuShortcut" />

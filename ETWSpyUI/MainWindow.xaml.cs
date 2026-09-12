@@ -178,6 +178,12 @@ namespace ETWSpyUI
         // Derives elapsed time for providers that emit paired Begin/End events
         private readonly EventDurationCorrelator<EventRecord> _durationCorrelator = new();
 
+        // Current sort state. The grid's ItemsSource is reassigned on every batch flush,
+        // which discards the CollectionView's sort, so sorting is applied to the list
+        // directly and the header indicator is restored after each reassignment.
+        private string? _sortMemberPath;
+        private ListSortDirection _sortDirection = ListSortDirection.Ascending;
+
         // Track open windows to avoid duplicates
         private FiltersWindow? _filtersWindow;
         private ProviderConfigWindow? _providerConfigWindow;
@@ -439,11 +445,17 @@ namespace ETWSpyUI
             // Add new records
             _eventRecordsList.AddRange(newRecords);
 
+            // Keep newly arrived events in the user's chosen order
+            ApplySort();
+
             // Create a completely new list and assign it to ItemsSource
             // This replaces the entire binding rather than refreshing it,
             // which avoids the WeakEventManager listener accumulation
             var displayList = new List<EventRecord>(_eventRecordsList);
             EventsDataGrid.ItemsSource = displayList;
+
+            // Reassigning ItemsSource resets header state, so reapply the sort arrow
+            UpdateSortIndicators();
 
             // Update the event count display with current interval info
             EventCountText.Text = $"Events: {_eventRecordsList.Count:N0} (max {MaxEventsToShow:N0})";
@@ -456,6 +468,16 @@ namespace ETWSpyUI
             {
                 EventsDataGrid.ScrollIntoView(_eventRecordsList[^1]);
             }
+        }
+
+        /// <summary>
+        /// Rebinds the grid to the current event list, preserving the sort indicator.
+        /// </summary>
+        private void RefreshEventsDisplay()
+        {
+            var displayList = new List<EventRecord>(_eventRecordsList);
+            EventsDataGrid.ItemsSource = displayList;
+            UpdateSortIndicators();
         }
 
         private void MainWindow_Closing(object? sender, CancelEventArgs e)
@@ -1144,6 +1166,9 @@ namespace ETWSpyUI
             // Rebind the ItemsSource to the new empty collection
             EventsDataGrid.ItemsSource = _eventRecordsList;
 
+            // Rebinding resets header state, so reapply the sort arrow
+            UpdateSortIndicators();
+
             // Update the event count display
             EventCountText.Text = "Events: 0";
 
@@ -1334,6 +1359,8 @@ namespace ETWSpyUI
                 {
                     Header = "Timestamp",
                     Binding = binding,
+                    // Sort on the underlying DateTime rather than the formatted string
+                    SortMemberPath = nameof(EventRecord.Timestamp),
                     Width = new DataGridLength(180)
                 };
                 
@@ -1346,6 +1373,115 @@ namespace ETWSpyUI
             if (e.PropertyName == nameof(EventRecord.PayloadDisplay))
             {
                 e.Column.Width = new DataGridLength(500);
+            }
+        }
+
+        /// <summary>
+        /// Handles column sorting.
+        /// </summary>
+        /// <remarks>
+        /// Sorting is handled manually because the grid's ItemsSource is replaced on every
+        /// batch flush, which would otherwise discard the CollectionView's sort and its
+        /// header indicator.
+        /// </remarks>
+        private void EventsDataGrid_Sorting(object sender, DataGridSortingEventArgs e)
+        {
+            var column = e.Column;
+            string? sortPath = column.SortMemberPath;
+
+            if (string.IsNullOrEmpty(sortPath))
+            {
+                return;
+            }
+
+            // Take over from the default behaviour so the sort survives ItemsSource changes
+            e.Handled = true;
+
+            // Toggle direction when re-sorting the same column, otherwise start ascending
+            _sortDirection = _sortMemberPath == sortPath && _sortDirection == ListSortDirection.Ascending
+                ? ListSortDirection.Descending
+                : ListSortDirection.Ascending;
+            _sortMemberPath = sortPath;
+
+            ApplySort();
+            UpdateSortIndicators();
+            RefreshEventsDisplay();
+        }
+
+        /// <summary>
+        /// Sorts the backing event list according to the current sort state.
+        /// </summary>
+        private void ApplySort()
+        {
+            if (string.IsNullOrEmpty(_sortMemberPath))
+            {
+                return;
+            }
+
+            var comparer = GetSortComparer(_sortMemberPath);
+            if (comparer == null)
+            {
+                return;
+            }
+
+            // List.Sort is unstable, but every comparer falls back to a unique-enough
+            // ordering for display purposes.
+            _eventRecordsList.Sort(_sortDirection == ListSortDirection.Ascending
+                ? comparer
+                : Comparer<EventRecord>.Create((x, y) => comparer.Compare(y, x)));
+        }
+
+        /// <summary>
+        /// Gets an ascending comparer for the specified property.
+        /// </summary>
+        private static IComparer<EventRecord>? GetSortComparer(string sortMemberPath) => sortMemberPath switch
+        {
+            nameof(EventRecord.Timestamp) => Comparer<EventRecord>.Create((x, y) => x.Timestamp.CompareTo(y.Timestamp)),
+            nameof(EventRecord.ProviderName) => Comparer<EventRecord>.Create((x, y) => string.Compare(x.ProviderName, y.ProviderName, StringComparison.OrdinalIgnoreCase)),
+            nameof(EventRecord.EventName) => Comparer<EventRecord>.Create((x, y) => string.Compare(x.EventName, y.EventName, StringComparison.OrdinalIgnoreCase)),
+            nameof(EventRecord.TaskName) => Comparer<EventRecord>.Create((x, y) => string.Compare(x.TaskName, y.TaskName, StringComparison.OrdinalIgnoreCase)),
+            nameof(EventRecord.EventId) => Comparer<EventRecord>.Create((x, y) => x.EventId.CompareTo(y.EventId)),
+            nameof(EventRecord.ProcessId) => Comparer<EventRecord>.Create((x, y) => x.ProcessId.CompareTo(y.ProcessId)),
+            nameof(EventRecord.ThreadId) => Comparer<EventRecord>.Create((x, y) => x.ThreadId.CompareTo(y.ThreadId)),
+            // Duration is a numeric value held as a string; compare numerically and sort
+            // unset values last so populated durations group together.
+            nameof(EventRecord.Duration) => Comparer<EventRecord>.Create(CompareDuration),
+            nameof(EventRecord.PayloadDisplay) => Comparer<EventRecord>.Create((x, y) => string.Compare(x.PayloadDisplay, y.PayloadDisplay, StringComparison.OrdinalIgnoreCase)),
+            _ => null
+        };
+
+        private static int CompareDuration(EventRecord x, EventRecord y)
+        {
+            bool xHas = ulong.TryParse(x.Duration, out var xValue);
+            bool yHas = ulong.TryParse(y.Duration, out var yValue);
+
+            if (xHas && yHas)
+            {
+                return xValue.CompareTo(yValue);
+            }
+
+            // Events without a duration sort after those with one
+            if (xHas != yHas)
+            {
+                return xHas ? -1 : 1;
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Applies the sort arrow to the active column and clears it from all others.
+        /// </summary>
+        /// <remarks>
+        /// Must be called after any ItemsSource reassignment, which resets header state.
+        /// </remarks>
+        private void UpdateSortIndicators()
+        {
+            foreach (var column in EventsDataGrid.Columns)
+            {
+                column.SortDirection = column.SortMemberPath == _sortMemberPath
+                    ? _sortDirection
+                    : null;
             }
         }
 

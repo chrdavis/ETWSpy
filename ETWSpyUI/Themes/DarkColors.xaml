@@ -14,6 +14,9 @@
     <SolidColorBrush x:Key="SelectionBrush" Color="#264F78"/>
     <SolidColorBrush x:Key="SelectionInactiveBrush" Color="#3E3E42"/>
     <SolidColorBrush x:Key="HoverBrush" Color="#3E3E42"/>
+    <!-- Background tint for the column currently being sorted. Distinct from HoverBrush
+         so hover feedback remains visible on the sorted column. -->
+    <SolidColorBrush x:Key="SortedColumnBrush" Color="#37373D"/>
     <SolidColorBrush x:Key="ErrorBrush" Color="#F44336"/>
     <SolidColorBrush x:Key="WarningBrush" Color="#FF9800"/>
     <SolidColorBrush x:Key="SuccessBrush" Color="#4CAF50"/>

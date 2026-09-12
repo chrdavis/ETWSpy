@@ -35,4 +35,7 @@
     <ProjectReference Include="..\ETWSpyLib\ETWSpyLib.csproj" />
   </ItemGroup>
 
+  <!-- Ships the Visual C++ runtime app-locally so no redistributable install is required -->
+  <Import Project="..\build\VCRuntime.targets" />
+
 </Project>

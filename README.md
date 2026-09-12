@@ -24,6 +24,7 @@ ETWSpy is a Windows desktop application for monitoring and capturing Event Traci
 
 - Windows 10 or later
 - .NET 8.0 Runtime
+- [Microsoft Visual C++ Redistributable (2015-2022, x64)](https://aka.ms/vs/17/release/vc_redist.x64.exe) - required by the native ETW library. Install with `winget install Microsoft.VCRedist.2015+.x64`
 - **Administrator privileges** (required for ETW tracing)
 
 ## Installation
