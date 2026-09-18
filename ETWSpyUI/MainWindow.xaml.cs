@@ -602,6 +602,10 @@ namespace ETWSpyUI
         /// </summary>
         private void RestartTraceSession()
         {
+            // Tracks the operation in progress. Native krabsetw failures arrive as an
+            // SEHException with no context, so the step is recorded to identify the source.
+            string currentStep = "stopping the previous session";
+
             try
             {
                 // Stop any existing session
@@ -613,6 +617,7 @@ namespace ETWSpyUI
                 // Reset adaptive interval to start fresh
                 ResetAdaptiveInterval();
 
+                currentStep = "creating the trace session";
                 _traceSession = EtwTraceSession.CreateUserSession($"ETWSpySession_{Guid.NewGuid():N}");
                 _traceCancellation = new CancellationTokenSource();
 
@@ -657,9 +662,11 @@ namespace ETWSpyUI
                         .Select(f => f.Value)
                         .ToList();
 
+                    currentStep = $"creating the provider '{firstFilter.Provider}' (GUID: {firstFilter.ProviderGuid ?? "none"})";
                     var wrapper = CreateProviderWrapper(firstFilter, needsOnAllEvents, excludeEventIds, includeMatchTexts, excludeMatchTexts);
 
                     // Apply all include filters with specific event IDs
+                    currentStep = $"applying event id filters for provider '{firstFilter.Provider}'";
                     foreach (var filterEntry in filterList.Where(f => f.FilterLogic == "Include" && f.FilterCategory == "Event Id" && !string.IsNullOrWhiteSpace(f.Value)))
                     {
                         ApplyEventIdFilterToProvider(wrapper, filterEntry);
@@ -683,6 +690,7 @@ namespace ETWSpyUI
                 _batchTimer.Start();
 
                 // Start the trace asynchronously
+                currentStep = "starting the trace";
                 _ = _traceSession.StartAsync(_traceCancellation.Token);
 
                 // Update UI to reflect running state
@@ -695,13 +703,54 @@ namespace ETWSpyUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Failed to start tracing: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(DescribeTraceStartFailure(ex, currentStep), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 StopTracing();
                 StartPauseToolbarIcon.Text = "\uE768"; // Play icon
                 StartPauseToolbarButton.ToolTip = "Start event capture";
                 StartPauseMenuItem.Header = "_Start event capture";
                 StartPauseMenuIcon.Text = "\uE768"; // Play icon
             }
+        }
+
+        /// <summary>
+        /// Builds a diagnosable message for a trace start failure.
+        /// </summary>
+        /// <remarks>
+        /// Native failures surface as SEHException, whose Message is only the unhelpful
+        /// "External component has thrown an exception." The exception type, error code and
+        /// inner exception are included so the actual cause is identifiable, along with the
+        /// two conditions that account for most failures.
+        /// </remarks>
+        private static string DescribeTraceStartFailure(Exception ex, string failingStep)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine($"Failed to start tracing while {failingStep}.");
+            sb.AppendLine();
+            sb.AppendLine($"{ex.Message}");
+            sb.AppendLine();
+            sb.AppendLine($"Type: {ex.GetType().FullName}");
+
+            if (ex is System.Runtime.InteropServices.SEHException seh)
+            {
+                sb.AppendLine($"Error code: 0x{seh.ErrorCode:X8}");
+            }
+            else if (ex is System.ComponentModel.Win32Exception win32)
+            {
+                sb.AppendLine($"Win32 error: {win32.NativeErrorCode}");
+            }
+
+            if (ex.InnerException != null)
+            {
+                sb.AppendLine($"Inner: {ex.InnerException.GetType().Name}: {ex.InnerException.Message}");
+            }
+
+            sb.AppendLine();
+            sb.AppendLine("Common causes:");
+            sb.AppendLine("  - ETWSpy is not running elevated. ETW tracing requires Administrator.");
+            sb.AppendLine("  - A provider is not registered on this machine, or its GUID is invalid.");
+            sb.AppendLine("  - Windows has no free trace sessions. Close other ETW tools and retry.");
+
+            return sb.ToString();
         }
 
         private void OnPropertyChanged(string propertyName)
@@ -905,12 +954,18 @@ namespace ETWSpyUI
         {
             // Look up the provider to get its GUID if available
             var providerInfo = ProviderManager.FindByName(entry.Provider);
-            
+
+            // An all-zero GUID is not a usable provider identity. The provider list can contain
+            // entries with a zero GUID, and passing one to the tracing library fails in native
+            // code with no useful diagnostic, so treat it as "no GUID known".
+            Guid? knownGuid = providerInfo?.Guid;
+            bool hasUsableGuid = knownGuid.HasValue && knownGuid.Value != Guid.Empty;
+
             EtwProviderWrapper wrapper;
-            if (providerInfo?.Guid != null)
+            if (hasUsableGuid)
             {
                 // Use the GUID from the provider info
-                wrapper = new EtwProviderWrapper(providerInfo.Guid.Value);
+                wrapper = new EtwProviderWrapper(knownGuid!.Value);
             }
             else if (Guid.TryParse(entry.Provider, out var guid))
             {

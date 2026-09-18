@@ -36,3 +36,6 @@ ETWSpyUI/obj/
 /ETWSpyInstaller/publish/ETWSpyUI.exe
 /ETWSpyInstaller/publish/ETWSpyLib.pdb
 /UpgradeLog.htm
+
+# Local, uncommitted build overrides (e.g. pointing at a locally built krabsetw)
+Directory.Build.local.props

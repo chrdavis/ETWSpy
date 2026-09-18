@@ -1,0 +1,64 @@
+<Project>
+
+  <!--
+    Copies the Visual C++ runtime DLLs next to the application so the krabsetw mixed-mode
+    assembly (Microsoft.O365.Security.Native.ETW.dll) can load without the machine-wide
+    Visual C++ Redistributable being installed.
+
+    App-local deployment of the VC runtime is permitted by the redistributable licence.
+    The files are located from the Visual Studio install; if they cannot be found the build
+    still succeeds and the application falls back to the machine-wide runtime, with
+    NativeRuntimeChecker reporting a clear message when neither is present.
+  -->
+
+  <PropertyGroup>
+    <VCRuntimeVSWhere Condition="'$(VCRuntimeVSWhere)' == ''">$(MSBuildProgramFiles32)\Microsoft Visual Studio\Installer\vswhere.exe</VCRuntimeVSWhere>
+    <!-- Set to false to opt out of app-local deployment -->
+    <IncludeVCRuntimeAppLocal Condition="'$(IncludeVCRuntimeAppLocal)' == ''">true</IncludeVCRuntimeAppLocal>
+  </PropertyGroup>
+
+  <Target Name="IncludeVCRuntimeFiles"
+          BeforeTargets="AssignTargetPaths"
+          Condition="'$(OS)' == 'Windows_NT' And '$(IncludeVCRuntimeAppLocal)' == 'true'">
+
+    <!-- Preferred: the redist directory exposed inside a VS developer command prompt -->
+    <ItemGroup Condition="'$(VCToolsRedistDir)' != ''">
+      <_VCRuntimeFile Include="$(VCToolsRedistDir)x64\Microsoft.VC*.CRT\*.dll" />
+    </ItemGroup>
+
+    <!-- Fallback: ask vswhere to locate the redist folder in the latest VS install -->
+    <Exec Condition="'@(_VCRuntimeFile)' == '' And Exists('$(VCRuntimeVSWhere)')"
+          Command="&quot;$(VCRuntimeVSWhere)&quot; -latest -prerelease -products * -find &quot;VC\Redist\MSVC\**\x64\Microsoft.VC*.CRT\vcruntime140.dll&quot;"
+          ConsoleToMSBuild="true"
+          StandardOutputImportance="low"
+          ContinueOnError="true">
+      <Output TaskParameter="ConsoleOutput" ItemName="_VCRuntimeProbe" />
+    </Exec>
+
+    <!-- Batching assigns once per match; the final value is the highest version found -->
+    <PropertyGroup Condition="'@(_VCRuntimeProbe)' != ''">
+      <_VCRuntimeDir>%(_VCRuntimeProbe.RootDir)%(_VCRuntimeProbe.Directory)</_VCRuntimeDir>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'@(_VCRuntimeFile)' == '' And '$(_VCRuntimeDir)' != ''">
+      <_VCRuntimeFile Include="$(_VCRuntimeDir)*.dll" />
+    </ItemGroup>
+
+    <!-- Copy beside the executable, flattened -->
+    <ItemGroup Condition="'@(_VCRuntimeFile)' != ''">
+      <None Include="@(_VCRuntimeFile)"
+            Link="%(Filename)%(Extension)"
+            CopyToOutputDirectory="PreserveNewest"
+            Visible="false" />
+    </ItemGroup>
+
+    <Message Condition="'@(_VCRuntimeFile)' != ''"
+             Importance="normal"
+             Text="Including Visual C++ runtime app-locally" />
+
+    <Warning Condition="'@(_VCRuntimeFile)' == ''"
+             Code="ETWSPY001"
+             Text="Visual C++ runtime files were not found, so they will not be shipped app-locally. The application will require the Microsoft Visual C++ Redistributable (2015-2022, x64) on the target machine." />
+  </Target>
+
+</Project>

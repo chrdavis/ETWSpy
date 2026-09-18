@@ -1,0 +1,46 @@
+<Project>
+
+  <!--
+	Selects which krabsetw (Microsoft.O365.Security.Native.ETW) build the solution uses.
+
+	The published 4.4.6 package mis-decodes TraceLogging payloads. Its schema cache cannot
+	distinguish events that share a name but declare different fields, so the first schema
+	seen is reused for every variant and the decoded values come out shifted.
+	See https://github.com/microsoft/krabsetw/issues/193.
+
+	Until that fix ships upstream the default is 'Vendored': a prebuilt assembly committed to
+	lib\krabsetw, which requires no C++ toolchain and works on a fresh clone. See
+	lib\krabsetw\README.md for provenance and rebuild instructions.
+
+	Valid values:
+	  Vendored  lib\krabsetw (default)
+	  Local     KrabsEtwLocalDir, for iterating on krabsetw itself
+	  Package   the published NuGet package, once the fix ships upstream
+
+	To point at your own krabsetw build without editing tracked files, create
+	Directory.Build.local.props (gitignored) next to this file:
+
+	  <Project>
+		<PropertyGroup>
+		  <KrabsEtwSource>Local</KrabsEtwSource>
+		  <KrabsEtwLocalDir>D:\krabsetw\Microsoft.O365.Security.Native.ETW.NetCore\x64\Release\net8.0\</KrabsEtwLocalDir>
+		</PropertyGroup>
+	  </Project>
+
+	or pass the properties on the command line:
+
+	  dotnet build /p:KrabsEtwSource=Local /p:KrabsEtwLocalDir=...\x64\Release\net8.0\
+
+	The selected source either resolves or fails the build; it never silently falls back, so a
+	green build always means the assembly named in the build log is the one being used.
+  -->
+
+  <!-- Local, uncommitted overrides -->
+  <Import Project="$(MSBuildThisFileDirectory)Directory.Build.local.props"
+		  Condition="Exists('$(MSBuildThisFileDirectory)Directory.Build.local.props')" />
+
+  <PropertyGroup>
+	<KrabsEtwSource Condition="'$(KrabsEtwSource)' == ''">Vendored</KrabsEtwSource>
+  </PropertyGroup>
+
+</Project>

@@ -64,6 +64,73 @@ namespace ETWSpyLib
         }
 
         /// <summary>
+        /// Name used for the synthetic property that carries the raw payload when the decoded
+        /// schema does not match the event.
+        /// </summary>
+        public const string RawPayloadPropertyName = "(raw payload)";
+
+        /// <summary>
+        /// Name used for the synthetic property that explains a schema mismatch.
+        /// </summary>
+        public const string SchemaWarningPropertyName = "(schema warning)";
+
+        /// <summary>
+        /// Text shown when the decoded schema does not match the event payload.
+        /// </summary>
+        public const string SchemaMismatchWarning =
+            "The decoded schema does not match this event's payload, so the values above are " +
+            "unreliable. This provider emits the same TraceLogging event name with different " +
+            "field sets, which the underlying library cannot distinguish " +
+            "(github.com/microsoft/krabsetw/issues/193).";
+
+        /// <summary>
+        /// Determines whether the schema used to decode an event matches its payload.
+        /// </summary>
+        /// <remarks>
+        /// Returns <c>false</c> unless a mismatch is positively identified, so events whose
+        /// layout cannot be measured are left alone rather than being falsely flagged.
+        /// </remarks>
+        public static bool IsSchemaMismatched(IEventRecord record, out byte[]? userData)
+        {
+            userData = null;
+
+            try
+            {
+                var propertyTypes = new List<int>();
+                foreach (var property in record.Properties)
+                {
+                    propertyTypes.Add(property.Type);
+                }
+
+                // Nothing to compare against
+                if (propertyTypes.Count == 0)
+                {
+                    return false;
+                }
+
+                var data = record.CopyUserData();
+                if (data == null || data.Length == 0)
+                {
+                    return false;
+                }
+
+                var match = PayloadLayoutValidator.Validate(propertyTypes, data, out _);
+                if (match == PayloadLayoutValidator.LayoutMatch.Mismatch)
+                {
+                    userData = data;
+                    return true;
+                }
+
+                return false;
+            }
+            catch
+            {
+                // Never let diagnostics break event processing
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Formats all properties of an event record into a list of FormattedProperty objects
         /// that include name, type, and value.
         /// </summary>
@@ -97,6 +164,25 @@ namespace ETWSpyLib
             catch
             {
                 // If enumeration fails, return what we have
+            }
+
+            // When the schema does not fit the payload the values above are shifted and wrong.
+            // Surface the raw bytes so the real content is still recoverable.
+            if (IsSchemaMismatched(record, out var rawPayload) && rawPayload != null)
+            {
+                result.Add(new FormattedProperty
+                {
+                    Name = interner?.Intern(SchemaWarningPropertyName) ?? SchemaWarningPropertyName,
+                    TypeName = interner?.Intern("Diagnostic") ?? "Diagnostic",
+                    Value = SchemaMismatchWarning
+                });
+
+                result.Add(new FormattedProperty
+                {
+                    Name = interner?.Intern(RawPayloadPropertyName) ?? RawPayloadPropertyName,
+                    TypeName = interner?.Intern("Binary") ?? "Binary",
+                    Value = PayloadLayoutValidator.FormatHex(rawPayload)
+                });
             }
 
             return result;

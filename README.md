@@ -123,6 +123,21 @@ Windows has a limited number of concurrent ETW trace sessions. Close other traci
 - Clear events periodically during long capture sessions
 - Use filters to capture only relevant events
 
+### Payload shows "(schema warning)"
+Some providers emit the same TraceLogging event name from multiple call sites with different
+field sets - for example `Microsoft.Windows.AppLifeCycle.UI` emits `AppLaunch_UserClick` both
+with and without a leading `PartA_PrivTags` field.
+
+TraceLogging events report an event ID of 0 and are identified by name, so these variants are
+indistinguishable to the underlying tracing library, which caches one schema per event name
+and reuses it for every variant ([krabsetw#193](https://github.com/microsoft/krabsetw/issues/193)).
+When that happens the decoded field values are shifted and wrong.
+
+ETWSpy detects this by checking the decoded schema against the real payload length. Affected
+events are flagged with a `(schema warning)` entry and the undecoded bytes are shown as
+`(raw payload)` in the Event Details window, so the true values remain recoverable. Correcting
+the decoding requires the raw `EVENT_RECORD`, which the library does not expose to managed code.
+
 ## Project Structure
 
 - **ETWSpyUI**: WPF desktop application

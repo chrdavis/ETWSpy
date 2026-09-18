@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace ETWSpyLib
 {
@@ -53,39 +54,47 @@ namespace ETWSpyLib
         }
 
         /// <summary>
-        /// Attempts to construct a krabsetw object, forcing the mixed-mode assembly and its
-        /// native dependencies to load.
+        /// Checks that the Visual C++ runtime krabsetw depends on can be loaded.
         /// </summary>
         /// <remarks>
-        /// Kept in its own non-inlined method so the assembly reference is not resolved until
-        /// the call is actually made, allowing the load failure to be caught here.
+        /// This deliberately probes the CRT directly rather than constructing a krabsetw
+        /// object. Creating a real Provider would allocate a native object that is then
+        /// abandoned to the finalizer, which is needless risk for a startup check - and
+        /// LoadLibrary answers the actual question (is the VC runtime present?) without
+        /// touching any tracing state.
+        ///
+        /// The modules are already loaded if the process got this far with them present, so
+        /// LoadLibrary simply increments a refcount; the handle is intentionally not freed.
         /// </remarks>
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static bool ProbeEtwRuntime()
         {
             try
             {
-                // Constructing a Provider executes C++/CLI code, which requires the native
-                // runtime to be resolvable. The instance itself is discarded.
-                _ = new Microsoft.O365.Security.ETW.Provider(Guid.Empty);
+                foreach (var module in RequiredModules)
+                {
+                    if (LoadLibraryW(module) == IntPtr.Zero)
+                    {
+                        return false;
+                    }
+                }
+
                 return true;
-            }
-            catch (Exception ex) when (
-                ex is FileNotFoundException ||
-                ex is DllNotFoundException ||
-                ex is BadImageFormatException ||
-                ex is TypeInitializationException ||
-                ex is TypeLoadException)
-            {
-                return false;
             }
             catch
             {
-                // Any other exception means the assembly and its native dependencies loaded
-                // successfully and managed to run - the runtime is present, this particular
-                // probe value was simply rejected. Treat that as available.
+                // If the probe itself cannot run, assume the runtime is present rather than
+                // blocking startup on a diagnostic.
                 return true;
             }
         }
+
+        /// <summary>
+        /// Native modules imported by the krabsetw assembly.
+        /// </summary>
+        private static readonly string[] RequiredModules = ["vcruntime140.dll", "msvcp140.dll"];
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        private static extern IntPtr LoadLibraryW(string lpLibFileName);
     }
 }

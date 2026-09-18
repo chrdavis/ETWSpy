@@ -1,0 +1,83 @@
+<Project>
+
+  <!--
+	Selects which krabsetw (Microsoft.O365.Security.Native.ETW) assembly to build against.
+	Controlled by KrabsEtwSource in Directory.Build.props:
+
+	  Vendored  lib\krabsetw - a prebuilt assembly carrying the TraceLogging schema fix.
+				This is the default; see lib\krabsetw\README.md for why, and for provenance.
+
+	  Local     A krabsetw build output directory given by KrabsEtwLocalDir. Use this to
+				iterate on krabsetw itself without copying files into lib\krabsetw.
+
+	  Package   The published NuGet package. Correct once the fix ships upstream, but it
+				mis-decodes TraceLogging payloads today.
+				See https://github.com/microsoft/krabsetw/issues/193.
+
+	Every mode either resolves or fails the build. None of them silently falls back, so a green
+	build always means the assembly named in the build log is the one being used.
+
+	This file is imported automatically by MSBuild for every project in the tree. The krabsetw
+	reference is scoped to C# projects so it is not applied to the WiX installer project.
+  -->
+
+  <PropertyGroup Condition="'$(MSBuildProjectExtension)' == '.csproj'">
+	<_KrabsEtwApplies>true</_KrabsEtwApplies>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(_KrabsEtwApplies)' == 'true' And '$(KrabsEtwSource)' == 'Vendored'">
+	<_KrabsEtwDir>$(MSBuildThisFileDirectory)lib\krabsetw\</_KrabsEtwDir>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(_KrabsEtwApplies)' == 'true' And '$(KrabsEtwSource)' == 'Local'">
+	<_KrabsEtwDir>$(KrabsEtwLocalDir)</_KrabsEtwDir>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(_KrabsEtwApplies)' == 'true'">
+	<_KrabsEtwAssembly>$(_KrabsEtwDir)Microsoft.O365.Security.Native.ETW.dll</_KrabsEtwAssembly>
+	<_KrabsEtwIjwhost>$(_KrabsEtwDir)Ijwhost.dll</_KrabsEtwIjwhost>
+  </PropertyGroup>
+
+  <Target Name="ValidateKrabsEtwSource"
+		  BeforeTargets="ResolveAssemblyReferences"
+		  Condition="'$(_KrabsEtwApplies)' == 'true'">
+
+	<Error Condition="'$(KrabsEtwSource)' != 'Vendored' And '$(KrabsEtwSource)' != 'Local' And '$(KrabsEtwSource)' != 'Package'"
+		   Code="ETWSPY004"
+		   Text="KrabsEtwSource is '$(KrabsEtwSource)'. Expected 'Vendored', 'Local' or 'Package'." />
+
+	<Error Condition="'$(KrabsEtwSource)' == 'Local' And '$(KrabsEtwLocalDir)' == ''"
+		   Code="ETWSPY005"
+		   Text="KrabsEtwSource is 'Local' but KrabsEtwLocalDir is not set. Point it at a krabsetw build output directory (x64\Release\net8.0\), or use 'Vendored'." />
+
+	<Error Condition="'$(KrabsEtwSource)' != 'Package' And !Exists('$(_KrabsEtwAssembly)')"
+		   Code="ETWSPY002"
+		   Text="KrabsEtwSource is '$(KrabsEtwSource)' but no krabsetw assembly was found at '$(_KrabsEtwAssembly)'. Build krabsetw and refresh it (see lib\krabsetw\README.md), or set KrabsEtwSource to 'Package'." />
+
+	<Error Condition="'$(KrabsEtwSource)' != 'Package' And !Exists('$(_KrabsEtwIjwhost)')"
+		   Code="ETWSPY003"
+		   Text="Ijwhost.dll was not found next to the krabsetw assembly at '$(_KrabsEtwDir)'. It is required to host a mixed-mode assembly on .NET Core." />
+
+	<Message Importance="high"
+			 Condition="'$(KrabsEtwSource)' != 'Package'"
+			 Text="krabsetw: $(KrabsEtwSource) - $(_KrabsEtwAssembly)" />
+
+	<Message Importance="high"
+			 Condition="'$(KrabsEtwSource)' == 'Package'"
+			 Text="krabsetw: published package" />
+  </Target>
+
+  <ItemGroup Condition="'$(_KrabsEtwApplies)' == 'true' And '$(KrabsEtwSource)' != 'Package'">
+	<Reference Include="Microsoft.O365.Security.Native.ETW">
+	  <HintPath>$(_KrabsEtwAssembly)</HintPath>
+	  <Private>true</Private>
+	</Reference>
+	<!-- Mixed-mode assemblies need the IJW host alongside them on .NET Core -->
+	<None Include="$(_KrabsEtwIjwhost)" Condition="Exists('$(_KrabsEtwIjwhost)')">
+	  <Link>Ijwhost.dll</Link>
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  <Visible>false</Visible>
+	</None>
+  </ItemGroup>
+
+</Project>

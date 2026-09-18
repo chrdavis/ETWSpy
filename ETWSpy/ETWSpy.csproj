@@ -16,7 +16,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.O365.Security.Native.ETW" Version="4.4.6" />
+    <!-- Used only when KrabsEtwSource is 'Package'; see Directory.Build.props -->
+    <PackageReference Include="Microsoft.O365.Security.Native.ETW" Version="4.4.6" Condition="'$(KrabsEtwSource)' == 'Package'" />
   </ItemGroup>
 
   <ItemGroup>

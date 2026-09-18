@@ -30,4 +30,13 @@
     <ProjectReference Include="..\ETWSpyLib\ETWSpyLib.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!--
+      The tests use krabsetw types directly. A PackageReference would flow transitively from
+      ETWSpyLib, but a local assembly Reference does not, so it is declared here as well.
+      Superseded by the locally built assembly when UseLocalKrabsEtw is true.
+    -->
+    <PackageReference Include="Microsoft.O365.Security.Native.ETW" Version="4.4.6" Condition="'$(KrabsEtwSource)' == 'Package'" />
+  </ItemGroup>
+
 </Project>
